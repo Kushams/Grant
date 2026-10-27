@@ -1,89 +1,73 @@
 @import "tailwindcss";
 
 /*
- * NEN design tokens. Institutional navy + teal on warm neutral surfaces.
- * Contrast notes: ink-700/600 on white and sand-50 are >= 7:1 / 5.5:1; navy-800 on white 12:1;
- * teal-700 on white 6.6:1. Never use ink-400 or lighter for text that carries meaning.
+ * NEN design tokens. Deep institutional navy, white and cool greys; green only for success states.
+ * Brand navy #142B45 (navy-800), dark cinematic #0B1220 (navy-950), content white / #F5F7FA (sand-50),
+ * text #17212F (ink-900), secondary #526579 (ink-600), borders #D9E0E8 (ink-200 / sand-200).
+ * Contrast: ink-900 / ink-600 on white are >= 14:1 / 6:1; navy-800 on white 13:1.
  */
 @theme {
   /* Geist (self-hosted via the `geist` package) everywhere, with the system stack as fallback. */
   --font-sans: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  /*
-   * NEN dark system. The existing scale names (ink / navy / sand / teal / ok / warn / bad / info) are kept so every
-   * component restyles from ONE place; their VALUES now describe the dark theme:
-   *   ink    -> text on dark (900 = white) and, at 50-300, raised surfaces / borders
-   *   navy   -> violet-tinted tints (50-300), the violet accent (400-800) and the darkest surfaces (900-950)
-   *   sand   -> page backgrounds
-   *   teal   -> secondary violet accent (positive actions, progress)
-   */
-  --color-bg: #08090d;
-  --color-surface: #12141b;
-  --color-raised: #181a22;
+  --color-navy-50: #f2f5f9;
+  --color-navy-100: #e3e9f1;
+  --color-navy-200: #c3d0e0;
+  --color-navy-300: #94a9c4;
+  --color-navy-400: #647f9f;
+  --color-navy-500: #44607f;
+  --color-navy-600: #2f4b6a;
+  --color-navy-700: #223c5a;
+  --color-navy-800: #142b45;
+  --color-navy-900: #0f2036;
+  --color-navy-950: #0b1220;
 
-  --color-violet-300: #b7a6ff;
-  --color-violet-400: #a58bff;
-  --color-violet-500: #9274ff;
-  --color-violet-600: #7f5cf5;
-  --color-violet-700: #6c47e6;
+  /* "teal" is kept as a name for the secondary interactive tone, now a mid institutional blue (not green). */
+  --color-teal-50: #eef3f8;
+  --color-teal-100: #dce6f0;
+  --color-teal-200: #b9cce0;
+  --color-teal-500: #2e5c8a;
+  --color-teal-600: #254f7a;
+  --color-teal-700: #1d4268;
+  --color-teal-800: #142b45;
 
-  --color-navy-50: #1a1730;
-  --color-navy-100: #221e42;
-  --color-navy-200: #352e6a;
-  --color-navy-300: #5b4fb3;
-  --color-navy-400: #7d6ae0;
-  --color-navy-500: #9274ff;
-  --color-navy-600: #8264f7;
-  --color-navy-700: #7254ee;
-  --color-navy-800: #6544e0;
-  --color-navy-900: #12141b;
-  --color-navy-950: #08090d;
+  --color-sand-50: #f5f7fa;
+  --color-sand-100: #eef2f6;
+  --color-sand-200: #d9e0e8;
+  --color-sand-300: #c3ccd8;
 
-  --color-teal-50: #1d1a36;
-  --color-teal-100: #2a2550;
-  --color-teal-200: #c8bcff;
-  --color-teal-500: #8f72ff;
-  --color-teal-600: #8264f5;
-  --color-teal-700: #6f4fe8;
-  --color-teal-800: #5a3ccf;
+  --color-ink-900: #17212f;
+  --color-ink-800: #212d3d;
+  --color-ink-700: #2d3a4c;
+  --color-ink-600: #526579;
+  --color-ink-500: #5b6d80;
+  --color-ink-300: #aab5c3;
+  --color-ink-200: #d9e0e8;
+  --color-ink-100: #e8edf2;
+  --color-ink-50: #f5f7fa;
 
-  --color-sand-50: #08090d;
-  --color-sand-100: #0d0f15;
-  --color-sand-200: #1d2029;
-  --color-sand-300: #2a2e3a;
+  --color-ok-50: #ecf6f0;
+  --color-ok-700: #276749;
+  --color-warn-50: #fff6e5;
+  --color-warn-700: #8a5300;
+  --color-bad-50: #fdeeee;
+  --color-bad-700: #a42626;
+  --color-info-50: #eaf0f8;
+  --color-info-700: #1d4f9c;
 
-  --color-ink-900: #ffffff;
-  --color-ink-800: #eceef4;
-  --color-ink-700: #d3d6e0;
-  --color-ink-600: #b9bdc9;
-  --color-ink-500: #9aa0b2;
-  --color-ink-300: #4d5264;
-  --color-ink-200: #2a2d38;
-  --color-ink-100: #1c1f27;
-  --color-ink-50: #161820;
-
-  --color-ok-50: #0e2a1f;
-  --color-ok-700: #7ee2a8;
-  --color-warn-50: #2a2008;
-  --color-warn-700: #fbbf4d;
-  --color-bad-50: #2c1013;
-  --color-bad-700: #ff9a9a;
-  --color-info-50: #10203d;
-  --color-info-700: #9cc0ff;
-
-  --radius-card: 0.9rem;
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.18);
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(23 33 47 / 0.05), 0 1px 3px rgb(23 33 47 / 0.04);
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
 }
 
 body {
   background: var(--color-sand-50);
-  color: var(--color-ink-700);
+  color: var(--color-ink-800);
   font-family: var(--font-sans);
   font-weight: 400;
   line-height: 1.6;
@@ -93,7 +77,7 @@ body {
 @layer base {
   h1, h2, h3 {
     font-family: var(--font-display);
-    color: #fff;
+    color: var(--color-navy-900);
     font-weight: 600;
     line-height: 1.15;
     letter-spacing: -0.02em;
@@ -104,12 +88,12 @@ a { text-underline-offset: 3px; }
 
 /* Visible focus for every interactive element (WCAG 2.4.7 / 2.4.11). */
 :focus-visible {
-  outline: 3px solid var(--color-violet-400);
+  outline: 3px solid var(--color-teal-500);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-::selection { background: var(--color-teal-100); color: #fff; }
+::selection { background: var(--color-navy-100); color: var(--color-navy-900); }
 
 /* Skip link */
 .skip-link {
@@ -118,7 +102,7 @@ a { text-underline-offset: 3px; }
   top: -4rem;
   z-index: 100;
   background: #fff;
-  color: #08090d;
+  color: #0b1220;
   padding: 0.6rem 1rem;
   border-radius: 0.5rem;
   transition: top 0.15s ease;
@@ -133,7 +117,7 @@ a { text-underline-offset: 3px; }
 .prose-nen ul { margin: 0 0 1rem 1.25rem; list-style: disc; color: var(--color-ink-700); }
 .prose-nen ol { margin: 0 0 1rem 1.25rem; list-style: decimal; color: var(--color-ink-700); }
 .prose-nen li { margin: 0.35rem 0; }
-.prose-nen a { color: var(--color-violet-300); text-decoration: underline; }
+.prose-nen a { color: var(--color-teal-700); text-decoration: underline; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -177,21 +161,19 @@ a { text-underline-offset: 3px; }
     z-index: -1;
   }
   /* Denser tint where glass sits on a busy image so text keeps AA contrast. */
-  .liquid-glass-strong { background: rgba(8, 9, 13, 0.55); }
+  .liquid-glass-strong { background: rgba(11, 18, 32, 0.55); }
 
   /* Fallbacks: no backdrop-filter, or the user asked for less transparency -> a readable solid surface. */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .liquid-glass { background: rgba(18, 20, 27, 0.92); }
+    .liquid-glass { background: rgba(15, 32, 54, 0.94); }
   }
   @supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
     .liquid-glass::before { display: none; }
   }
   @media (prefers-reduced-transparency: reduce) {
-    .liquid-glass, .liquid-glass-strong { background: #181a22; -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .liquid-glass, .liquid-glass-strong { background: #0f2036; -webkit-backdrop-filter: none; backdrop-filter: none; }
   }
 
-  /* Native-looking dark form controls */
-  input, select, textarea { color-scheme: dark; }
 }
 
 /* ------------------------------------------------------------------ hero entrance (restrained, 400-800ms) */

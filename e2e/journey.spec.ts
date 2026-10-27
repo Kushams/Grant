@@ -354,7 +354,7 @@ test("11. hero: poster fallback + reduced motion loads no video; short landscape
   await p.waitForTimeout(1500);
   expect(await p.locator("video").count()).toBe(0);
   expect(requests.some((u) => u.endsWith(".mp4"))).toBe(false);
-  expect(await p.locator("section[aria-labelledby=hero-h]").evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("82e7eb75");
+  expect(await p.locator("[data-hero-poster]").evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("82e7eb75");
   // entrance animations are disabled: headline is fully visible immediately
   expect(await p.locator("#hero-h").evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
   await reduced.close();
@@ -373,7 +373,7 @@ test("12. mobile menu closes on Escape, on outside tap and after navigating", as
   const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });
   const page = await ctx.newPage();
   await page.goto("/");
-  const toggle = page.getByRole("button", { name: /Menu/ });
+  const toggle = page.locator("button[aria-controls=mobile-menu]");
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
   await page.keyboard.press("Escape");

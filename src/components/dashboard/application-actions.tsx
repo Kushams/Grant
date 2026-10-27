@@ -19,7 +19,7 @@ export function ReplyForm({ applicationId }: { applicationId: string }) {
 export function WithdrawForm({ applicationId }: { applicationId: string }) {
   const { state, onSubmit, pending } = useActionForm(withdrawAction);
   return (
-    <details className="rounded-lg border border-ink-200 bg-surface p-4">
+    <details className="rounded-lg border border-ink-200 bg-white p-4">
       <summary className="cursor-pointer text-sm font-semibold text-bad-700">Withdraw this application</summary>
       <form onSubmit={onSubmit} className="mt-3 space-y-3">
         <input type="hidden" name="applicationId" value={applicationId} />

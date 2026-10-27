@@ -22,7 +22,7 @@ export default async function ApplicationsPage({ searchParams }: { searchParams:
   return (
     <div>
       <PageHeader title="My applications" description="Search and filter every application you can access." actions={<Link className={buttonClasses("primary")} href="/opportunities">Start a new application</Link>} />
-      <form method="get" className="mb-6 grid gap-4 rounded-xl border border-ink-200 bg-surface p-4 sm:grid-cols-[1fr_14rem_auto] sm:items-end" aria-label="Filter applications">
+      <form method="get" className="mb-6 grid gap-4 rounded-xl border border-ink-200 bg-white p-4 sm:grid-cols-[1fr_14rem_auto] sm:items-end" aria-label="Filter applications">
         <TextField label="Search" name="q" type="search" defaultValue={sp.q ?? ""} placeholder="Reference or opportunity title" />
         <SelectField label="Status" name="status" defaultValue={status ?? ""} placeholder="All statuses" options={APPLICATION_STATUSES.map((s) => ({ value: s, label: STATUS_LABELS[s as ApplicationStatus] }))} />
         <div className="flex gap-2"><Button type="submit">Filter</Button>{filtered ? <Link href="/dashboard/applications" className={buttonClasses("outline")}>Clear</Link> : null}</div>

@@ -6,8 +6,8 @@ import { DISBURSEMENT_LABELS, STATUS_LABELS, type ApplicationStatus, type Disbur
 type Tone = "neutral" | "navy" | "teal" | "ok" | "warn" | "bad" | "info";
 const tones: Record<Tone, string> = {
   neutral: "bg-ink-100 text-ink-800 border-ink-200",
-  navy: "bg-navy-50 text-violet-300 border-navy-200",
-  teal: "bg-teal-50 text-violet-300 border-teal-200",
+  navy: "bg-navy-50 text-navy-800 border-navy-200",
+  teal: "bg-teal-50 text-teal-800 border-teal-200",
   ok: "bg-ok-50 text-ok-700 border-ok-700/25",
   warn: "bg-warn-50 text-warn-700 border-warn-700/25",
   bad: "bg-bad-50 text-bad-700 border-bad-700/25",

@@ -11,7 +11,7 @@ function Interests({ name, selected, legend }: { name: string; selected: string[
       <legend className="mb-2 text-sm font-semibold text-ink-900">{legend}</legend>
       <div className="grid gap-2 sm:grid-cols-2">
         {PROGRAMME_CATEGORIES.map((c) => (
-          <label key={c} className="flex items-center gap-2 rounded-lg border border-ink-200 bg-surface px-3 py-2 text-sm">
+          <label key={c} className="flex items-center gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm">
             <input type="checkbox" name={name} value={c} defaultChecked={selected.includes(c)} className="size-4 accent-teal-700" />{c}
           </label>
         ))}

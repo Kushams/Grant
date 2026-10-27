@@ -9,12 +9,12 @@ type Size = "sm" | "md" | "lg";
 const base =
   "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-55 whitespace-nowrap";
 const variants: Record<Variant, string> = {
-  primary: "bg-white text-[#08090d] hover:bg-white/90 active:bg-white/80",
+  primary: "bg-navy-800 text-white hover:bg-navy-700 active:bg-navy-900",
   accent: "bg-teal-700 text-white hover:bg-teal-600",
-  secondary: "liquid-glass text-white hover:bg-white/5",
-  outline: "border border-white/15 bg-transparent text-white hover:bg-white/5",
-  ghost: "text-violet-300 hover:bg-white/5",
-  danger: "bg-red-600 text-white hover:bg-red-700",
+  secondary: "border border-ink-200 bg-white text-navy-800 hover:bg-navy-50",
+  outline: "border border-navy-800 bg-transparent text-navy-800 hover:bg-navy-50",
+  ghost: "text-navy-800 hover:bg-navy-50",
+  danger: "bg-bad-700 text-white hover:bg-red-900",
 };
 const sizes: Record<Size, string> = {
   sm: "min-h-9 px-4 text-sm",

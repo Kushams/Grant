@@ -16,7 +16,7 @@ export function NotificationList({ items, back }: { items: N[]; back: string }) 
         <p className="text-sm text-ink-700" aria-live="polite">{unread ? `${unread} unread` : "You’re all caught up"}</p>
         {unread ? <form action={markAllNotificationsReadAction}><input type="hidden" name="back" value={back} /><Button type="submit" variant="outline" size="sm">Mark all as read</Button></form> : null}
       </div>
-      <ul className="divide-y divide-ink-100 overflow-hidden rounded-xl border border-ink-200 bg-surface">
+      <ul className="divide-y divide-ink-100 overflow-hidden rounded-xl border border-ink-200 bg-white">
         {items.map((n) => (
           <li key={n.id} className={cn("flex flex-wrap items-start justify-between gap-3 p-4", !n.readAt && "bg-info-50/60")}>
             <div className="min-w-0 flex-1">

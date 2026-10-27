@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 /** Wrapper gives tables sensible small-screen behaviour: horizontal scroll with a focusable region. */
 export function TableWrap({ children, label }: { children: React.ReactNode; label: string }) {
   return (
-    <div role="region" aria-label={label} tabIndex={0} className="overflow-x-auto rounded-xl border border-ink-200 bg-surface shadow-[var(--shadow-card)]">
+    <div role="region" aria-label={label} tabIndex={0} className="overflow-x-auto rounded-xl border border-ink-200 bg-white shadow-[var(--shadow-card)]">
       {children}
     </div>
   );

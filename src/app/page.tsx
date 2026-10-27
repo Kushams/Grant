@@ -32,7 +32,7 @@ export default async function Home() {
           <Reveal>
             <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
               <SectionHeading id="featured-h" eyebrow="Featured" title="Demonstration opportunities" description="Fictional examples that show how a programme page works." />
-              <Link href="/opportunities" className="font-semibold text-violet-300 underline">See all opportunities</Link>
+              <Link href="/opportunities" className="font-semibold text-teal-700 underline">See all opportunities</Link>
             </div>
           </Reveal>
           {featured.length ? (
@@ -40,19 +40,19 @@ export default async function Home() {
           ) : <EmptyState title="No opportunities to show yet" description="Run the seed script to load fictional demonstration data." />}
         </section>
 
-        <section className="border-y border-ink-200 bg-surface" aria-labelledby="audiences-h">
+        <section className="border-y border-ink-200 bg-white" aria-labelledby="audiences-h">
           <div className="mx-auto max-w-7xl px-4 py-20">
             <Reveal><SectionHeading id="audiences-h" eyebrow="Who it’s for" title="Built for people and for organizations" className="mb-10" /></Reveal>
             <div className="grid gap-6 md:grid-cols-2">
               <Reveal className="rounded-2xl border border-ink-200 bg-sand-50 p-7">
-                <UserRound className="size-8 text-violet-300" aria-hidden="true" />
+                <UserRound className="size-8 text-teal-700" aria-hidden="true" />
                 <h3 className="mt-3 text-2xl font-medium">For individuals &amp; entrepreneurs</h3>
                 <p className="mt-2 text-ink-700">Create a simple personal profile, save opportunities for later, and work through an application at your own pace with automatic draft saving.</p>
                 <ul className="mt-4 space-y-1.5 text-sm text-ink-700"><li>• Individual and entrepreneur categories</li><li>• Clear eligibility explained up front</li><li>• Track every step from your dashboard</li></ul>
                 <LinkButton href="/register" className="mt-5">Register as an individual</LinkButton>
               </Reveal>
               <Reveal delay={100} className="rounded-2xl border border-ink-200 bg-sand-50 p-7">
-                <Building2 className="size-8 text-violet-300" aria-hidden="true" />
+                <Building2 className="size-8 text-teal-700" aria-hidden="true" />
                 <h3 className="mt-3 text-2xl font-medium">For businesses &amp; organizations</h3>
                 <p className="mt-2 text-ink-700">Set up an organization profile for your business, nonprofit or community group and manage applications on its behalf, with awards and planned instalments visible in one place.</p>
                 <ul className="mt-4 space-y-1.5 text-sm text-ink-700"><li>• Small, registered, nonprofit and community types</li><li>• Explicit organization membership — no guesswork</li><li>• Programme-specific questions and requirements</li></ul>
@@ -66,13 +66,13 @@ export default async function Home() {
           <Reveal><SectionHeading id="process-h" eyebrow="The process" title="How an application works" /></Reveal>
           <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {STEPS.slice(0, 5).map(([title], i) => (
-              <Reveal as="li" key={title} delay={i * 70} className="rounded-xl border border-ink-200 bg-surface p-4">
-                <span className="text-2xl font-medium text-violet-300" aria-hidden="true">{i + 1}</span>
+              <Reveal as="li" key={title} delay={i * 70} className="rounded-xl border border-ink-200 bg-white p-4">
+                <span className="text-2xl font-medium text-teal-700" aria-hidden="true">{i + 1}</span>
                 <p className="mt-1 text-sm font-semibold text-ink-900"><span className="sr-only">Step {i + 1}: </span>{title}</p>
               </Reveal>
             ))}
           </ol>
-          <p className="mt-5"><Link href="/how-it-works" className="font-semibold text-violet-300 underline">See all ten steps</Link></p>
+          <p className="mt-5"><Link href="/how-it-works" className="font-semibold text-teal-700 underline">See all ten steps</Link></p>
         </section>
 
         <section className="bg-navy-900 text-white" aria-labelledby="review-h">
@@ -97,19 +97,19 @@ export default async function Home() {
             <Reveal>
               <ShieldAlert className="mb-4 size-9 text-warn-700" aria-hidden="true" />
               <SectionHeading id="safety-h" eyebrow="Stay safe" title="Transparency & fraud prevention" description={`Real programmes do not charge you to receive an award. ${NO_FEE_STATEMENT}`} />
-              <Link href="/fraud-prevention" className="mt-3 inline-block font-semibold text-violet-300 underline">Read the full guidance</Link>
+              <Link href="/fraud-prevention" className="mt-3 inline-block font-semibold text-teal-700 underline">Read the full guidance</Link>
             </Reveal>
             <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
               {([[BadgeCheck, "Clearly labelled demos", "Fictional opportunities always carry a visible DEMO label."], [Lock, "No sensitive data", "We never ask for ID numbers, bank details or card data."], [FileSearch, "Honest status", "Award and payment records are staff-entered and labelled as such."], [ShieldAlert, "No upfront payments", "Never pay to “release” or “unlock” funding. Report anyone who asks."]] as const).map(([Icon, t, d], i) => (
-                <Reveal as="li" key={t} delay={i * 70} className="rounded-xl border border-ink-200 bg-surface p-5">
-                  <Icon className="size-6 text-violet-300" aria-hidden="true" /><p className="mt-2 font-semibold text-ink-900">{t}</p><p className="mt-1 text-sm text-ink-700">{d}</p>
+                <Reveal as="li" key={t} delay={i * 70} className="rounded-xl border border-ink-200 bg-white p-5">
+                  <Icon className="size-6 text-teal-700" aria-hidden="true" /><p className="mt-2 font-semibold text-ink-900">{t}</p><p className="mt-1 text-sm text-ink-700">{d}</p>
                 </Reveal>
               ))}
             </ul>
           </div>
         </section>
 
-        <section className="border-y border-ink-200 bg-surface" aria-labelledby="cats-h">
+        <section className="border-y border-ink-200 bg-white" aria-labelledby="cats-h">
           <div className="mx-auto max-w-7xl px-4 py-14">
             <Reveal>
               <SectionHeading id="cats-h" eyebrow="Explore" title="Browse by category" />
@@ -122,12 +122,12 @@ export default async function Home() {
           <Reveal>
             <SectionHeading id="faq-h" eyebrow="Help" title="Frequently asked questions" className="mb-6" />
             <Accordion items={FAQ.slice(0, 6).map((f) => ({ title: f.q, content: <p>{f.a}</p> }))} />
-            <p className="mt-4"><Link href="/faq" className="font-semibold text-violet-300 underline">View all questions</Link></p>
+            <p className="mt-4"><Link href="/faq" className="font-semibold text-teal-700 underline">View all questions</Link></p>
           </Reveal>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 pb-4" aria-labelledby="cta-h">
-          <Reveal className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-teal-700 p-8 text-white">
+          <Reveal className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-navy-800 p-8 text-white">
             <div><h2 id="cta-h" className="text-2xl font-medium text-white">Questions? We’re here to help.</h2><p className="mt-1 text-teal-50">Use the support form — messages go to our in-app support queue (no email is sent in this prototype).</p></div>
             <LinkButton href="/contact" variant="secondary" size="lg">Contact support</LinkButton>
           </Reveal>

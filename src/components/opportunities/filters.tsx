@@ -9,7 +9,7 @@ import { SelectField, TextField } from "@/components/ui/form";
 export function DirectoryFilters({ p }: { p: SearchParams }) {
   const active = Object.entries(p).some(([k, v]) => !["page", "sort"].includes(k) && v);
   return (
-    <form method="get" action="/opportunities" className="space-y-4 rounded-xl border border-ink-200 bg-surface p-4 shadow-[var(--shadow-card)]" aria-label="Search and filter opportunities">
+    <form method="get" action="/opportunities" className="space-y-4 rounded-xl border border-ink-200 bg-white p-4 shadow-[var(--shadow-card)]" aria-label="Search and filter opportunities">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <div className="flex-1"><TextField label="Search" name="q" type="search" defaultValue={p.q ?? ""} placeholder="Title, description or keyword" /></div>
         <Button type="submit" className="sm:w-auto"><Search className="size-4" aria-hidden="true" /> Search</Button>

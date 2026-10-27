@@ -23,8 +23,8 @@ export default function Eligibility() {
       </Alert>
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {CATEGORIES.map(([name, who, note]) => (
-          <li key={name} className="rounded-xl border border-ink-200 bg-surface p-5 shadow-[var(--shadow-card)]">
-            <h2 className="font-sans text-base font-bold tracking-normal text-white">{name}</h2>
+          <li key={name} className="rounded-xl border border-ink-200 bg-white p-5 shadow-[var(--shadow-card)]">
+            <h2 className="font-sans text-base font-bold tracking-normal text-navy-900">{name}</h2>
             <p className="mt-1 text-sm text-ink-800">{who}</p>
             <p className="mt-2 text-sm text-ink-600">{note}</p>
           </li>

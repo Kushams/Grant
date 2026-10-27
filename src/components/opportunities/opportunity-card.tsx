@@ -7,11 +7,11 @@ import { applicantTypeLabel, deadlineText, fundingLabel } from "@/lib/opportunit
 export function OpportunityCard({ o }: { o: OpportunityView }) {
   const funding = fundingLabel(o);
   return (
-    <article className="relative flex h-full flex-col rounded-xl border border-ink-200 bg-surface p-5 shadow-[var(--shadow-card)] transition-shadow focus-within:shadow-md hover:shadow-md">
+    <article className="relative flex h-full flex-col rounded-xl border border-ink-200 bg-white p-5 shadow-[var(--shadow-card)] transition-shadow focus-within:shadow-md hover:shadow-md">
       <div className="mb-3 flex flex-wrap items-center gap-2">
         {o.isDemo ? <DemoBadge /> : <Badge tone="ok">Verified programme</Badge>}
       </div>
-      <p className="text-xs font-bold uppercase tracking-wider text-violet-300">{o.category}</p>
+      <p className="text-xs font-bold uppercase tracking-wider text-teal-700">{o.category}</p>
       <h3 className="mt-1 text-xl font-semibold">
         <Link href={`/opportunities/${o.slug}`} className="after:absolute after:inset-0 hover:underline">{o.title}</Link>
       </h3>

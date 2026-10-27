@@ -56,10 +56,10 @@ export function OpportunityEditor({ v }: { v: EditorValues }) {
 
       <Card><CardHeader title="Eligibility" description="Leave a field empty to show “Details to be confirmed” publicly — nothing is assumed." /><CardBody className="space-y-4">
         <fieldset><legend className="mb-2 text-sm font-semibold">Accepted applicant types</legend>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{APPLICANT_TYPES.map((t) => <label key={t} className="flex items-center gap-2 rounded-lg border border-ink-200 bg-surface px-3 py-2 text-sm"><input type="checkbox" name="applicantTypes" value={t} defaultChecked={v.applicantTypes.includes(t)} className="size-4 accent-teal-700" />{APPLICANT_TYPE_LABELS[t]}</label>)}</div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{APPLICANT_TYPES.map((t) => <label key={t} className="flex items-center gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm"><input type="checkbox" name="applicantTypes" value={t} defaultChecked={v.applicantTypes.includes(t)} className="size-4 accent-teal-700" />{APPLICANT_TYPE_LABELS[t]}</label>)}</div>
           {fe(state, "applicantTypes") ? <p className="mt-1 text-sm text-bad-700">{fe(state, "applicantTypes")!.join(" ")}</p> : null}</fieldset>
         <fieldset><legend className="mb-2 text-sm font-semibold">Eligible regions</legend>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{REGIONS.map((t) => <label key={t} className="flex items-center gap-2 rounded-lg border border-ink-200 bg-surface px-3 py-2 text-sm"><input type="checkbox" name="eligibleRegions" value={t} defaultChecked={v.eligibleRegions.includes(t)} className="size-4 accent-teal-700" />{t}</label>)}</div></fieldset>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{REGIONS.map((t) => <label key={t} className="flex items-center gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm"><input type="checkbox" name="eligibleRegions" value={t} defaultChecked={v.eligibleRegions.includes(t)} className="size-4 accent-teal-700" />{t}</label>)}</div></fieldset>
         <TextArea label="Eligibility criteria (one per line)" name="eligibilityCriteria" rows={4} defaultValue={v.eligibilityCriteria} />
         <TextArea label="Required information (one per line)" name="requiredInformation" rows={3} defaultValue={v.requiredInformation} />
         <TextArea label="Required documents (one per line)" name="requiredDocuments" rows={2} defaultValue={v.requiredDocuments} hint="The prototype does not collect documents; this list is informational." />
@@ -143,7 +143,7 @@ export function OpportunityEditor({ v }: { v: EditorValues }) {
         <Button variant="outline" onClick={() => setFaq((a) => [...a, { q: "", a: "" }])}><Plus className="size-4" aria-hidden="true" /> Add FAQ</Button>
       </CardBody></Card>
 
-      <div className="sticky bottom-0 z-10 -mx-4 flex justify-end gap-3 border-t border-ink-200 bg-bg/95 px-4 py-3 backdrop-blur"><SubmitButton pending={pending} size="lg" pendingLabel="Saving…">{v.id ? "Save changes" : "Create opportunity (as draft)"}</SubmitButton></div>
+      <div className="sticky bottom-0 z-10 -mx-4 flex justify-end gap-3 border-t border-ink-200 bg-white/95 px-4 py-3 backdrop-blur"><SubmitButton pending={pending} size="lg" pendingLabel="Saving…">{v.id ? "Save changes" : "Create opportunity (as draft)"}</SubmitButton></div>
     </form>
   );
 }

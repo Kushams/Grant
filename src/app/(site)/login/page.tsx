@@ -41,7 +41,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             <ul className="mt-4 space-y-2">
               {demoUsers.map((u) => (
                 <li key={u.email}>
-                  <form action={demoLoginAction} className="flex items-center justify-between gap-3 rounded-lg border border-ink-200 bg-surface p-3">
+                  <form action={demoLoginAction} className="flex items-center justify-between gap-3 rounded-lg border border-ink-200 bg-white p-3">
                     <input type="hidden" name="email" value={u.email} />
                     <div className="min-w-0">
                       <p className="truncate text-sm font-bold text-ink-900">{u.name}</p>

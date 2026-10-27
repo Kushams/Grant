@@ -20,7 +20,7 @@ export default async function SupportInbox({ searchParams }: { searchParams: Pro
   return (
     <div>
       <PageHeader title="Support inbox" description="Requests from the contact form. Replies are in-app only — nothing is emailed." />
-      <form method="get" className="mb-4 grid gap-4 rounded-xl border border-ink-200 bg-surface p-4 sm:grid-cols-[1fr_12rem_auto] sm:items-end">
+      <form method="get" className="mb-4 grid gap-4 rounded-xl border border-ink-200 bg-white p-4 sm:grid-cols-[1fr_12rem_auto] sm:items-end">
         <TextField label="Search" name="q" type="search" defaultValue={sp.q ?? ""} placeholder="Reference, name, topic" />
         <SelectField label="Status" name="status" defaultValue={status ?? ""} placeholder="All" options={SUPPORT_STATUSES.map((s) => ({ value: s, label: s.replace("_", " ") }))} />
         <div className="flex gap-2"><Button type="submit">Filter</Button>{sp.q || status ? <Link href="/admin/support" className={buttonClasses("outline")}>Clear</Link> : null}</div>
@@ -31,7 +31,7 @@ export default async function SupportInbox({ searchParams }: { searchParams: Pro
             <thead><tr><Th>Reference</Th><Th>Topic</Th><Th>Sender</Th><Th>Related</Th><Th>Received</Th><Th>Status</Th><Th>Assigned</Th></tr></thead>
             <tbody>{res.rows.map((r) => (
               <tr key={r.id}>
-                <Td className="whitespace-nowrap font-semibold"><Link className="text-violet-300 underline" href={`/admin/support/${r.id}`}>{r.reference}</Link></Td>
+                <Td className="whitespace-nowrap font-semibold"><Link className="text-navy-800 underline" href={`/admin/support/${r.id}`}>{r.reference}</Link></Td>
                 <Td>{r.topic}</Td><Td>{r.name}{r.userId ? <span className="block text-xs text-ink-600">signed-in user</span> : <span className="block text-xs text-ink-600">visitor</span>}</Td>
                 <Td>{r.relatedRef ?? "—"}</Td><Td className="whitespace-nowrap">{formatDate(r.createdAt)}</Td>
                 <Td><Badge tone={r.status === "OPEN" ? "warn" : r.status === "IN_PROGRESS" ? "info" : "ok"}>{r.status.replace("_", " ")}</Badge></Td>

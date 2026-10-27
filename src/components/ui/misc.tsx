@@ -26,9 +26,9 @@ export function Alert({ tone = "info", title, children, className }: { tone?: ke
 
 export function EmptyState({ title, description, action, icon }: { title: string; description?: string; action?: { href: string; label: string }; icon?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center rounded-xl border border-dashed border-ink-300 bg-surface/60 px-6 py-10 text-center">
+    <div className="flex flex-col items-center rounded-xl border border-dashed border-ink-300 bg-white/60 px-6 py-10 text-center">
       {icon ? <div className="mb-3 text-navy-400" aria-hidden="true">{icon}</div> : null}
-      <p className="font-display text-lg font-semibold text-white">{title}</p>
+      <p className="font-display text-lg font-semibold text-navy-900">{title}</p>
       {description ? <p className="mt-1 max-w-md text-sm text-ink-600">{description}</p> : null}
       {action ? <Link href={action.href} className={buttonClasses("primary", "md", "mt-4")}>{action.label}</Link> : null}
     </div>
@@ -50,9 +50,9 @@ export function ProgressBar({ value, label }: { value: number; label: string }) 
 export function Stat({ label, value, hint, href, tone = "navy" }: { label: string; value: ReactNode; hint?: string; href?: string; tone?: "navy" | "teal" | "warn" | "bad" }) {
   const accent = { navy: "border-l-navy-700", teal: "border-l-teal-600", warn: "border-l-warn-700", bad: "border-l-bad-700" }[tone];
   const body = (
-    <div className={cn("h-full rounded-lg border border-ink-200 border-l-4 bg-surface p-4 shadow-[var(--shadow-card)]", accent, href && "transition-colors hover:bg-navy-50/40")}>
+    <div className={cn("h-full rounded-lg border border-ink-200 border-l-4 bg-white p-4 shadow-[var(--shadow-card)]", accent, href && "transition-colors hover:bg-navy-50/40")}>
       <p className="text-sm font-medium text-ink-600">{label}</p>
-      <p className="mt-1 font-display text-3xl font-semibold text-white">{value}</p>
+      <p className="mt-1 font-display text-3xl font-semibold text-navy-900">{value}</p>
       {hint ? <p className="mt-1 text-xs text-ink-600">{hint}</p> : null}
     </div>
   );
@@ -63,7 +63,7 @@ export function PageHeader({ title, description, actions, eyebrow }: { title: Re
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div className="max-w-3xl">
-        {eyebrow ? <p className="mb-1 text-xs font-bold uppercase tracking-wider text-violet-300">{eyebrow}</p> : null}
+        {eyebrow ? <p className="mb-1 text-xs font-bold uppercase tracking-wider text-teal-700">{eyebrow}</p> : null}
         <h1 className="text-3xl font-semibold sm:text-4xl">{title}</h1>
         {description ? <p className="mt-2 text-base text-ink-600">{description}</p> : null}
       </div>
@@ -83,14 +83,14 @@ export function Pagination({ page, pages, hrefFor }: { page: number; pages: numb
   const nums = Array.from({ length: pages }, (_, i) => i + 1).filter((n) => n === 1 || n === pages || Math.abs(n - page) <= 1);
   return (
     <nav aria-label="Pagination" className="mt-6 flex flex-wrap items-center justify-center gap-2">
-      {page > 1 ? <Link href={hrefFor(page - 1)} className={cn(link, "border-ink-300 bg-surface")} rel="prev">Previous</Link> : null}
+      {page > 1 ? <Link href={hrefFor(page - 1)} className={cn(link, "border-ink-300 bg-white")} rel="prev">Previous</Link> : null}
       {nums.map((n, i) => (
         <span key={n} className="flex items-center gap-2">
           {i > 0 && n - nums[i - 1] > 1 ? <span aria-hidden="true">…</span> : null}
-          <Link href={hrefFor(n)} aria-current={n === page ? "page" : undefined} className={cn(link, n === page ? "border-navy-800 bg-navy-800 text-white" : "border-ink-300 bg-surface")}>{n}</Link>
+          <Link href={hrefFor(n)} aria-current={n === page ? "page" : undefined} className={cn(link, n === page ? "border-navy-800 bg-navy-800 text-white" : "border-ink-300 bg-white")}>{n}</Link>
         </span>
       ))}
-      {page < pages ? <Link href={hrefFor(page + 1)} className={cn(link, "border-ink-300 bg-surface")} rel="next">Next</Link> : null}
+      {page < pages ? <Link href={hrefFor(page + 1)} className={cn(link, "border-ink-300 bg-white")} rel="next">Next</Link> : null}
     </nav>
   );
 }

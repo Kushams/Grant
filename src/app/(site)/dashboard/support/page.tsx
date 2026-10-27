@@ -21,7 +21,7 @@ export default async function SupportPage() {
           <li key={s.id}><Card><CardBody>
             <div className="flex flex-wrap items-center gap-2"><strong>{s.reference}</strong><Badge tone={s.status === "RESOLVED" || s.status === "CLOSED" ? "ok" : "info"}>{s.status.replace("_", " ")}</Badge><span className="text-xs text-ink-600">{s.topic} · {formatDateTime(s.createdAt)}{s.relatedRef ? ` · re ${s.relatedRef}` : ""}</span></div>
             <p className="mt-2 whitespace-pre-line text-sm text-ink-800">{s.message}</p>
-            {s.notes.length ? <div className="mt-3 space-y-2 border-t border-ink-100 pt-3">{s.notes.map((n) => <div key={n.id} className="rounded-lg bg-teal-50 p-3 text-sm"><p className="text-xs font-bold uppercase text-violet-300">Reply from staff · {formatDateTime(n.createdAt)}</p><p className="mt-1 whitespace-pre-line">{n.body}</p></div>)}</div> : null}
+            {s.notes.length ? <div className="mt-3 space-y-2 border-t border-ink-100 pt-3">{s.notes.map((n) => <div key={n.id} className="rounded-lg bg-teal-50 p-3 text-sm"><p className="text-xs font-bold uppercase text-teal-800">Reply from staff · {formatDateTime(n.createdAt)}</p><p className="mt-1 whitespace-pre-line">{n.body}</p></div>)}</div> : null}
           </CardBody></Card></li>))}</ul>}
     </div>
   );

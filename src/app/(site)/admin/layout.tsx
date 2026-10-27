@@ -24,7 +24,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[14.5rem_1fr]">
       <div>
-        <p className="mb-3 hidden rounded-lg bg-navy-900 px-3 py-2 text-xs font-semibold text-white lg:block">{ROLE_LABELS[user.role]}<span className="block font-normal text-white/60">{user.name}</span></p>
+        <p className="mb-3 hidden rounded-lg bg-navy-900 px-3 py-2 text-xs font-semibold text-white lg:block">{ROLE_LABELS[user.role]}<span className="block font-normal text-navy-200">{user.name}</span></p>
         <SideNav label="Staff area" items={items} />
       </div>
       <div className="min-w-0">{children}</div>

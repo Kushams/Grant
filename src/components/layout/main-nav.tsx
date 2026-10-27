@@ -12,7 +12,7 @@ export type NavAccount = { signedIn: boolean; homeHref: string; homeLabel: strin
 type Props = { variant: "overlay" | "bar"; items: NavItem[]; account: NavAccount };
 
 const ghost = "liquid-glass inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm font-medium text-white transition-colors hover:bg-white/5";
-const solid = "inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-medium text-[#08090d] transition-colors hover:bg-white/90";
+const solid = "inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-medium text-[#0b1220] transition-colors hover:bg-white/90";
 
 /**
  * Liquid-glass navigation used as the hero overlay (home) and as the sticky bar elsewhere.
@@ -60,7 +60,7 @@ export function MainNav({ variant, items, account }: Props) {
   );
 
   return (
-    <div ref={root} className={cn(variant === "overlay" ? "nav-in relative z-30" : "sticky top-0 z-40 border-b border-white/10 bg-[#08090d]/85 backdrop-blur-xl")}>
+    <div ref={root} className={cn(variant === "overlay" ? "nav-in relative z-30" : "sticky top-0 z-40 border-b border-white/10 bg-[#0b1220]/85 backdrop-blur-xl")}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2 text-base font-medium text-white" aria-label={`${ORG.name} — home`}>
           <InfinityIcon size={22} strokeWidth={1.5} aria-hidden="true" />
@@ -104,7 +104,7 @@ export function MainNav({ variant, items, account }: Props) {
         </div>
       </div>
 
-      <div id="mobile-menu" hidden={!isOpen("mobile")} className="absolute inset-x-4 top-full z-40 mt-1 max-h-[calc(100svh-6rem)] overflow-y-auto rounded-3xl border border-white/10 bg-[rgba(13,15,21,0.98)] p-4 shadow-2xl backdrop-blur-xl lg:hidden">
+      <div id="mobile-menu" hidden={!isOpen("mobile")} className="absolute inset-x-4 top-full z-40 mt-1 max-h-[calc(100svh-6rem)] overflow-y-auto rounded-3xl border border-white/10 bg-[#0b1220] p-4 shadow-2xl backdrop-blur-xl lg:hidden">
         <nav aria-label="Mobile primary" className="flex flex-col gap-1">
           {items.map((it) =>
             it.children ? (
