@@ -11,6 +11,7 @@ import { formatDate } from "@/lib/format";
 import { isApplicantRole, INDIVIDUAL_CATEGORIES } from "@/lib/constants";
 import { NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT } from "@/config/organization";
 import { startApplicationAction, toggleSavedAction } from "@/app/actions/applicant";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Badge, DemoBadge, OpportunityStateBadge } from "@/components/ui/badge";
 import { Alert, DefinitionList, Unconfirmed } from "@/components/ui/misc";
 import { Button, LinkButton } from "@/components/ui/button";
@@ -61,9 +62,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
-      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-ink-600">
-        <Link href="/opportunities" className="underline">Opportunities</Link> <span aria-hidden="true">/</span> <span>{o.title}</span>
-      </nav>
+      <Breadcrumbs items={[{ label: "Opportunities", href: "/opportunities" }, { label: o.title }]} />
       <header className="mb-8 max-w-4xl">
         <div className="mb-3 flex flex-wrap items-center gap-2">
           {o.isDemo ? <DemoBadge /> : <Badge tone="ok">Verified programme</Badge>}

@@ -2,7 +2,7 @@
   "name": "national-empowerment-network",
   "version": "0.1.0",
   "private": true,
-  "description": "National Empowerment Network (NEN) \u2014 opportunity-access platform prototype",
+  "description": "National Empowerment Network (NEN) — opportunity-access platform prototype",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -52,6 +52,7 @@
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^13.0.3",
     "clsx": "^2.1.1",
+    "geist": "^1.8.2",
     "lucide-react": "^1.61.0",
     "next": "^16.4.3",
     "react": "^19.3.1",

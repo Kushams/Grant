@@ -82,6 +82,13 @@ src/components/    ui primitives, layout, dashboard, application wizard, admin f
 tests/ · e2e/      Vitest suites · Playwright journeys
 ```
 
+## Design notes
+
+* **Home hero:** full-height "liquid glass" hero over a looping background video (`src/components/home/`). The video is decorative (muted, `aria-hidden`), paused for `prefers-reduced-motion`, with a dark scrim to keep text contrast. The video URL is an external asset (`BG_VIDEO` in `hero-video.tsx`) — host your own copy before launch.
+* **Font:** Geist, self-hosted through the `geist` package (no runtime Google Fonts request).
+* Patterns adapted from the World Bridge Meridian site: scroll `Reveal`, eyebrow `SectionHeading`, `Accordion`, `Breadcrumbs`, favicon and a prototype-wide `robots.txt` that blocks indexing.
+* Screenshots of the main screens are in `docs/screenshots/`.
+
 ## What is genuinely implemented
 
 * **Public site:** home, opportunity directory (server-side search, 8 filters, 4 sorts, pagination, empty/invalid-filter handling, loading skeleton), opportunity detail pages, About, How it works, Eligibility, FAQ, a working contact form (stored in an in-app support queue), and draft Privacy/Terms/Accessibility/Fraud-prevention pages.

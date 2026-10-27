@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { GeistSans } from "geist/font/sans";
 import { ORG } from "@/config/organization";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { FlashRegion } from "@/components/ui/flash";
 
 // Every page reads the session cookie (header) and/or the database, so render per request.
@@ -19,12 +18,10 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={GeistSans.variable}>
       <body className="flex min-h-screen flex-col">
         <a href="#main" className="skip-link">Skip to main content</a>
-        <SiteHeader />
-        <main id="main" tabIndex={-1} className="flex-1 outline-none">{children}</main>
-        <SiteFooter />
+        {children}
         <FlashRegion />
       </body>
     </html>

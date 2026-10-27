@@ -38,6 +38,8 @@ export default async function StaffApplication({ params }: { params: Promise<{ i
   const who = app.organization ? `${app.organization.name} (${APPLICANT_TYPE_LABELS[app.applicantCategory as ApplicantType] ?? app.applicantCategory})` : `${app.applicant.individual?.fullName ?? app.applicant.name} (${APPLICANT_TYPE_LABELS[app.applicantCategory as ApplicantType] ?? app.applicantCategory})`;
   const decline = isAdmin && targets.includes("DECLINED");
   const approve = isAdmin && targets.includes("APPROVED");
+  const canMove = (["INITIAL_REVIEW", "UNDER_REVIEW"] as ApplicationStatus[]).some((t) => targets.includes(t));
+  const hasStatusControls = canMove || targets.includes("INFO_REQUESTED") || targets.includes("RESUBMISSION_REQUIRED");
 
   return (
     <div className="space-y-6">
@@ -125,7 +127,7 @@ export default async function StaffApplication({ params }: { params: Promise<{ i
                 <TextArea label="Request a revision" name="message" required rows={3} hint="Unlocks editing for the applicant. Reason is recorded on the timeline." />
               </ActionForm>
             ) : null}
-            {targets.length === 0 ? <p className="text-sm text-ink-600">No further status changes are available to you from this state.</p> : null}
+            {!hasStatusControls ? <p className="text-sm text-ink-600">No manual review actions apply in this state. Later stages (decision, award, disbursement) are handled in their own sections.</p> : null}
           </CardBody></Card>
 
           <Card><CardHeader title="Add internal note" /><CardBody>

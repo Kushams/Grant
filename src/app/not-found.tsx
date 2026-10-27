@@ -1,7 +1,12 @@
 import { LinkButton } from "@/components/ui/button";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
 
 export default function NotFound() {
   return (
+    <>
+    <SiteHeader />
+    <main id="main" tabIndex={-1} className="flex-1 outline-none">
     <div className="mx-auto max-w-xl px-4 py-20 text-center">
       <p className="text-sm font-bold uppercase tracking-wider text-teal-700">404</p>
       <h1 className="mt-2 text-3xl font-semibold">We couldn’t find that page</h1>
@@ -11,5 +16,8 @@ export default function NotFound() {
         <LinkButton href="/opportunities" variant="outline">Browse opportunities</LinkButton>
       </div>
     </div>
+    </main>
+    <SiteFooter />
+    </>
   );
 }
