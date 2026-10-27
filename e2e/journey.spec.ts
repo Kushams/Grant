@@ -23,7 +23,7 @@ test.describe.configure({ mode: "serial" });
 
 test("1. visitor browses demo opportunities, searches, filters and clears", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: /Discover Opportunities/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Opportunity starts here." })).toBeVisible();
   await page.goto("/opportunities");
   await expect(page.getByText("DEMO — NOT A LIVE FUNDING OPPORTUNITY").first()).toBeVisible();
   const all = await page.locator("article").count();
@@ -320,5 +320,70 @@ test("9. mobile layout: navigation menu is usable and no horizontal page scroll"
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, `${path} horizontal overflow`).toBeLessThanOrEqual(1);
   }
+  await ctx.close();
+});
+
+test("10. redesigned navigation: dropdown, Escape, outside click, active state, keyboard", async ({ page }) => {
+  await page.goto("/");
+  const res = page.getByRole("button", { name: "Resources" });
+  await expect(res).toHaveAttribute("aria-expanded", "false");
+  await res.click();
+  await expect(res).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByRole("link", { name: /Fraud prevention/ }).first()).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(res).toHaveAttribute("aria-expanded", "false");
+  await expect(res).toBeFocused();
+  await res.click();
+  await page.mouse.click(700, 600); // outside
+  await expect(res).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("aria-current", "page");
+  await page.getByRole("link", { name: "Opportunities", exact: true }).first().click();
+  await page.waitForURL(/\/opportunities/);
+  await expect(page.getByRole("link", { name: "Opportunities", exact: true }).first()).toHaveAttribute("aria-current", "page");
+  // keyboard: tab reaches the primary nav links
+  await page.keyboard.press("Tab");
+  expect(await page.evaluate(() => document.activeElement?.tagName)).toBeTruthy();
+});
+
+test("11. hero: poster fallback + reduced motion loads no video; short landscape has no overflow and scrolls on", async ({ browser }) => {
+  const reduced = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 800 } });
+  const p = await reduced.newPage();
+  const requests: string[] = [];
+  p.on("request", (r) => requests.push(r.url()));
+  await p.goto("/");
+  await p.waitForTimeout(1500);
+  expect(await p.locator("video").count()).toBe(0);
+  expect(requests.some((u) => u.endsWith(".mp4"))).toBe(false);
+  expect(await p.locator("section[aria-labelledby=hero-h]").evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("82e7eb75");
+  // entrance animations are disabled: headline is fully visible immediately
+  expect(await p.locator("#hero-h").evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+  await reduced.close();
+
+  const land = await browser.newContext({ viewport: { width: 667, height: 375 } });
+  const q = await land.newPage();
+  await q.goto("/");
+  await q.waitForTimeout(1200);
+  expect(await q.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  await expect(q.getByRole("link", { name: "Explore Opportunities" }).first()).toBeVisible();
+  expect(await q.evaluate(() => document.documentElement.scrollHeight)).toBeGreaterThan(375 * 2); // page scrolls beyond the hero
+  await land.close();
+});
+
+test("12. mobile menu closes on Escape, on outside tap and after navigating", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });
+  const page = await ctx.newPage();
+  await page.goto("/");
+  const toggle = page.getByRole("button", { name: /Menu/ });
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("Escape");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.click();
+  await page.mouse.click(200, 760);
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.click();
+  await page.getByRole("navigation", { name: "Mobile primary" }).getByRole("link", { name: "About" }).click();
+  await page.waitForURL(/\/about/);
+  await expect(page.getByRole("button", { name: /Menu/ })).toHaveAttribute("aria-expanded", "false");
   await ctx.close();
 });

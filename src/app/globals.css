@@ -10,63 +10,82 @@
   --font-sans: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  --color-navy-50: #eef3fa;
-  --color-navy-100: #dbe5f3;
-  --color-navy-200: #b8cbe6;
-  --color-navy-300: #8ca9d3;
-  --color-navy-400: #5f84bd;
-  --color-navy-500: #3f65a2;
-  --color-navy-600: #2e4f85;
-  --color-navy-700: #243f6a;
-  --color-navy-800: #1b3256;
-  --color-navy-900: #132440;
-  --color-navy-950: #0c1a2e;
+  /*
+   * NEN dark system. The existing scale names (ink / navy / sand / teal / ok / warn / bad / info) are kept so every
+   * component restyles from ONE place; their VALUES now describe the dark theme:
+   *   ink    -> text on dark (900 = white) and, at 50-300, raised surfaces / borders
+   *   navy   -> violet-tinted tints (50-300), the violet accent (400-800) and the darkest surfaces (900-950)
+   *   sand   -> page backgrounds
+   *   teal   -> secondary violet accent (positive actions, progress)
+   */
+  --color-bg: #08090d;
+  --color-surface: #12141b;
+  --color-raised: #181a22;
 
-  --color-teal-50: #eefaf8;
-  --color-teal-100: #d2f2ed;
-  --color-teal-200: #a6e4db;
-  --color-teal-500: #1f9d8f;
-  --color-teal-600: #14827a;
-  --color-teal-700: #0f6a64;
-  --color-teal-800: #0e5450;
+  --color-violet-300: #b7a6ff;
+  --color-violet-400: #a58bff;
+  --color-violet-500: #9274ff;
+  --color-violet-600: #7f5cf5;
+  --color-violet-700: #6c47e6;
 
-  --color-sand-50: #fbf9f5;
-  --color-sand-100: #f5f1e8;
-  --color-sand-200: #e9e3d4;
-  --color-sand-300: #d6cdb7;
+  --color-navy-50: #1a1730;
+  --color-navy-100: #221e42;
+  --color-navy-200: #352e6a;
+  --color-navy-300: #5b4fb3;
+  --color-navy-400: #7d6ae0;
+  --color-navy-500: #9274ff;
+  --color-navy-600: #8264f7;
+  --color-navy-700: #7254ee;
+  --color-navy-800: #6544e0;
+  --color-navy-900: #12141b;
+  --color-navy-950: #08090d;
 
-  --color-ink-900: #18212d;
-  --color-ink-800: #263140;
-  --color-ink-700: #364355;
-  --color-ink-600: #4a586b;
-  --color-ink-500: #5f6d80;
-  --color-ink-300: #aab3c0;
-  --color-ink-200: #d3d9e1;
-  --color-ink-100: #e8ecf1;
-  --color-ink-50: #f4f6f8;
+  --color-teal-50: #1d1a36;
+  --color-teal-100: #2a2550;
+  --color-teal-200: #c8bcff;
+  --color-teal-500: #8f72ff;
+  --color-teal-600: #8264f5;
+  --color-teal-700: #6f4fe8;
+  --color-teal-800: #5a3ccf;
 
-  --color-ok-50: #ecf8f1;
-  --color-ok-700: #166a3e;
-  --color-warn-50: #fff6e5;
-  --color-warn-700: #8a5300;
-  --color-bad-50: #fdeeee;
-  --color-bad-700: #a42626;
-  --color-info-50: #eaf2fd;
-  --color-info-700: #1d4f9c;
+  --color-sand-50: #08090d;
+  --color-sand-100: #0d0f15;
+  --color-sand-200: #1d2029;
+  --color-sand-300: #2a2e3a;
 
-  --radius-card: 0.75rem;
-  --shadow-card: 0 1px 2px rgb(24 33 45 / 0.05), 0 1px 3px rgb(24 33 45 / 0.04);
+  --color-ink-900: #ffffff;
+  --color-ink-800: #eceef4;
+  --color-ink-700: #d3d6e0;
+  --color-ink-600: #b9bdc9;
+  --color-ink-500: #9aa0b2;
+  --color-ink-300: #4d5264;
+  --color-ink-200: #2a2d38;
+  --color-ink-100: #1c1f27;
+  --color-ink-50: #161820;
+
+  --color-ok-50: #0e2a1f;
+  --color-ok-700: #7ee2a8;
+  --color-warn-50: #2a2008;
+  --color-warn-700: #fbbf4d;
+  --color-bad-50: #2c1013;
+  --color-bad-700: #ff9a9a;
+  --color-info-50: #10203d;
+  --color-info-700: #9cc0ff;
+
+  --radius-card: 0.9rem;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.18);
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
   scroll-behavior: smooth;
 }
 
 body {
   background: var(--color-sand-50);
-  color: var(--color-ink-800);
+  color: var(--color-ink-700);
   font-family: var(--font-sans);
+  font-weight: 400;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -74,9 +93,10 @@ body {
 @layer base {
   h1, h2, h3 {
     font-family: var(--font-display);
-    color: var(--color-navy-900);
-    line-height: 1.2;
-    letter-spacing: -0.01em;
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -84,12 +104,12 @@ a { text-underline-offset: 3px; }
 
 /* Visible focus for every interactive element (WCAG 2.4.7 / 2.4.11). */
 :focus-visible {
-  outline: 3px solid var(--color-teal-600);
+  outline: 3px solid var(--color-violet-400);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-::selection { background: var(--color-teal-100); }
+::selection { background: var(--color-teal-100); color: #fff; }
 
 /* Skip link */
 .skip-link {
@@ -97,8 +117,8 @@ a { text-underline-offset: 3px; }
   left: 0.75rem;
   top: -4rem;
   z-index: 100;
-  background: var(--color-navy-900);
-  color: #fff;
+  background: #fff;
+  color: #08090d;
   padding: 0.6rem 1rem;
   border-radius: 0.5rem;
   transition: top 0.15s ease;
@@ -113,7 +133,7 @@ a { text-underline-offset: 3px; }
 .prose-nen ul { margin: 0 0 1rem 1.25rem; list-style: disc; color: var(--color-ink-700); }
 .prose-nen ol { margin: 0 0 1rem 1.25rem; list-style: decimal; color: var(--color-ink-700); }
 .prose-nen li { margin: 0.35rem 0; }
-.prose-nen a { color: var(--color-navy-700); text-decoration: underline; }
+.prose-nen a { color: var(--color-violet-300); text-decoration: underline; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -129,33 +149,60 @@ a { text-underline-offset: 3px; }
 }
 
 @layer components {
-/* ------------------------------------------------------------------ liquid glass */
-.liquid-glass {
-  background: rgba(255, 255, 255, 0.01);
-  background-blend-mode: luminosity;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: none;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  position: relative;
-  overflow: hidden;
+  /* Liquid glass: subtle translucent surface with a gradient hairline border. Use over imagery / dark chrome,
+     NOT for dense forms or tables (use .bg-surface for those). */
+  .liquid-glass {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: rgba(255, 255, 255, 0.025);
+    background-blend-mode: luminosity;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 8px 28px rgba(0, 0, 0, 0.12);
+  }
+  .liquid-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.14) 24%, rgba(255,255,255,0) 48%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.14) 80%, rgba(255,255,255,0.4) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+  /* Denser tint where glass sits on a busy image so text keeps AA contrast. */
+  .liquid-glass-strong { background: rgba(8, 9, 13, 0.55); }
+
+  /* Fallbacks: no backdrop-filter, or the user asked for less transparency -> a readable solid surface. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .liquid-glass { background: rgba(18, 20, 27, 0.92); }
+  }
+  @supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+    .liquid-glass::before { display: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .liquid-glass, .liquid-glass-strong { background: #181a22; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
+
+  /* Native-looking dark form controls */
+  input, select, textarea { color-scheme: dark; }
 }
-.liquid-glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.4px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-}
-/* Slightly stronger tint where the glass sits on a busy video, so text keeps AA contrast. */
-.liquid-glass-strong { background: rgba(12, 26, 46, 0.35); }
-}
+
+/* ------------------------------------------------------------------ hero entrance (restrained, 400-800ms) */
+@keyframes nen-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes nen-fade { from { opacity: 0; } to { opacity: 1; } }
+.hero-in { opacity: 0; animation: nen-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.hero-in-fade { opacity: 0; animation: nen-fade 0.7s ease-out forwards; }
+.nav-in { opacity: 0; animation: nen-fade 0.5s ease-out 0.05s forwards; }
+.d-1 { animation-delay: 0.12s; } .d-2 { animation-delay: 0.28s; } .d-3 { animation-delay: 0.44s; } .d-4 { animation-delay: 0.6s; }
+@media (prefers-reduced-motion: reduce) { .hero-in, .hero-in-fade, .nav-in { opacity: 1; animation: none; transform: none; } }
+@media (scripting: none) { .hero-in, .hero-in-fade, .nav-in { opacity: 1; animation: none; } }
 
 /* ------------------------------------------------------------------ scroll reveal */
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }

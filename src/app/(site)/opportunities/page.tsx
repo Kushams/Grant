@@ -32,7 +32,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
         <div className="mt-4">
           <EmptyState icon={<Search className="size-8" />} title="No opportunities match your search"
             description="Try removing a filter, checking your spelling or searching a broader keyword." action={{ href: "/opportunities", label: "Clear all filters" }} />
-          <p className="mt-4 text-center text-sm text-ink-600">Can’t find what you need? <Link href="/contact" className="font-semibold text-navy-800 underline">Ask support</Link>.</p>
+          <p className="mt-4 text-center text-sm text-ink-600">Can’t find what you need? <Link href="/contact" className="font-semibold text-violet-300 underline">Ask support</Link>.</p>
         </div>
       ) : (
         <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

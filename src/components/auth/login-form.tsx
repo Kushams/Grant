@@ -15,7 +15,7 @@ export function LoginForm({ next }: { next?: string }) {
       <TextField label="Password" name="password" type="password" autoComplete="current-password" required error={fe(state, "password")} />
       <SubmitButton pending={pending} className="w-full" size="lg" pendingLabel="Signing in…">Sign in</SubmitButton>
       <p className="text-center text-sm text-ink-600">
-        New here? <Link href="/register" className="font-semibold text-navy-800 underline">Create an account</Link>
+        New here? <Link href="/register" className="font-semibold text-violet-300 underline">Create an account</Link>
       </p>
       <p className="text-center text-xs text-ink-600">Password reset is not available in this prototype (no email is sent). Ask an administrator to create a new demo account.</p>
     </form>

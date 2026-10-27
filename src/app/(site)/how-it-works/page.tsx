@@ -16,7 +16,7 @@ export default function HowItWorks() {
       </Alert>
       <ol className="grid gap-4 md:grid-cols-2">
         {STEPS.map(([title, text], i) => (
-          <li key={title} className="flex gap-4 rounded-xl border border-ink-200 bg-white p-5 shadow-[var(--shadow-card)]">
+          <li key={title} className="flex gap-4 rounded-xl border border-ink-200 bg-surface p-5 shadow-[var(--shadow-card)]">
             <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-navy-800 font-display text-lg font-semibold text-white">{i + 1}</span>
             <div><h2 className="font-sans text-base font-bold tracking-normal text-ink-900"><span className="sr-only">Step {i + 1}: </span>{title}</h2><p className="mt-1 text-sm text-ink-700">{text}</p></div>
           </li>

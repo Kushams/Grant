@@ -7,7 +7,7 @@ import { Button } from "./button";
 import type { ActionState } from "@/lib/action";
 
 const control =
-  "block w-full rounded-lg border border-ink-300 bg-white px-3 py-2.5 text-base text-ink-900 placeholder:text-ink-500 shadow-sm " +
+  "block w-full rounded-lg border border-ink-300 bg-raised px-3 py-2.5 text-base text-ink-900 placeholder:text-ink-500 shadow-sm " +
   "focus:border-teal-600 disabled:bg-ink-50 aria-[invalid=true]:border-bad-700";
 
 export function Field({

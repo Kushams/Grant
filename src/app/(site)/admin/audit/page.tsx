@@ -26,10 +26,10 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
     <div>
       <PageHeader title="Audit log" description="Append-only record of sensitive actions. There is no control to edit or erase entries; the database also rejects updates and deletes." />
       <Alert tone="info" className="mb-4">Entries store previous and new values and the reason given. Secrets, password hashes and session tokens are never recorded.</Alert>
-      <form method="get" className="mb-4 flex flex-wrap items-end gap-3 rounded-xl border border-ink-200 bg-white p-4">
+      <form method="get" className="mb-4 flex flex-wrap items-end gap-3 rounded-xl border border-ink-200 bg-surface p-4">
         <div className="min-w-60 flex-1"><TextField label="Search" name="q" type="search" defaultValue={sp.q ?? ""} placeholder="Summary, entity id or person" /></div>
         <div><label htmlFor="act" className="mb-1.5 block text-sm font-semibold">Category</label>
-          <select id="act" name="action" defaultValue={sp.action ?? ""} className="block rounded-lg border border-ink-300 bg-white px-3 py-2.5">{GROUPS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></div>
+          <select id="act" name="action" defaultValue={sp.action ?? ""} className="block rounded-lg border border-ink-300 bg-surface px-3 py-2.5">{GROUPS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></div>
         <Button type="submit">Filter</Button>{sp.q || sp.action ? <Link className={buttonClasses("outline")} href="/admin/audit">Clear</Link> : null}
       </form>
       {res.rows.length === 0 ? <EmptyState title="No matching audit entries" /> : (

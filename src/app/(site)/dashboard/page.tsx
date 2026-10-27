@@ -39,7 +39,7 @@ export default async function DashboardHome() {
 
       <div className="grid gap-6 xl:grid-cols-2">
         <Card>
-          <CardHeader title="Applications requiring action" action={<Link className="text-sm font-semibold text-navy-800 underline" href="/dashboard/applications">All applications</Link>} />
+          <CardHeader title="Applications requiring action" action={<Link className="text-sm font-semibold text-violet-300 underline" href="/dashboard/applications">All applications</Link>} />
           <CardBody>
             {o.total === 0 ? <EmptyState icon={<FileText className="size-8" />} title="You haven’t started an application yet." description="Browse the opportunity directory, read the eligibility, then choose “Start application”." action={{ href: "/opportunities", label: "Explore opportunities" }} />
               : o.needsAction.length === 0 ? <p className="text-sm text-ink-600">Nothing needs your attention right now.</p>
@@ -58,13 +58,13 @@ export default async function DashboardHome() {
               : <ul className="divide-y divide-ink-100">{o.decisions.map((a) => (
                   <li key={a.id} className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
                     <div><p className="font-semibold text-ink-900">{a.opportunity.title}</p><p className="mt-1 text-xs text-ink-600">{a.reference} · decided {formatDate(a.decidedAt)}</p></div>
-                    <div className="flex items-center gap-3"><StatusBadge status={a.status} /><Link className="text-sm font-semibold text-navy-800 underline" href={`/dashboard/applications/${a.id}`}>Details</Link></div>
+                    <div className="flex items-center gap-3"><StatusBadge status={a.status} /><Link className="text-sm font-semibold text-violet-300 underline" href={`/dashboard/applications/${a.id}`}>Details</Link></div>
                   </li>))}</ul>}
           </CardBody>
         </Card>
 
         <Card>
-          <CardHeader title="Saved opportunities" action={<Link className="text-sm font-semibold text-navy-800 underline" href="/dashboard/saved">View all</Link>} />
+          <CardHeader title="Saved opportunities" action={<Link className="text-sm font-semibold text-violet-300 underline" href="/dashboard/saved">View all</Link>} />
           <CardBody>
             {o.saved.length === 0 ? <EmptyState icon={<Bookmark className="size-8" />} title="No opportunities are currently saved." description="Use “Save for later” on an opportunity page to keep it here." />
               : <ul className="divide-y divide-ink-100">{o.saved.map((s) => (
@@ -76,7 +76,7 @@ export default async function DashboardHome() {
         </Card>
 
         <Card>
-          <CardHeader title={`Notifications${o.unread ? ` (${o.unread} unread)` : ""}`} action={<Link className="text-sm font-semibold text-navy-800 underline" href="/dashboard/notifications">View all</Link>} />
+          <CardHeader title={`Notifications${o.unread ? ` (${o.unread} unread)` : ""}`} action={<Link className="text-sm font-semibold text-violet-300 underline" href="/dashboard/notifications">View all</Link>} />
           <CardBody>
             {o.notifications.length === 0 ? <EmptyState icon={<Bell className="size-8" />} title="No notifications yet" />
               : <ul className="divide-y divide-ink-100">{o.notifications.map((n) => (
@@ -85,7 +85,7 @@ export default async function DashboardHome() {
         </Card>
 
         <Card className="xl:col-span-2">
-          <CardHeader title="Awards and planned disbursements" action={<Link className="text-sm font-semibold text-navy-800 underline" href="/dashboard/awards">Details</Link>} />
+          <CardHeader title="Awards and planned disbursements" action={<Link className="text-sm font-semibold text-violet-300 underline" href="/dashboard/awards">Details</Link>} />
           <CardBody>
             {o.awards.length === 0 ? <EmptyState icon={<Award className="size-8" />} title="There are no award records associated with your account." description="If an application is approved, staff may record an award here. Nothing is guaranteed by applying." />
               : (
@@ -101,7 +101,7 @@ export default async function DashboardHome() {
         </Card>
 
         <Card className="xl:col-span-2">
-          <CardHeader title="Support requests" action={<Link className="text-sm font-semibold text-navy-800 underline" href="/dashboard/support">View all</Link>} />
+          <CardHeader title="Support requests" action={<Link className="text-sm font-semibold text-violet-300 underline" href="/dashboard/support">View all</Link>} />
           <CardBody>
             {o.support.length === 0 ? <EmptyState icon={<LifeBuoy className="size-8" />} title="No support requests" description="Need help? Send us a message — it is stored in our in-app support queue." action={{ href: "/contact", label: "Contact support" }} />
               : <ul className="divide-y divide-ink-100">{o.support.map((s) => <li key={s.id} className="flex items-center justify-between gap-3 py-2 text-sm"><span>{s.reference} — {s.topic}</span><span className="text-xs font-semibold uppercase text-ink-600">{s.status.replace("_", " ")}</span></li>)}</ul>}

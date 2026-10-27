@@ -48,7 +48,7 @@ export default async function AwardsAdmin({ searchParams }: { searchParams: Prom
         </CardBody></Card>
       ) : null}
 
-      <form method="get" className="grid gap-4 rounded-xl border border-ink-200 bg-white p-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Filter awards">
+      <form method="get" className="grid gap-4 rounded-xl border border-ink-200 bg-surface p-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Filter awards">
         <TextField label="Search by award, application or instalment ref" name="q" type="search" defaultValue={f.q ?? ""} />
         <SelectField label="Award status" name="awardStatus" defaultValue={f.awardStatus ?? ""} placeholder="Any" options={AWARD_STATUSES.map((s) => ({ value: s, label: s.replace("_", " ").toLowerCase() }))} />
         <SelectField label="Instalment status" name="disbursementStatus" defaultValue={f.disbursementStatus ?? ""} placeholder="Any" options={DISBURSEMENT_STATUSES.map((s) => ({ value: s, label: DISBURSEMENT_LABELS[s] }))} />
@@ -67,7 +67,7 @@ export default async function AwardsAdmin({ searchParams }: { searchParams: Prom
               const s = a.summary;
               return (
                 <tr key={a.id}>
-                  <Td className="whitespace-nowrap font-semibold"><Link className="text-navy-800 underline" href={`/admin/awards/${a.id}`}>{a.reference}</Link><span className="block text-xs font-normal text-ink-600">{a.application.reference}</span></Td>
+                  <Td className="whitespace-nowrap font-semibold"><Link className="text-violet-300 underline" href={`/admin/awards/${a.id}`}>{a.reference}</Link><span className="block text-xs font-normal text-ink-600">{a.application.reference}</span></Td>
                   <Td className="min-w-48">{a.application.organization?.name ?? a.application.applicant.name}<span className="block text-xs text-ink-600">{a.application.opportunity.title}</span>{a.application.opportunity.classification === "DEMO" ? <DemoBadge compact className="mt-1" /> : null}</Td>
                   <Td className="whitespace-nowrap">{formatMinor(a.amountMinor, a.currency)}<span className="block text-xs text-ink-600">{formatDate(a.approvedAt)}</span></Td>
                   <Td className="whitespace-nowrap">{formatMinor(s.scheduledMinor, a.currency)}</Td>

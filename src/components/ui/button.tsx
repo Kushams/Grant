@@ -5,20 +5,21 @@ import { cn } from "@/lib/cn";
 type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "accent";
 type Size = "sm" | "md" | "lg";
 
+/** One button system for the whole site: pill shape, medium weight, comfortable touch targets, visible focus (global). */
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-55 whitespace-nowrap";
+  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-55 whitespace-nowrap";
 const variants: Record<Variant, string> = {
-  primary: "bg-navy-800 text-white hover:bg-navy-700 active:bg-navy-900",
-  accent: "bg-teal-700 text-white hover:bg-teal-800",
-  secondary: "bg-navy-50 text-navy-900 hover:bg-navy-100 border border-navy-100",
-  outline: "border border-ink-300 bg-white text-ink-900 hover:bg-ink-50",
-  ghost: "text-navy-800 hover:bg-navy-50",
-  danger: "bg-bad-700 text-white hover:bg-red-800",
+  primary: "bg-white text-[#08090d] hover:bg-white/90 active:bg-white/80",
+  accent: "bg-teal-700 text-white hover:bg-teal-600",
+  secondary: "liquid-glass text-white hover:bg-white/5",
+  outline: "border border-white/15 bg-transparent text-white hover:bg-white/5",
+  ghost: "text-violet-300 hover:bg-white/5",
+  danger: "bg-red-600 text-white hover:bg-red-700",
 };
 const sizes: Record<Size, string> = {
-  sm: "min-h-9 px-3 text-sm",
-  md: "min-h-11 px-4 text-sm",
-  lg: "min-h-12 px-6 text-base",
+  sm: "min-h-9 px-4 text-sm",
+  md: "min-h-11 px-5 text-sm",
+  lg: "min-h-12 px-7 text-base",
 };
 
 export function buttonClasses(variant: Variant = "primary", size: Size = "md", className?: string) {

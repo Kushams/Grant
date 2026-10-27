@@ -22,7 +22,7 @@ export default async function AdminOpportunities({ searchParams }: { searchParam
   return (
     <div>
       <PageHeader title="Opportunities" description="Create, edit, publish, unpublish and archive. Archiving never deletes historical applications or awards." actions={<LinkButton href="/admin/opportunities/new">New opportunity</LinkButton>} />
-      <form method="get" className="mb-4 grid gap-4 rounded-xl border border-ink-200 bg-white p-4 sm:grid-cols-[1fr_11rem_11rem_auto] sm:items-end">
+      <form method="get" className="mb-4 grid gap-4 rounded-xl border border-ink-200 bg-surface p-4 sm:grid-cols-[1fr_11rem_11rem_auto] sm:items-end">
         <TextField label="Search" name="q" type="search" defaultValue={sp.q ?? ""} placeholder="Title or reference" />
         <SelectField label="Status" name="status" defaultValue={status ?? ""} placeholder="All" options={OPPORTUNITY_STATUSES.map((s) => ({ value: s, label: s.toLowerCase() }))} />
         <SelectField label="Demo / live" name="classification" defaultValue={classification ?? ""} placeholder="All" options={[{ value: "DEMO", label: "Demo" }, { value: "LIVE", label: "Live" }]} />
@@ -34,7 +34,7 @@ export default async function AdminOpportunities({ searchParams }: { searchParam
             <thead><tr><Th>Opportunity</Th><Th>Status</Th><Th>Funding</Th><Th>Deadline</Th><Th>Applications</Th><Th>Updated</Th></tr></thead>
             <tbody>{res.rows.map((o) => (
               <tr key={o.id}>
-                <Td className="min-w-64"><Link href={`/admin/opportunities/${o.id}`} className="font-semibold text-navy-800 underline">{o.title}</Link><span className="block text-xs text-ink-600">{o.reference}</span>{o.isDemo ? <DemoBadge compact className="mt-1" /> : <Badge tone={o.verifiedAt ? "ok" : "warn"} className="mt-1">{o.verifiedAt ? "LIVE · verified" : "LIVE · unverified"}</Badge>}</Td>
+                <Td className="min-w-64"><Link href={`/admin/opportunities/${o.id}`} className="font-semibold text-violet-300 underline">{o.title}</Link><span className="block text-xs text-ink-600">{o.reference}</span>{o.isDemo ? <DemoBadge compact className="mt-1" /> : <Badge tone={o.verifiedAt ? "ok" : "warn"} className="mt-1">{o.verifiedAt ? "LIVE · verified" : "LIVE · unverified"}</Badge>}</Td>
                 <Td><Badge tone={o.status === "PUBLISHED" ? "ok" : o.status === "ARCHIVED" ? "neutral" : "warn"}>{o.status.toLowerCase()}</Badge></Td>
                 <Td>{fundingLabel(o) ?? "To be confirmed"}</Td><Td className="whitespace-nowrap">{o.deadline ? formatDate(o.deadline) : "TBC"}</Td>
                 <Td>{o.applicationCount}</Td><Td className="whitespace-nowrap">{formatDate(o.updatedAt)}</Td>

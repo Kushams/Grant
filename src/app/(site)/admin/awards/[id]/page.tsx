@@ -62,7 +62,7 @@ export default async function AwardDetail({ params, searchParams }: { params: Pr
                   <div className="mt-4 grid gap-4 md:grid-cols-2">
                     <InstalmentStatusForm id={d.id} awardId={award.id} status={d.status} allowed={allowed} />
                     {locked ? <p className="text-xs text-ink-600">Amount and date are locked once recorded as paid, reconciled or cancelled.</p>
-                      : <details><summary className="cursor-pointer text-sm font-semibold text-navy-800">Edit amount / date / notes</summary><div className="mt-2"><InstalmentEditForm d={{ id: d.id, awardId: award.id, amount: minorToInputValue(d.amountMinor, d.currency), plannedDate: dateInputValue(d.plannedDate), milestone: d.milestone, applicantNote: d.applicantNote, internalNotes: d.internalNotes }} /></div></details>}
+                      : <details><summary className="cursor-pointer text-sm font-semibold text-violet-300">Edit amount / date / notes</summary><div className="mt-2"><InstalmentEditForm d={{ id: d.id, awardId: award.id, amount: minorToInputValue(d.amountMinor, d.currency), plannedDate: dateInputValue(d.plannedDate), milestone: d.milestone, applicantNote: d.applicantNote, internalNotes: d.internalNotes }} /></div></details>}
                   </div>) : null}
                 <details className="mt-3"><summary className="cursor-pointer text-xs font-semibold text-ink-700">History ({d.events.length})</summary>
                   <ol className="mt-2 space-y-1 text-xs text-ink-700">{d.events.map((e) => <li key={e.id}>{formatDateTime(e.createdAt)} · {people[e.actorId] ?? "Staff"} · {e.fromStatus ?? "—"} → {e.toStatus}{e.reason ? ` — ${e.reason}` : ""}</li>)}</ol></details>

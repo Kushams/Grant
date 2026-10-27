@@ -22,7 +22,7 @@ export function RegisterForm() {
             ["INDIVIDUAL_APPLICANT", "An individual", "Apply as yourself or as an entrepreneur."],
             ["ORGANIZATION_APPLICANT", "An organization or business", "Apply for a business, nonprofit or community group."],
           ] as const).map(([value, title, desc]) => (
-            <label key={value} className={cn("flex cursor-pointer gap-3 rounded-lg border p-4 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-teal-600", type === value ? "border-navy-700 bg-navy-50" : "border-ink-300 bg-white")}>
+            <label key={value} className={cn("flex cursor-pointer gap-3 rounded-lg border p-4 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-teal-600", type === value ? "border-navy-700 bg-navy-50" : "border-ink-300 bg-surface")}>
               <input type="radio" name="accountType" value={value} checked={type === value} onChange={() => setType(value)} className="mt-1 size-4 accent-navy-800" />
               <span><span className="block text-sm font-bold text-ink-900">{title}</span><span className="block text-sm text-ink-600">{desc}</span></span>
             </label>
@@ -47,7 +47,7 @@ export function RegisterForm() {
       <CheckboxField name="consentPrivacy" error={fe(state, "consentPrivacy")}
         label={<>I have read the <Link href="/privacy" className="font-semibold underline" target="_blank">draft privacy notice</Link> and understand this is a prototype.</>} />
       <SubmitButton pending={pending} className="w-full" size="lg" pendingLabel="Creating account…">Create account</SubmitButton>
-      <p className="text-center text-sm text-ink-600">Already registered? <Link href="/login" className="font-semibold text-navy-800 underline">Sign in</Link></p>
+      <p className="text-center text-sm text-ink-600">Already registered? <Link href="/login" className="font-semibold text-violet-300 underline">Sign in</Link></p>
     </form>
   );
 }

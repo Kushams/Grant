@@ -61,6 +61,31 @@ export const PRIMARY_NAV = [
   { href: "/contact", label: "Contact" },
 ];
 
+export type NavItem = { href: string; label: string; children?: Array<{ href: string; label: string; hint?: string }> };
+/** Header navigation. "Resources" is a dropdown; every entry maps to an existing route. */
+export const NAV_ITEMS: NavItem[] = [
+  { href: "/", label: "Home" },
+  { href: "/opportunities", label: "Opportunities" },
+  { href: "/how-it-works", label: "How It Works" },
+  { href: "/about", label: "About" },
+  {
+    href: "/faq", label: "Resources",
+    children: [
+      { href: "/eligibility", label: "Eligibility guide", hint: "Who can apply to what" },
+      { href: "/faq", label: "FAQ", hint: "Straight answers" },
+      { href: "/fraud-prevention", label: "Fraud prevention", hint: "Stay safe" },
+      { href: "/accessibility", label: "Accessibility", hint: "Our commitments" },
+    ],
+  },
+  { href: "/contact", label: "Contact" },
+];
+
+export const HERO = {
+  eyebrow: "NATIONAL EMPOWERMENT NETWORK",
+  headline: "Opportunity starts here.",
+  body: "Discover opportunities, understand eligibility, and navigate a clearer path from application to outcome.",
+} as const;
+
 export const FOOTER_LEGAL = [
   { href: "/privacy", label: "Privacy (draft)" },
   { href: "/terms", label: "Terms (draft)" },

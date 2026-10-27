@@ -1,54 +1,37 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
-import { getCurrentUser } from "@/lib/auth/session";
-import { can } from "@/lib/permissions";
-import { NO_GUARANTEE_STATEMENT, ORG, PRIMARY_NAV, PROTOTYPE_NOTICE } from "@/config/organization";
-import { APPLICANT_TYPES, APPLICANT_TYPE_LABELS } from "@/lib/constants";
-import { HeroNav } from "./hero-nav";
-import { HeroVideo } from "./hero-video";
+import { HERO, NAV_ITEMS, NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
+import { MainNav } from "@/components/layout/main-nav";
+import { PrototypeBanner, getNavAccount } from "@/components/layout/site-header";
+import { BG_POSTER, HeroVideo, OBJECT_POSITION } from "./hero-video";
 
-/** Full-height liquid-glass hero over a looping background video. */
-export async function Hero({ openCount }: { openCount: number }) {
-  const user = await getCurrentUser();
-  const staff = !!user && can(user.role, "admin:access");
+/** Cinematic, roughly one-viewport hero. Only this section is viewport-height — the page scrolls normally below it. */
+export async function Hero() {
+  const account = await getNavAccount();
   return (
-    <section aria-labelledby="hero-h" className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-navy-950 text-white">
+    <section aria-labelledby="hero-h" className="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#08090d] bg-cover text-white"
+      style={{ backgroundImage: `url(${BG_POSTER})`, backgroundPosition: OBJECT_POSITION }}>
+      <link rel="preload" as="image" href={BG_POSTER} fetchPriority="high" />
       <HeroVideo />
-      <div className="relative z-20 border-b border-white/10 bg-warn-50/95 text-warn-700">
-        <p className="mx-auto max-w-7xl px-4 py-1.5 text-center text-xs font-semibold sm:text-sm">{PROTOTYPE_NOTICE} All opportunities shown are fictional demonstrations.</p>
+      {/* Legibility: darken the top (nav) and fade the bottom into the page background. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-0 bg-gradient-to-b from-[#08090d]/70 via-[#08090d]/10 to-transparent" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#08090d] via-[#08090d]/70 to-transparent" />
+
+      <div className="relative z-30">
+        <PrototypeBanner className="relative z-30" />
+        <MainNav variant="overlay" items={NAV_ITEMS} account={account} />
       </div>
-      <HeroNav links={PRIMARY_NAV} account={{ signedIn: !!user, homeHref: staff ? "/admin" : "/dashboard", homeLabel: staff ? "Staff area" : "My dashboard" }} />
 
-      <div className="relative z-20 mt-auto grid gap-8 px-6 pb-10 pt-16 sm:px-12 sm:pb-16 lg:grid-cols-[minmax(0,42rem)_22rem] lg:items-end lg:justify-between">
-        <div>
-          <p className="mb-4 text-xs font-bold uppercase tracking-wider text-teal-200">{ORG.name}</p>
-          <h1 id="hero-h" className="mb-4 text-4xl font-medium leading-tight tracking-tight !text-white sm:text-5xl lg:text-6xl">{ORG.tagline}</h1>
-          <p className="mb-7 max-w-md text-sm leading-relaxed text-white/70">
-            Explore empowerment programmes, discover funding opportunities, understand eligibility requirements, and track your applications through one organized platform.
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Link href="/opportunities" className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-white/90 sm:px-7 sm:text-base">Explore Opportunities</Link>
-            <Link href="/how-it-works" className="liquid-glass rounded-full px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/5 sm:px-7 sm:text-base">How It Works</Link>
+      <div className="relative z-20 mt-auto px-6 pb-24 pt-20 sm:px-12 sm:pb-28 lg:px-16">
+        <div className="max-w-2xl">
+          <p className="hero-in-fade d-1 mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-violet-300">{HERO.eyebrow}</p>
+          <h1 id="hero-h" className="hero-in d-1 mb-5 text-balance text-[2.6rem] font-semibold leading-[1.04] tracking-tight text-white sm:text-6xl lg:text-7xl">{HERO.headline}</h1>
+          <p className="hero-in d-2 mb-8 max-w-md text-base font-light leading-relaxed text-white/75 sm:text-lg">{HERO.body}</p>
+          <div className="hero-in d-3 flex flex-wrap items-center gap-3">
+            <Link href="/opportunities" className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-7 text-base font-medium text-[#08090d] transition-colors hover:bg-white/90">Explore Opportunities</Link>
+            <Link href="/how-it-works" className="liquid-glass inline-flex min-h-12 items-center justify-center rounded-full px-7 text-base font-medium text-white transition-colors hover:bg-white/5">How It Works</Link>
           </div>
-          <p className="mt-5 max-w-md text-xs text-white/60">{ORG.name} is an independent platform — not a government agency. {NO_GUARANTEE_STATEMENT}</p>
+          <p className="hero-in d-4 mt-6 max-w-md text-xs text-white/60">{ORG.name} is an independent platform — not a government agency. {NO_GUARANTEE_STATEMENT}</p>
         </div>
-
-        <form action="/opportunities" method="get" role="search" aria-label="Search opportunities" className="liquid-glass liquid-glass-strong space-y-4 rounded-2xl p-5">
-          <h2 className="font-sans text-base font-semibold tracking-normal text-white">Search opportunities</h2>
-          <div>
-            <label htmlFor="home-q" className="text-sm font-medium text-white">Keyword</label>
-            <input id="home-q" name="q" type="search" placeholder="e.g. training, farming" className="mt-1 block w-full rounded-lg border border-white/25 bg-white/10 px-3 py-2.5 text-base text-white placeholder:text-white/60" />
-          </div>
-          <div>
-            <label htmlFor="home-type" className="text-sm font-medium text-white">I am applying as</label>
-            <select id="home-type" name="applicantType" defaultValue="" className="mt-1 block w-full rounded-lg border border-white/25 bg-navy-900/80 px-3 py-2.5 text-base text-white">
-              <option value="">Any applicant type</option>
-              {APPLICANT_TYPES.map((t) => <option key={t} value={t}>{APPLICANT_TYPE_LABELS[t]}</option>)}
-            </select>
-          </div>
-          <button type="submit" className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90"><Search className="size-4" aria-hidden="true" /> Search</button>
-          <p className="text-xs text-white/70">{openCount === 0 ? "No demonstration opportunities are open right now." : `${openCount} fictional demonstration ${openCount === 1 ? "opportunity is" : "opportunities are"} currently open.`}</p>
-        </form>
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ import { Field } from "@/components/ui/form";
 import { cn } from "@/lib/cn";
 import type { WizardQuestion, WizardValues } from "./types";
 
-const control = "block w-full rounded-lg border border-ink-300 bg-white px-3 py-2.5 text-base text-ink-900 shadow-sm focus:border-teal-600 aria-[invalid=true]:border-bad-700";
+const control = "block w-full rounded-lg border border-ink-300 bg-surface px-3 py-2.5 text-base text-ink-900 shadow-sm focus:border-teal-600 aria-[invalid=true]:border-bad-700";
 
 export function QuestionField({ q, register, error }: { q: WizardQuestion; register: UseFormRegister<WizardValues>; error?: FieldError | { message?: string } }) {
   const name = `answers.${q.key}` as const;
@@ -26,7 +26,7 @@ export function QuestionField({ q, register, error }: { q: WizardQuestion; regis
         {q.helpText ? <p id={hintId} className="mt-0.5 text-sm text-ink-600">{q.helpText}</p> : null}
         <div className="mt-2 flex flex-wrap gap-2">
           {options.map((o) => (
-            <label key={o.value} className={cn("flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-ink-300 bg-white px-3 py-2 text-sm has-[:checked]:border-navy-700 has-[:checked]:bg-navy-50")}>
+            <label key={o.value} className={cn("flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-ink-300 bg-surface px-3 py-2 text-sm has-[:checked]:border-navy-700 has-[:checked]:bg-navy-50")}>
               <input type={multi ? "checkbox" : "radio"} value={o.value} {...register(name)} className="size-4 accent-navy-800" />
               {o.label}
             </label>

@@ -137,7 +137,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
 
           {o.faqList.length ? (
             <Section id="faq" title="Frequently asked questions">
-              <div className="divide-y divide-ink-200 rounded-lg border border-ink-200 bg-white">
+              <div className="divide-y divide-ink-200 rounded-lg border border-ink-200 bg-surface">
                 {o.faqList.map((f) => (
                   <details key={f.q} className="group p-4"><summary className="cursor-pointer font-semibold text-ink-900">{f.q}</summary><p className="mt-2">{f.a}</p></details>
                 ))}
@@ -150,7 +150,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
           <Card><CardBody className="space-y-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-ink-600">Funding</p>
-              <p className="font-display text-2xl font-semibold text-navy-900">{funding ?? "To be confirmed"}</p>
+              <p className="font-display text-2xl font-semibold text-white">{funding ?? "To be confirmed"}</p>
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-ink-600">Deadline</p>

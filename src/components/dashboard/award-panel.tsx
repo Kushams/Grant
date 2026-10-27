@@ -33,7 +33,7 @@ export function AwardPanel({ award }: { award: ApplicantAward }) {
       {award.applicantSummary ? <p className="text-sm text-ink-800"><strong>Summary:</strong> {award.applicantSummary}</p> : null}
       {award.conditions ? <p className="text-sm text-ink-800"><strong>Conditions:</strong> {award.conditions}</p> : null}
       <div>
-        <h3 className="mb-2 font-sans text-base font-bold tracking-normal text-navy-900">Planned instalments</h3>
+        <h3 className="mb-2 font-sans text-base font-bold tracking-normal text-white">Planned instalments</h3>
         {award.disbursements.length === 0 ? <p className="text-sm text-ink-600">No instalments have been planned yet.</p> : (
           <TableWrap label="Planned instalments">
             <Table>

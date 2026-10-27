@@ -145,8 +145,8 @@ export function ApplicationWizard(p: WizardProps) {
             return (
               <li key={t}>
                 <button type="button" disabled={pending} onClick={() => n !== step && saveAndGo(n)} aria-current={n === step ? "step" : undefined}
-                  className={cn("flex min-h-12 w-full items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm font-semibold", n === step ? "border-navy-800 bg-navy-800 text-white" : "border-ink-300 bg-white text-ink-800 hover:bg-ink-50", n < step && "border-teal-600")}>
-                  <span aria-hidden="true" className={cn("grid size-6 shrink-0 place-items-center rounded-full text-xs", n === step ? "bg-white text-navy-900" : n < step ? "bg-teal-600 text-white" : "bg-ink-100 text-ink-700")}>{n < step ? <Check className="size-3.5" /> : n}</span>
+                  className={cn("flex min-h-12 w-full items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm font-semibold", n === step ? "border-navy-800 bg-navy-800 text-white" : "border-ink-300 bg-surface text-ink-800 hover:bg-ink-50", n < step && "border-teal-600")}>
+                  <span aria-hidden="true" className={cn("grid size-6 shrink-0 place-items-center rounded-full text-xs", n === step ? "bg-surface text-white" : n < step ? "bg-teal-600 text-white" : "bg-ink-100 text-ink-700")}>{n < step ? <Check className="size-3.5" /> : n}</span>
                   <span><span className="sr-only">Step {n}: </span>{t}</span>
                 </button>
               </li>
@@ -176,7 +176,7 @@ export function ApplicationWizard(p: WizardProps) {
                 {INDIVIDUAL_CATEGORIES.map((c) => {
                   const ok = acceptedCategory(c);
                   return (
-                    <label key={c} className={cn("flex items-start gap-3 rounded-lg border p-4", ok ? "cursor-pointer border-ink-300 bg-white has-[:checked]:border-navy-700 has-[:checked]:bg-navy-50" : "border-ink-200 bg-ink-50 text-ink-600")}>
+                    <label key={c} className={cn("flex items-start gap-3 rounded-lg border p-4", ok ? "cursor-pointer border-ink-300 bg-surface has-[:checked]:border-navy-700 has-[:checked]:bg-navy-50" : "border-ink-200 bg-ink-50 text-ink-600")}>
                       <input type="radio" value={c} disabled={!ok} {...register("category")} className="mt-1 size-4 accent-navy-800" />
                       <span><span className="block font-semibold">{APPLICANT_TYPE_LABELS[c as ApplicantType]}</span><span className="block text-sm">{ok ? "Accepted by this programme." : "Not accepted by this programme."}</span></span>
                     </label>
@@ -188,7 +188,7 @@ export function ApplicationWizard(p: WizardProps) {
                 {p.organizations.length > 1 ? (
                   <div>
                     <label htmlFor="org-select" className="text-sm font-semibold text-ink-900">Which organization is applying?</label>
-                    <select id="org-select" {...register("organizationId")} className="mt-1 block w-full rounded-lg border border-ink-300 bg-white px-3 py-2.5">
+                    <select id="org-select" {...register("organizationId")} className="mt-1 block w-full rounded-lg border border-ink-300 bg-surface px-3 py-2.5">
                       {p.organizations.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
                     </select>
                   </div>
@@ -219,7 +219,7 @@ export function ApplicationWizard(p: WizardProps) {
             ) : null}
             {profileReady ? <p className="text-sm font-semibold text-ok-700">✓ Your profile has the minimum information needed to apply.</p>
               : <Alert tone="warn" title="Complete your profile to submit">Add the missing details, then return — your draft is saved. <Link className="font-semibold underline" href="/dashboard/profile">Edit profile</Link></Alert>}
-            <p className="text-sm"><Link href="/dashboard/profile" className="font-semibold text-navy-800 underline">Edit profile</Link> (your draft stays saved).</p>
+            <p className="text-sm"><Link href="/dashboard/profile" className="font-semibold text-violet-300 underline">Edit profile</Link> (your draft stays saved).</p>
           </div>
         ) : null}
 
@@ -258,7 +258,7 @@ export function ApplicationWizard(p: WizardProps) {
             ) : <Alert tone="ok" title="Everything required is filled in">Review your answers below, then confirm and submit.</Alert>}
 
             <section aria-labelledby="sum-h">
-              <h3 id="sum-h" className="mb-3 font-sans text-base font-bold tracking-normal text-navy-900">Summary</h3>
+              <h3 id="sum-h" className="mb-3 font-sans text-base font-bold tracking-normal text-white">Summary</h3>
               <dl className="space-y-3 text-sm">
                 <div><dt className="font-semibold">Applying as</dt><dd>{p.mode === "ORGANIZATION" && org ? `${org.name} (${APPLICANT_TYPE_LABELS[org.type as ApplicantType] ?? org.type})` : APPLICANT_TYPE_LABELS[watched.category as ApplicantType] ?? watched.category}</dd></div>
                 {opp.fundingSpecified && opp.fixedAmountMinor == null ? <div><dt className="font-semibold">Amount requested</dt><dd>{watched.requestedAmount ? `${opp.currency} ${watched.requestedAmount}` : "—"}</dd></div> : null}

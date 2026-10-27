@@ -96,7 +96,7 @@ export default async function StaffApplication({ params }: { params: Promise<{ i
           {app.award ? (
             <Card><CardHeader title="Award" /><CardBody className="text-sm">
               <p><strong>{app.award.reference}</strong> · {formatMinor(app.award.amountMinor, app.award.currency)}</p>
-              {can(user.role, "award:view") ? <Link className="mt-2 inline-block font-semibold text-navy-800 underline" href={`/admin/awards/${app.award.id}`}>Manage award & instalments</Link> : <p className="mt-1 text-ink-600">Award administration is limited to administrators.</p>}
+              {can(user.role, "award:view") ? <Link className="mt-2 inline-block font-semibold text-violet-300 underline" href={`/admin/awards/${app.award.id}`}>Manage award & instalments</Link> : <p className="mt-1 text-ink-600">Award administration is limited to administrators.</p>}
             </CardBody></Card>
           ) : status === "APPROVED" && can(user.role, "award:manage") ? (
             <Alert tone="info" title="Approved — no award record yet"><Link className="font-semibold underline" href={`/admin/awards?create=${app.id}`}>Create the award record</Link></Alert>

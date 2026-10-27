@@ -64,7 +64,7 @@ export default async function AdminHome() {
               <div className="grid gap-4 md:grid-cols-2">
                 {o.money.map((m) => (
                   <div key={m.currency} className="rounded-lg border border-ink-200 p-4">
-                    <p className="font-semibold text-navy-900">{m.currency} — {m.count} award{m.count === 1 ? "" : "s"}</p>
+                    <p className="font-semibold text-white">{m.currency} — {m.count} award{m.count === 1 ? "" : "s"}</p>
                     <dl className="mt-2 grid grid-cols-2 gap-y-1 text-sm">
                       <dt className="text-ink-600">Total approved</dt><dd className="text-right font-semibold">{formatMinor(m.awarded, m.currency)}</dd>
                       <dt className="text-ink-600">Scheduled (planned)</dt><dd className="text-right">{formatMinor(m.scheduled, m.currency)}</dd>

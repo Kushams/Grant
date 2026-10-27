@@ -42,7 +42,7 @@ export default async function Queue({ searchParams }: { searchParams: Promise<SP
   return (
     <div>
       <PageHeader title={isAdmin ? "Application review queue" : "My review queue"} description={isAdmin ? "All submitted applications. Drafts are private to applicants." : "Only applications assigned to you are shown."} />
-      <form method="get" className="mb-4 grid gap-4 rounded-xl border border-ink-200 bg-white p-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Filter applications">
+      <form method="get" className="mb-4 grid gap-4 rounded-xl border border-ink-200 bg-surface p-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Filter applications">
         <TextField label="Search" name="q" type="search" defaultValue={params.q ?? ""} placeholder="Reference, applicant, opportunity" />
         <SelectField label="Status" name="status" defaultValue={status ?? ""} placeholder="All statuses" options={APPLICATION_STATUSES.filter((s) => s !== "DRAFT").map((s) => ({ value: s, label: STATUS_LABELS[s as ApplicationStatus] }))} />
         <SelectField label="Opportunity" name="opportunityId" defaultValue={params.opportunityId ?? ""} placeholder="All opportunities" options={opps.map((o) => ({ value: o.id, label: o.title }))} />
@@ -60,7 +60,7 @@ export default async function Queue({ searchParams }: { searchParams: Promise<SP
             <thead><tr><Th>{sortLink("reference", "Reference")}</Th><Th>Applicant</Th><Th>Opportunity</Th><Th>{sortLink("status", "Status")}</Th><Th>{sortLink("submitted", "Submitted")}</Th><Th>Reviewer</Th><Th>{sortLink("updated", "Updated")}</Th></tr></thead>
             <tbody>{res.rows.map((a) => (
               <tr key={a.id}>
-                <Td className="whitespace-nowrap font-semibold"><Link className="text-navy-800 underline" href={`/admin/applications/${a.id}`}>{a.reference}</Link></Td>
+                <Td className="whitespace-nowrap font-semibold"><Link className="text-violet-300 underline" href={`/admin/applications/${a.id}`}>{a.reference}</Link></Td>
                 <Td>{a.organization?.name ?? a.applicant.name}<span className="block text-xs text-ink-600">{a.applicantCategory.replace("_", " ").toLowerCase()}</span></Td>
                 <Td className="min-w-48">{a.opportunity.title}<span className="block text-xs text-ink-600">{a.opportunity.reference}</span>{a.opportunity.classification === "DEMO" ? <DemoBadge compact className="mt-1" /> : null}</Td>
                 <Td><StatusBadge status={a.status} /></Td>

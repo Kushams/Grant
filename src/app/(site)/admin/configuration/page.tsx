@@ -28,7 +28,7 @@ export default async function Configuration() {
       <Card><CardHeader title="Opportunity verification readiness" description="A LIVE opportunity needs every item complete plus an explicit verification confirmation. Demo opportunities stay DEMO." /><CardBody>
         <ul className="divide-y divide-ink-100">{rows.map(({ v, done, total }) => (
           <li key={v.id} className="flex flex-wrap items-center justify-between gap-2 py-3 first:pt-0 last:pb-0">
-            <div><Link className="font-semibold text-navy-800 underline" href={`/admin/opportunities/${v.id}`}>{v.title}</Link><p className="text-xs text-ink-600">{v.reference} · {v.classification}{v.verifiedAt ? " · verified" : ""}</p></div>
+            <div><Link className="font-semibold text-violet-300 underline" href={`/admin/opportunities/${v.id}`}>{v.title}</Link><p className="text-xs text-ink-600">{v.reference} · {v.classification}{v.verifiedAt ? " · verified" : ""}</p></div>
             <Badge tone={v.isDemo ? "warn" : done === total ? "ok" : "info"}>{v.isDemo ? "DEMO — never live" : `${done}/${total} items ready`}</Badge>
           </li>))}</ul>
       </CardBody></Card>

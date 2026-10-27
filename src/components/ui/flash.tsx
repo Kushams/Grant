@@ -28,7 +28,7 @@ export function FlashRegion() {
   return (
     <div aria-live="polite" role="status" className="pointer-events-none fixed bottom-4 right-4 z-50 flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2">
       {items.map((i) => (
-        <div key={i.id} className="pointer-events-auto flex items-start gap-3 rounded-lg border border-ok-700/30 bg-white p-3 text-sm font-medium text-ok-700 shadow-lg">
+        <div key={i.id} className="pointer-events-auto flex items-start gap-3 rounded-lg border border-ok-700/30 bg-surface p-3 text-sm font-medium text-ok-700 shadow-lg">
           <span className="flex-1">{i.text}</span>
           <button type="button" aria-label="Dismiss message" onClick={() => setItems((a) => a.filter((x) => x.id !== i.id))} className="rounded p-0.5 text-ink-600 hover:bg-ink-100"><X className="size-4" /></button>
         </div>
