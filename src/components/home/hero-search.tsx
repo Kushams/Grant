@@ -19,7 +19,7 @@ export function HeroSearch({ openCount }: { openCount: number }) {
           </select>
         </div>
         <button type="submit" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-navy-800 px-6 text-sm font-medium text-white hover:bg-navy-700"><Search className="size-4" aria-hidden="true" /> Search</button>
-        <p className="text-xs text-ink-600 sm:col-span-3">{openCount === 0 ? (DEMO_SITE ? "No demonstration opportunities are open right now." : "No opportunities are open right now.") : `${openCount} ${DEMO_SITE ? "fictional demonstration " : ""}${openCount === 1 ? "opportunity is" : "opportunities are"} currently open.`}</p>
+        <p className="text-xs text-ink-600 sm:col-span-3">{openCount === 0 ? (DEMO_SITE ? "No demonstration opportunities are open right now." : "") : `${openCount} ${DEMO_SITE ? "fictional demonstration " : ""}${openCount === 1 ? "opportunity is" : "opportunities are"} currently open.`}</p>
       </form>
     </section>
   );

@@ -4,6 +4,7 @@ import { searchOpportunities } from "@/lib/services/opportunities";
 import { parseDirectoryParams } from "@/lib/search-params";
 import { DirectoryFilters } from "@/components/opportunities/filters";
 import { OpportunityCard } from "@/components/opportunities/opportunity-card";
+import { FundCard } from "@/components/opportunities/fund-card";
 import { Alert, EmptyState, PageHeader, Pagination } from "@/components/ui/misc";
 import { qs, pluralize } from "@/lib/format";
 import { Search } from "lucide-react";
@@ -15,6 +16,8 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
   const { params, ignored } = parseDirectoryParams(await searchParams);
   const result = await searchOpportunities(params);
   const base = { q: params.q, applicantType: params.applicantType, category: params.category, region: params.region, status: params.status, deadline: params.deadline, currency: params.currency, minFunding: params.minFunding, sort: params.sort };
+  const unfiltered = !Object.values(base).some(Boolean);
+  const showFund = !DEMO_SITE && result.total === 0 && unfiltered;
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
       <PageHeader eyebrow="Opportunity directory" title="Find an opportunity"
@@ -25,6 +28,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
           These values were ignored: {ignored.join(", ")}. Showing results for the remaining filters.
         </Alert>
       ) : null}
+      {showFund ? <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"><li><FundCard /></li></ul> : <>
       <div className="mt-8 flex flex-wrap items-baseline justify-between gap-2" aria-live="polite">
         <h2 className="font-sans text-lg font-bold tracking-normal text-ink-900">{pluralize(result.total, "opportunity", "opportunities")} found</h2>
         <p className="text-sm text-ink-600">Page {result.page} of {result.pages}</p>
@@ -41,6 +45,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
         </ul>
       )}
       <Pagination page={result.page} pages={result.pages} hrefFor={(n) => `/opportunities${qs({ ...base, page: n })}`} />
+      </>}
     </div>
   );
 }

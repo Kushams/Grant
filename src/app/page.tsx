@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FundCard } from "@/components/opportunities/fund-card";
 import { BadgeCheck, Building2, ClipboardCheck, FileSearch, Lock, ShieldAlert, UserRound } from "lucide-react";
 import { db } from "@/lib/db";
 import { featuredOpportunities } from "@/lib/services/opportunities";
@@ -37,7 +38,7 @@ export default async function Home() {
           </Reveal>
           {featured.length ? (
             <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{featured.map((o, i) => <Reveal as="li" key={o.id} delay={i * 80}><OpportunityCard o={o} /></Reveal>)}</ul>
-          ) : <EmptyState title="No opportunities are open yet" description={DEMO_SITE ? "Run the seed script to load fictional demonstration data." : "Read about the General Opportunity Fund. Applications will be announced here when they open."} action={DEMO_SITE ? undefined : { href: "/fund", label: "About the General Opportunity Fund" }} />}
+          ) : DEMO_SITE ? <EmptyState title="No opportunities to show yet" description="Run the seed script to load fictional demonstration data." /> : <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"><li><FundCard /></li></ul>}
         </section>
 
         <section className="border-y border-ink-200 bg-white" aria-labelledby="audiences-h">
