@@ -9,6 +9,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Only set for the static GitHub Pages preview (served under /<repo>/). Unset in normal use.
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || undefined,
   // better-sqlite3 is a native module; keep it out of the bundle.
   serverExternalPackages: ["better-sqlite3", "@prisma/adapter-better-sqlite3"],
   async headers() {

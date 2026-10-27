@@ -89,6 +89,10 @@ tests/ · e2e/      Vitest suites · Playwright journeys
 * Patterns adapted from the World Bridge Meridian site: scroll `Reveal`, eyebrow `SectionHeading`, `Accordion`, `Breadcrumbs`, favicon and a prototype-wide `robots.txt` that blocks indexing.
 * Screenshots of the main screens are in `docs/screenshots/`.
 
+## Static preview (GitHub Pages)
+
+GitHub Pages can only host static files, and this app needs a Node server and database, so the hosted preview is a **read-only snapshot of the public pages** (forms, sign-in, dashboards and staff screens are disabled with a banner). Regenerate it with `npm run preview:snapshot` (output in `preview-site/`, served under the `/Grant/` base path) and publish that folder to the `gh-pages` branch. For the full working app, run it locally as described above.
+
 ## What is genuinely implemented
 
 * **Public site:** home, opportunity directory (server-side search, 8 filters, 4 sorts, pagination, empty/invalid-filter handling, loading skeleton), opportunity detail pages, About, How it works, Eligibility, FAQ, a working contact form (stored in an in-app support queue), and draft Privacy/Terms/Accessibility/Fraud-prevention pages.

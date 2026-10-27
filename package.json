@@ -2,7 +2,7 @@
   "name": "national-empowerment-network",
   "version": "0.1.0",
   "private": true,
-  "description": "National Empowerment Network (NEN) — opportunity-access platform prototype",
+  "description": "National Empowerment Network (NEN) \u2014 opportunity-access platform prototype",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,7 +17,8 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "node scripts/reset-db.mjs",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "preview:snapshot": "node scripts/static-snapshot.mjs /Grant preview-site"
   },
   "engines": {
     "node": ">=20.19"
