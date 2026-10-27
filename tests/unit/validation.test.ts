@@ -55,3 +55,13 @@ describe("zod schemas", () => {
     expect(contactSchema.safeParse({ ...ok, relatedRef: "nope" }).success).toBe(false);
   });
 });
+
+import { safeNext } from "@/lib/safe-redirect";
+describe("safeNext (open-redirect guard)", () => {
+  it("allows only same-site relative paths", () => {
+    expect(safeNext("/dashboard?x=1")).toBe("/dashboard?x=1");
+    for (const bad of ["//evil.example", "https://evil.example", "/\\evil", "javascript:alert(1)", "evil", "", null, undefined, "/ok\nSet-Cookie: x=1"]) {
+      expect(safeNext(bad as string)).toBeNull();
+    }
+  });
+});

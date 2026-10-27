@@ -67,3 +67,29 @@ export const submitSchema = z.object({
 
 export const withdrawSchema = z.object({ reason: z.string().trim().max(500).optional() });
 export const applicantReplySchema = z.object({ body: z.string().trim().min(3, "Write a reply.").max(3000) });
+
+/**
+ * Builds a Zod schema for the `answers` object of a set of questions. It type-checks every
+ * non-empty value (never enforces `required` — drafts are lenient). Used by the client form
+ * resolver for instant feedback; the server runs the same `validateAnswer` rules authoritatively.
+ */
+export function buildAnswersSchema(questions: QuestionLike[]) {
+  const shape: Record<string, z.ZodType> = {};
+  for (const q of questions) {
+    shape[q.key] = z
+      .union([z.string(), z.array(z.string())])
+      .optional()
+      .superRefine((raw, ctx) => {
+        const err = validateAnswer(q, normalizeAnswer(raw ?? ""), false);
+        if (err) ctx.addIssue({ code: "custom", message: err });
+      });
+  }
+  return z.object({
+    answers: z.object(shape).partial(),
+    requestedAmount: z.string().optional(),
+    category: z.string().optional(),
+    organizationId: z.string().optional(),
+    consentAccepted: z.boolean().optional(),
+    consentTerms: z.boolean().optional(),
+  });
+}

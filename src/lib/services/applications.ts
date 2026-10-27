@@ -17,6 +17,7 @@ import { ORG } from "@/config/organization";
 import { applicantReplySchema, normalizeAnswer, stepOneSchema, submitSchema, validateAnswer, withdrawSchema } from "../validation/application";
 import { isIndividualApplyReady, isOrganizationApplyReady } from "../validation/profile";
 import { toView, type OpportunityView } from "./opportunities";
+import { assessCompleteness } from "../completeness";
 import { recordAudit } from "./audit";
 import { notify, notifyAdmins, notifyMany } from "./notifications";
 
@@ -273,34 +274,6 @@ export async function saveApplicationStep(actor: Actor, id: string, step: number
   const target = Math.min(Math.max(nextStep, 1), TOTAL_STEPS);
   await db.application.update({ where: { id: app.id }, data: { ...data, currentStep: target, lastActivityAt: new Date() } });
   return { currentStep: target };
-}
-
-// ---------------------------------------------------------------- completeness
-export function assessCompleteness(opp: OpportunityView, answers: Record<string, string>, extra: { requestedAmountMinor: number | null }) {
-  const missing: Array<{ step: number; label: string }> = [];
-  const invalid: Array<{ step: number; label: string; message: string }> = [];
-  const stepFor = (section: string) => (section === "GENERAL" ? 3 : section === "PROJECT" ? 4 : 5);
-  let required = 0;
-  let answered = 0;
-  for (const q of opp.questions) {
-    const v = answers[q.key] ?? "";
-    if (q.required) {
-      required++;
-      if (v !== "" && v !== "[]") answered++;
-      else missing.push({ step: stepFor(q.section), label: q.label });
-    }
-    const err = validateAnswer({ ...q, options: q.optionList }, v, false);
-    if (err) invalid.push({ step: stepFor(q.section), label: q.label, message: err });
-  }
-  if (opp.fundingSpecified && opp.fixedAmountMinor == null && opp.requireProposal && extra.requestedAmountMinor == null) {
-    required++;
-    missing.push({ step: 4, label: "Requested amount" });
-  } else if (opp.fundingSpecified && opp.fixedAmountMinor == null && opp.requireProposal) {
-    required++;
-    answered++;
-  }
-  const percent = required === 0 ? 100 : Math.round((answered / required) * 100);
-  return { missing, invalid, percent, required, answered };
 }
 
 // ---------------------------------------------------------------- submit

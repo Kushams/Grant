@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/*
+ * NEN design tokens. Institutional navy + teal on warm neutral surfaces.
+ * Contrast notes: ink-700/600 on white and sand-50 are >= 7:1 / 5.5:1; navy-800 on white 12:1;
+ * teal-700 on white 6.6:1. Never use ink-400 or lighter for text that carries meaning.
+ */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+
+  --color-navy-50: #eef3fa;
+  --color-navy-100: #dbe5f3;
+  --color-navy-200: #b8cbe6;
+  --color-navy-300: #8ca9d3;
+  --color-navy-400: #5f84bd;
+  --color-navy-500: #3f65a2;
+  --color-navy-600: #2e4f85;
+  --color-navy-700: #243f6a;
+  --color-navy-800: #1b3256;
+  --color-navy-900: #132440;
+  --color-navy-950: #0c1a2e;
+
+  --color-teal-50: #eefaf8;
+  --color-teal-100: #d2f2ed;
+  --color-teal-200: #a6e4db;
+  --color-teal-500: #1f9d8f;
+  --color-teal-600: #14827a;
+  --color-teal-700: #0f6a64;
+  --color-teal-800: #0e5450;
+
+  --color-sand-50: #fbf9f5;
+  --color-sand-100: #f5f1e8;
+  --color-sand-200: #e9e3d4;
+  --color-sand-300: #d6cdb7;
+
+  --color-ink-900: #18212d;
+  --color-ink-800: #263140;
+  --color-ink-700: #364355;
+  --color-ink-600: #4a586b;
+  --color-ink-500: #5f6d80;
+  --color-ink-300: #aab3c0;
+  --color-ink-200: #d3d9e1;
+  --color-ink-100: #e8ecf1;
+  --color-ink-50: #f4f6f8;
+
+  --color-ok-50: #ecf8f1;
+  --color-ok-700: #166a3e;
+  --color-warn-50: #fff6e5;
+  --color-warn-700: #8a5300;
+  --color-bad-50: #fdeeee;
+  --color-bad-700: #a42626;
+  --color-info-50: #eaf2fd;
+  --color-info-700: #1d4f9c;
+
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(24 33 45 / 0.05), 0 1px 3px rgb(24 33 45 / 0.04);
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-sand-50);
+  color: var(--color-ink-800);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--color-navy-900);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+}
+
+a { text-underline-offset: 3px; }
+
+/* Visible focus for every interactive element (WCAG 2.4.7 / 2.4.11). */
+:focus-visible {
+  outline: 3px solid var(--color-teal-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection { background: var(--color-teal-100); }
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--color-navy-900);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* Long-form policy / prose pages */
+.prose-nen { max-width: 68ch; }
+.prose-nen h2 { font-size: 1.5rem; margin: 2.25rem 0 0.75rem; }
+.prose-nen h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+.prose-nen p { margin: 0 0 1rem; color: var(--color-ink-700); }
+.prose-nen ul { margin: 0 0 1rem 1.25rem; list-style: disc; color: var(--color-ink-700); }
+.prose-nen ol { margin: 0 0 1rem 1.25rem; list-style: decimal; color: var(--color-ink-700); }
+.prose-nen li { margin: 0.35rem 0; }
+.prose-nen a { color: var(--color-navy-700); text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  header, footer, nav, .no-print { display: none !important; }
+}

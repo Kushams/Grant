@@ -10,7 +10,6 @@ export default defineConfig({
     globalSetup: ["tests/global-setup.ts"],
     setupFiles: ["tests/setup.ts"],
     environment: "node",
-    environmentMatchGlobs: [["tests/components/**", "jsdom"]],
     fileParallelism: false,
     testTimeout: 30000,
   },
