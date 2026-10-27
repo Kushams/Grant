@@ -13,10 +13,12 @@ fs.mkdirSync(tmp, { recursive: true });
 const db = path.join(tmp, "snapshot.db");
 for (const f of [db, `${db}-journal`]) if (fs.existsSync(f)) fs.rmSync(f);
 
-const env = { ...process.env, DATABASE_URL: `file:${db}`, NEXT_PUBLIC_BASE_PATH: base, SESSION_COOKIE_SECURE: "false" };
+const env = { ...process.env, DATABASE_URL: `file:${db}`, NEXT_PUBLIC_BASE_PATH: base, SESSION_COOKIE_SECURE: "false", ...(process.env.SNAPSHOT_MODE === "demo" ? { SITE_MODE: "demo" } : { SITE_MODE: "" }) };
 const run = (cmd, args, extra = {}) => { const r = spawnSync(cmd, args, { stdio: "inherit", env: { ...env, ...extra } }); if (r.status !== 0) process.exit(r.status ?? 1); };
 run("npx", ["prisma", "migrate", "deploy"]);
-run("npx", ["tsx", "prisma/seed.ts"], { NODE_ENV: "development" });
+// Live mode (default): an empty database, no sample data. Set SNAPSHOT_MODE=demo to seed the labelled demo data instead.
+const demo = process.env.SNAPSHOT_MODE === "demo";
+if (demo) run("npx", ["tsx", "prisma/seed.ts"], { NODE_ENV: "development" });
 run("npx", ["next", "build"], { NODE_ENV: "production" });
 
 spawnSync("fuser", ["-k", `${port}/tcp`], { stdio: "ignore" }); // clear a leftover server from an earlier run
@@ -26,7 +28,7 @@ const origin = `http://localhost:${port}`;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 for (let i = 0; i < 60; i++) { try { if ((await fetch(`${origin}${base}`)).ok) break; } catch {} await sleep(500); }
 
-const BANNER = `<div id="nen-preview-banner" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483647;background:#0c1a2e;color:#fff;font:600 13px/1.4 system-ui,sans-serif;padding:8px 14px;text-align:center">Static preview snapshot — sign-in, forms, search and dashboards are disabled here. All content is fictional demo data.</div><script>document.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();alert("This is a static preview, so forms are disabled. Run the app locally for the full experience (see README).");},true);</script>`;
+const BANNER = () => `<div id="nen-preview-banner" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483647;background:#0c1a2e;color:#fff;font:600 13px/1.4 system-ui,sans-serif;padding:8px 14px;text-align:center">Static preview snapshot — sign-in, forms, search and dashboards are disabled here. ${demo ? " All content is fictional demo data." : " Applications are not open yet."}</div><script>document.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();alert("This is a static preview, so forms are disabled. Run the app locally for the full experience (see README).");},true);</script>`;
 const SKIP = /^\/(dashboard|admin|access-denied)(\/|$)/;
 
 fs.rmSync(out, { recursive: true, force: true });
@@ -47,7 +49,7 @@ while (queue.length) {
     if (/\.(png|svg|ico|css|js|txt|xml)$/.test(r) || r.startsWith("/_next") || SKIP.test(r) || seen.has(r)) continue;
     queue.push(r.replace(/\/$/, "") || "/");
   }
-  html = html.replace("</body>", `${BANNER}</body>`);
+  html = html.replace("</body>", `${BANNER()}</body>`);
   const file = route === "/" ? path.join(out, "index.html") : path.join(out, route, "index.html");
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, html);
@@ -55,7 +57,7 @@ while (queue.length) {
 }
 // 404 page
 const nf = await fetch(`${origin}${base}/does-not-exist`);
-fs.writeFileSync(path.join(out, "404.html"), (await nf.text()).replace("</body>", `${BANNER}</body>`));
+fs.writeFileSync(path.join(out, "404.html"), (await nf.text()).replace("</body>", `${BANNER()}</body>`));
 // Static assets + icon
 fs.cpSync(path.resolve(".next/static"), path.join(out, "_next/static"), { recursive: true });
 for (const f of ["/icon.svg"]) { const r = await fetch(`${origin}${base}${f}`); if (r.ok) fs.writeFileSync(path.join(out, f), Buffer.from(await r.arrayBuffer())); }
