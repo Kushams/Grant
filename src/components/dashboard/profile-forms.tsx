@@ -57,7 +57,7 @@ export function OrganizationProfileForm({ org }: { org: { id: string; name: stri
       </div>
       <TextArea label="Short description" name="description" defaultValue={org.description ?? ""} error={fe(state, "description")} />
       <Interests name="sectors" selected={org.sectors} legend="Sector or programme interests" />
-      <p className="text-sm text-ink-600">No registration numbers, tax IDs or financial documents are requested in this prototype. Any verification requirement would be set by a verified programme and approved first.</p>
+      <p className="text-sm text-ink-600">No registration numbers, tax IDs or financial documents are requested on this site. Any verification requirement would be set by a verified programme and approved first.</p>
       <SubmitButton pending={pending} size="lg">Save organization profile</SubmitButton>
     </form>
   );

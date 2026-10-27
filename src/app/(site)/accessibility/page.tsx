@@ -8,7 +8,7 @@ export default function Accessibility() {
   return (
     <ContentPage draftPolicy eyebrow="Accessibility" title="Accessibility statement" intro="We want everyone to be able to find and apply for opportunities.">
       <h2>Our aim</h2>
-      <p>We are building this platform to follow WCAG 2.2 level AA practices wherever feasible. This is an aim, not a certification: the prototype has not yet had a formal third-party accessibility audit.</p>
+      <p>We are building this platform to follow WCAG 2.2 level AA practices wherever feasible. This is an aim, not a certification: this platform has not yet had a formal third-party accessibility audit.</p>
       <h2>What we have built in</h2>
       <ul>
         <li>Semantic page structure, a “skip to main content” link and clearly labelled navigation landmarks.</li>

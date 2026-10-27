@@ -39,7 +39,7 @@ export default function Eligibility() {
           <li>Whether you have already applied, where a programme allows only one application each.</li>
           <li>Programme-specific questions and any required information.</li>
         </ul>
-        <p className="mt-3 text-sm text-ink-600">If an item is not yet confirmed for an opportunity you will see “Details to be confirmed” — we never fill gaps with guesses. We do not require identity documents, bank statements or payment details in this prototype.</p>
+        <p className="mt-3 text-sm text-ink-600">If an item is not yet confirmed for an opportunity you will see “Details to be confirmed” — we never fill gaps with guesses. We do not require identity documents, bank statements or payment details.</p>
       </section>
       <div className="mt-8"><LinkButton href="/opportunities">Browse opportunities by applicant type</LinkButton></div>
     </ContentPage>

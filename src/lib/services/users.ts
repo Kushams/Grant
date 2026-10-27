@@ -33,7 +33,7 @@ export async function registerUser(raw: unknown): Promise<{ userId: string; role
     }
     await tx.consentRecord.create({ data: { userId: u.id, subject: "REGISTRATION", documentVersion: ORG.policyVersion } });
     await recordAudit({ actor: { id: u.id, role: u.role as Actor["role"], name: u.name }, action: "user.registered", entityType: "User", entityId: u.id, summary: `Account registered (${u.role})` }, tx);
-    await notify({ userId: u.id, type: "WELCOME", title: "Welcome to National Empowerment Network", body: "Complete your profile, then browse demo opportunities. Nothing on this prototype is a live funding offer.", href: "/dashboard/profile" }, tx);
+    await notify({ userId: u.id, type: "WELCOME", title: "Welcome to National Empowerment Network", body: "Complete your profile, then browse opportunities. Applying never guarantees funding.", href: "/dashboard/profile" }, tx);
     return u;
   });
   return { userId: user.id, role: user.role };

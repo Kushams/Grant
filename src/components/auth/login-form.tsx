@@ -17,7 +17,7 @@ export function LoginForm({ next }: { next?: string }) {
       <p className="text-center text-sm text-ink-600">
         New here? <Link href="/register" className="font-semibold text-navy-800 underline">Create an account</Link>
       </p>
-      <p className="text-center text-xs text-ink-600">Password reset is not available in this prototype (no email is sent). Ask an administrator to create a new demo account.</p>
+      <p className="text-center text-xs text-ink-600">Password reset by email is not available yet. Contact support if you need access restored.</p>
     </form>
   );
 }

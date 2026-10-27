@@ -115,7 +115,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
             <p className="font-semibold text-ink-900">Required information</p>
             <BulletList items={o.requiredInfo} empty="Details to be confirmed" />
             <p className="pt-2 font-semibold text-ink-900">Required documents</p>
-            <BulletList items={o.requiredDocs} empty="No documents are required for this demonstration. Please do not upload identity or financial documents to this prototype." />
+            <BulletList items={o.requiredDocs} empty="No documents are required at this stage. Please do not send identity or financial documents through this site." />
             {o.questions.length ? <p className="pt-2 text-sm">The application includes {o.questions.length} programme-specific question{o.questions.length === 1 ? "" : "s"} ({o.questions.filter((q) => q.required).length} required).</p> : null}
           </Section>
 

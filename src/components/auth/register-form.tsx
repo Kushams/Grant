@@ -39,13 +39,13 @@ export function RegisterForm() {
             options={ORGANIZATION_TYPES.map((t) => ({ value: t, label: APPLICANT_TYPE_LABELS[t] }))} />
         </>
       ) : null}
-      <TextField label="Email address" name="email" type="email" autoComplete="email" required error={fe(state, "email")} hint="Use a personal or organizational address you control. Demo or test addresses are fine for the prototype." />
+      <TextField label="Email address" name="email" type="email" autoComplete="email" required error={fe(state, "email")} hint="Use a personal or organizational address you control." />
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField label="Password" name="password" type="password" autoComplete="new-password" required error={fe(state, "password")} hint="At least 10 characters, with letters and numbers." />
         <TextField label="Confirm password" name="confirmPassword" type="password" autoComplete="new-password" required error={fe(state, "confirmPassword")} />
       </div>
       <CheckboxField name="consentPrivacy" error={fe(state, "consentPrivacy")}
-        label={<>I have read the <Link href="/privacy" className="font-semibold underline" target="_blank">draft privacy notice</Link> and understand this is a prototype.</>} />
+        label={<>I have read the <Link href="/privacy" className="font-semibold underline" target="_blank">privacy notice</Link> and understand how my information is used.</>} />
       <SubmitButton pending={pending} className="w-full" size="lg" pendingLabel="Creating account…">Create account</SubmitButton>
       <p className="text-center text-sm text-ink-600">Already registered? <Link href="/login" className="font-semibold text-navy-800 underline">Sign in</Link></p>
     </form>

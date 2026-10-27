@@ -14,8 +14,8 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
       <div className="grid gap-8 lg:grid-cols-[1fr_20rem]">
         <Card><CardBody><ContactForm defaults={{ name: user?.name, email: user?.email, ref: sp.ref }} /></CardBody></Card>
         <aside className="space-y-4">
-          <Alert tone="info" title="How this works in the prototype">
-            Your message is saved to an in-app support queue that staff can read. <strong>No email, SMS or phone contact is sent.</strong> Signed-in users see replies on their dashboard.
+          <Alert tone="info" title="How messages are handled">
+            Your message is saved to a support queue that staff can read. <strong>Replies appear in the site</strong>; signed-in users see them on their dashboard.
           </Alert>
           <Alert tone="warn" title="Contact details">
             No official email address, phone number or office address is published yet — they will be added once the organization confirms them. Be wary of anyone claiming to be us from another channel.

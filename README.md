@@ -154,3 +154,17 @@ Not done: a formal accessibility audit (axe / manual screen-reader pass), load/p
 7. Run an accessibility audit and fix findings; replace the typographic mark with approved branding.
 8. Remove demo accounts/seed data; never reuse demo credentials; set strong secrets and HTTPS-only cookies.
 9. Review every demo opportunity — none may be published as real.
+
+
+## Live mode vs demo mode
+
+By default the site runs in **live mode**: no DEMO banner, badges, sample opportunities or demo accounts.
+Demo copy and sample data appear only when `SITE_MODE=demo` (the test suites and local previews set it).
+
+- Bootstrap a live database with one administrator and nothing else:
+  `ADMIN_EMAIL=... ADMIN_PASSWORD='<12+ chars>' npm run db:seed:live`
+- Opportunities are created in the admin area. A LIVE opportunity cannot be published until the verification
+  checklist (verified funder, approved terms, fee policy) is completed and someone is recorded as having verified it.
+- `/fund` describes the General Opportunity Fund. It shows no amounts and states that applications are not yet open.
+- Policy pages are marked "Pending formal approval" until the organization approves them.
+- The site is still `noindex` (see `src/app/layout.tsx` and `src/app/robots.ts`); change that deliberately at launch.

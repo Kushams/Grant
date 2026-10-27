@@ -1,3 +1,4 @@
+import { DEMO_SITE } from "@/config/organization";
 import type { Metadata } from "next";
 import { searchOpportunities } from "@/lib/services/opportunities";
 import { parseDirectoryParams } from "@/lib/search-params";
@@ -8,7 +9,7 @@ import { qs, pluralize } from "@/lib/format";
 import { Search } from "lucide-react";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Opportunities", description: "Search and filter demonstration opportunities on National Empowerment Network." };
+export const metadata: Metadata = { title: "Opportunities", description: "Search and filter funding opportunities on National Empowerment Network." };
 
 export default async function OpportunitiesPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { params, ignored } = parseDirectoryParams(await searchParams);
@@ -17,7 +18,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
       <PageHeader eyebrow="Opportunity directory" title="Find an opportunity"
-        description="Every opportunity currently listed is a fictional demonstration for testing this platform. None is a live funding offer." />
+        description={DEMO_SITE ? "Every opportunity currently listed is a fictional demonstration for testing this platform. None is a live funding offer." : "Funding opportunities listed on the network. Each page shows its status, eligibility and what is still to be confirmed."} />
       <DirectoryFilters p={params} />
       {ignored.length ? (
         <Alert tone="warn" className="mt-4" title="Some filters were not recognised">

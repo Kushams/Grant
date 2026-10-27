@@ -1,4 +1,4 @@
-import { NAV_ITEMS, PROTOTYPE_NOTICE } from "@/config/organization";
+import { DEMO_SITE, NAV_ITEMS, PROTOTYPE_NOTICE } from "@/config/organization";
 import { getCurrentUser } from "@/lib/auth/session";
 import { unreadCount } from "@/lib/services/notifications";
 import { can } from "@/lib/permissions";
@@ -19,6 +19,7 @@ export async function getNavAccount(): Promise<NavAccount> {
 }
 
 export function PrototypeBanner({ className = "" }: { className?: string }) {
+  if (!DEMO_SITE) return null;
   return (
     <div className={`border-b border-warn-700/25 bg-warn-50 text-warn-700 ${className}`}>
       <p className="mx-auto max-w-7xl px-4 py-1.5 text-center text-xs font-medium sm:text-sm">{PROTOTYPE_NOTICE} All opportunities shown are fictional demonstrations.</p>

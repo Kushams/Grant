@@ -13,7 +13,7 @@ export const contactSchema = z.object({
     .max(40)
     .optional()
     .transform((v) => v || undefined)
-    .refine((v) => !v || /^NEN-[A-Z0-9-]{6,36}$/.test(v), "Use a reference like NEN-DEMO-2026-ABC234, or leave this blank."),
+    .refine((v) => !v || /^NEN-[A-Z0-9-]{6,36}$/.test(v), "Use a reference like NEN-APP-2026-ABC234, or leave this blank."),
   message: z.string().trim().min(10, "Please write at least a sentence.").max(4000),
   consent: z.literal(true, { error: "Please acknowledge the draft privacy notice." }),
   website: z.string().max(500).optional(), // honeypot: real people leave this empty (checked in the service)

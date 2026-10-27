@@ -237,8 +237,8 @@ export function ApplicationWizard(p: WizardProps) {
             ) : null}
             {step === 5 ? (
               <Alert tone="info" title="No files or sensitive documents">
-                File uploads are switched off in this prototype. Please don’t paste ID numbers, bank statements or card details into any field.
-                {opp.requiredDocs.length ? <> Documents this opportunity lists ({opp.requiredDocs.join("; ")}) are <strong>not collected</strong> in the prototype.</> : null}
+                File uploads are not available. Please don’t paste ID numbers, bank statements or card details into any field.
+                {opp.requiredDocs.length ? <> Documents this opportunity lists ({opp.requiredDocs.join("; ")}) are <strong>not collected</strong> through this site.</> : null}
               </Alert>
             ) : null}
             {sectionQs(stepSection).map((q) => <QuestionField key={q.key} q={q} register={register} error={errors.answers?.[q.key] as { message?: string } | undefined} />)}

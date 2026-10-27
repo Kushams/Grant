@@ -18,7 +18,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
     const c = individualCompletion({ ...p, interests });
     return (
       <div>
-        <PageHeader title="My profile" description="Only what’s needed to demonstrate the workflow. Never enter ID numbers or bank details." />
+        <PageHeader title="My profile" description="Only what’s needed for your applications. Never enter ID numbers or bank details." />
         {sp.welcome ? <Alert tone="ok" className="mb-6" title="Account created">Complete your profile so you’re ready to apply.</Alert> : null}
         <Card className="mb-6"><CardBody><ProgressBar label="Profile completion" value={c.percent} />{c.missing.length ? <p className="mt-2 text-sm text-ink-600">Still to add: {c.missing.join(", ")}.</p> : null}</CardBody></Card>
         <Card><CardBody><IndividualProfileForm profile={{ ...p, interests }} /></CardBody></Card>

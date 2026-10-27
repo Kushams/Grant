@@ -13,7 +13,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { FAQ } from "@/content/faq";
 import { STEPS } from "@/content/steps";
-import { NO_FEE_STATEMENT } from "@/config/organization";
+import { NO_FEE_STATEMENT, DEMO_SITE } from "@/config/organization";
 import { PROGRAMME_CATEGORIES } from "@/lib/constants";
 
 export default async function Home() {
@@ -31,13 +31,13 @@ export default async function Home() {
         <section className="mx-auto max-w-7xl px-4 pb-20 pt-16" aria-labelledby="featured-h">
           <Reveal>
             <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
-              <SectionHeading id="featured-h" eyebrow="Featured" title="Demonstration opportunities" description="Fictional examples that show how a programme page works." />
+              <SectionHeading id="featured-h" eyebrow="Featured" title={DEMO_SITE ? "Demonstration opportunities" : "Funding opportunities"} description={DEMO_SITE ? "Fictional examples that show how a programme page works." : "Programmes listed on the network, with their status and what is still to be confirmed."} />
               <Link href="/opportunities" className="font-semibold text-teal-700 underline">See all opportunities</Link>
             </div>
           </Reveal>
           {featured.length ? (
             <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{featured.map((o, i) => <Reveal as="li" key={o.id} delay={i * 80}><OpportunityCard o={o} /></Reveal>)}</ul>
-          ) : <EmptyState title="No opportunities to show yet" description="Run the seed script to load fictional demonstration data." />}
+          ) : <EmptyState title="No opportunities are open yet" description={DEMO_SITE ? "Run the seed script to load fictional demonstration data." : "Read about the General Opportunity Fund. Applications will be announced here when they open."} action={DEMO_SITE ? undefined : { href: "/fund", label: "About the General Opportunity Fund" }} />}
         </section>
 
         <section className="border-y border-ink-200 bg-white" aria-labelledby="audiences-h">
@@ -100,7 +100,7 @@ export default async function Home() {
               <Link href="/fraud-prevention" className="mt-3 inline-block font-semibold text-teal-700 underline">Read the full guidance</Link>
             </Reveal>
             <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
-              {([[BadgeCheck, "Clearly labelled demos", "Fictional opportunities always carry a visible DEMO label."], [Lock, "No sensitive data", "We never ask for ID numbers, bank details or card data."], [FileSearch, "Honest status", "Award and payment records are staff-entered and labelled as such."], [ShieldAlert, "No upfront payments", "Never pay to “release” or “unlock” funding. Report anyone who asks."]] as const).map(([Icon, t, d], i) => (
+              {([[BadgeCheck, DEMO_SITE ? "Clearly labelled demos" : "Clear status", DEMO_SITE ? "Fictional opportunities always carry a visible DEMO label." : "Every opportunity shows whether it is open, upcoming or closed, and what is still to be confirmed."], [Lock, "No sensitive data", "We never ask for ID numbers, bank details or card data."], [FileSearch, "Honest status", "Award and payment records are staff-entered and labelled as such."], [ShieldAlert, "No upfront payments", "Never pay to “release” or “unlock” funding. Report anyone who asks."]] as const).map(([Icon, t, d], i) => (
                 <Reveal as="li" key={t} delay={i * 70} className="rounded-xl border border-ink-200 bg-white p-5">
                   <Icon className="size-6 text-teal-700" aria-hidden="true" /><p className="mt-2 font-semibold text-ink-900">{t}</p><p className="mt-1 text-sm text-ink-700">{d}</p>
                 </Reveal>
@@ -128,7 +128,7 @@ export default async function Home() {
 
         <section className="mx-auto max-w-7xl px-4 pb-4" aria-labelledby="cta-h">
           <Reveal className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-navy-800 p-8 text-white">
-            <div><h2 id="cta-h" className="text-2xl font-medium text-white">Questions? We’re here to help.</h2><p className="mt-1 text-teal-50">Use the support form — messages go to our in-app support queue (no email is sent in this prototype).</p></div>
+            <div><h2 id="cta-h" className="text-2xl font-medium text-white">Questions? We’re here to help.</h2><p className="mt-1 text-teal-50">Use the support form — messages go to our support queue and replies appear on your dashboard.</p></div>
             <LinkButton href="/contact" variant="secondary" size="lg">Contact support</LinkButton>
           </Reveal>
         </section>

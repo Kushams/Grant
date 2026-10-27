@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FOOTER_LEGAL, NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG, PRIMARY_NAV } from "@/config/organization";
+import { DEMO_SITE, FOOTER_LEGAL, NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG, PRIMARY_NAV } from "@/config/organization";
 import { Logo } from "./logo";
 
 export function SiteFooter() {
@@ -29,7 +29,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-navy-800">
         <p className="mx-auto max-w-7xl px-4 py-4 text-xs text-white/60">
-          © {new Date().getFullYear()} {ORG.name}. Prototype for internal review — policy pages are drafts and no real programme, partner or funding is represented.
+          © {new Date().getFullYear()} {ORG.name}.{DEMO_SITE ? " Prototype for internal review — policy pages are drafts and no real programme, partner or funding is represented." : " An independent organization; not a government agency."}
         </p>
       </div>
     </footer>

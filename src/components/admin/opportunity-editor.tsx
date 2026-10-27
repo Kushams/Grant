@@ -90,7 +90,7 @@ export function OpportunityEditor({ v }: { v: EditorValues }) {
         <TextArea label="Milestones" name="milestones" rows={2} defaultValue={v.milestones} />
         <TextArea label="Expected payment schedule" name="paymentSchedule" rows={2} defaultValue={v.paymentSchedule} />
         <TextArea label="Approved conditions attached to disbursement" name="disbursementConditions" rows={2} defaultValue={v.disbursementConditions} />
-        <Alert tone="info" title="Fees are disabled"><p>{NO_FEE_STATEMENT} There is no fee amount field: a legitimate fee would need a documented policy decision with legal/compliance review, outside this prototype. Never request upfront payment to release an award.</p></Alert>
+        <Alert tone="info" title="Fees are disabled"><p>{NO_FEE_STATEMENT} There is no fee amount field: a legitimate fee would need a documented policy decision with legal/compliance review, outside this platform. Never request upfront payment to release an award.</p></Alert>
         <TextArea label="Fee policy note (internal)" name="feePolicyNote" rows={2} defaultValue={v.feePolicyNote} />
       </CardBody></Card>
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/content/prose";
 import { LinkButton } from "@/components/ui/button";
-import { NO_FEE_STATEMENT, ORG } from "@/config/organization";
+import { NO_FEE_STATEMENT } from "@/config/organization";
 
 export const metadata: Metadata = { title: "Fraud prevention" };
 
@@ -10,7 +10,7 @@ export default function Fraud() {
     <ContentPage draftPolicy eyebrow="Stay safe" title="Fraud prevention" intro="Genuine funding programmes do not charge you to receive money. Here is how to protect yourself.">
       <h2>Before you trust an offer</h2>
       <ul>
-        <li><strong>Verify the source.</strong> Check who is really offering the opportunity and read the full programme terms. On {ORG.name}, demonstration opportunities are labelled DEMO and are never real offers.</li>
+        <li><strong>Verify the source.</strong> Check who is really offering the opportunity and read the full programme terms.</li>
         <li><strong>Read the official terms.</strong> Eligibility, dates, award structure and any charges must be stated in the programme terms before you proceed.</li>
         <li><strong>Check the channel.</strong> We will not ask you for sensitive information by social media or personal messaging apps.</li>
       </ul>
@@ -26,7 +26,7 @@ export default function Fraud() {
       <h2>Our commitments</h2>
       <ul>
         <li>{NO_FEE_STATEMENT}</li>
-        <li>This prototype never asks for card, bank, wallet or cryptocurrency details and has no checkout or payment page.</li>
+        <li>This site never asks for card, bank, wallet or cryptocurrency details and has no checkout or payment page.</li>
         <li>Staff will never ask you to pay a fee to receive an award.</li>
         <li>Award and payment statuses shown to you are records entered by authorized staff — they are not payment-provider confirmations.</li>
       </ul>

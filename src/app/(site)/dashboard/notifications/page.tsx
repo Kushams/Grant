@@ -11,7 +11,7 @@ export default async function Notifications() {
   const items = await listNotifications(user.id);
   return (
     <div>
-      <PageHeader title="Notifications" description="In-app updates only. No emails, SMS or push messages are sent by this prototype." />
+      <PageHeader title="Notifications" description="In-app updates only. No emails, SMS or push messages are sent." />
       <NotificationList items={items} back="/dashboard/notifications" />
     </div>
   );

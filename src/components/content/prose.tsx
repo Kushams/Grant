@@ -7,8 +7,8 @@ export function ContentPage({ title, eyebrow, intro, children, draftPolicy = fal
     <div className="mx-auto max-w-7xl px-4 py-12">
       <PageHeader eyebrow={eyebrow} title={title} description={intro} />
       {draftPolicy ? (
-        <Alert tone="warn" className="mb-8 max-w-3xl" title="Draft policy — for prototype review only">
-          This page has not been approved by {ORG.name} or reviewed by legal counsel (version: {ORG.policyVersion}). It must not be relied on as a legal document.
+        <Alert tone="warn" className="mb-8 max-w-3xl" title="Pending formal approval">
+          This page is awaiting formal approval by {ORG.name} and legal review (version: {ORG.policyVersion}).
           Legal entity details, registration numbers, governing law, official addresses and privacy contacts are intentionally left blank until supplied and verified.
         </Alert>
       ) : null}

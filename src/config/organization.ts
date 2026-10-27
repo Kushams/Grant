@@ -18,7 +18,7 @@ export const ORG = {
     "To make empowerment programmes and funding opportunities easier to find, easier to understand and fairer to apply for — with clear rules, honest status tracking and no hidden costs.",
   referencePrefix: "NEN",
   /** Policy documents are drafts until the organization approves them. */
-  policyVersion: "DRAFT-0.1 (prototype — not approved)",
+  policyVersion: "DRAFT-0.1 (pending approval)",
 } as const;
 
 /** Facts that need to be supplied/approved by the organization. `null` = unconfirmed. */
@@ -39,11 +39,13 @@ export const UNCONFIRMED_FACTS: Array<{
   { key: "fundingPartners", label: "Verified funding partners", value: null, why: "No partner is named or implied until verified." },
   { key: "geographicCoverage", label: "Geographic coverage", value: null, why: "Eligible regions are set per verified programme." },
   { key: "feePolicy", label: "Application / service fee policy", value: null, why: "Fees are disabled. Any fee needs documented legal/compliance approval." },
-  { key: "paymentProcess", label: "Approved disbursement process", value: null, why: "The prototype records, but never executes, payments." },
+  { key: "paymentProcess", label: "Approved disbursement process", value: null, why: "The platform records, but never executes, payments." },
   { key: "approvedPolicies", label: "Approved Privacy, Terms, Accessibility & Fraud policies", value: null, why: "All policy pages are drafts for review." },
-  { key: "branding", label: "Final logo and brand assets", value: null, why: "Prototype uses a neutral typographic mark." },
+  { key: "branding", label: "Final logo and brand assets", value: null, why: "A neutral typographic mark is in use." },
 ];
 
+/** Server-side only. Demo copy, banners and sample data appear ONLY when SITE_MODE=demo (tests, local previews). */
+export const DEMO_SITE = process.env.SITE_MODE === "demo";
 export const DEMO_LABEL = "DEMO — NOT A LIVE FUNDING OPPORTUNITY";
 export const NO_FEE_STATEMENT =
   "Any applicable charges, if any, will be stated in the verified programme terms before you proceed.";
@@ -55,6 +57,7 @@ export const PROTOTYPE_NOTICE =
 export const PRIMARY_NAV = [
   { href: "/opportunities", label: "Opportunities" },
   { href: "/how-it-works", label: "How it works" },
+  { href: "/fund", label: "General Opportunity Fund" },
   { href: "/eligibility", label: "Eligibility" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
@@ -71,6 +74,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     href: "/faq", label: "Resources",
     children: [
+      { href: "/fund", label: "General Opportunity Fund", hint: "About the fund" },
       { href: "/eligibility", label: "Eligibility guide", hint: "Who can apply to what" },
       { href: "/faq", label: "FAQ", hint: "Straight answers" },
       { href: "/fraud-prevention", label: "Fraud prevention", hint: "Stay safe" },
@@ -87,8 +91,8 @@ export const HERO = {
 } as const;
 
 export const FOOTER_LEGAL = [
-  { href: "/privacy", label: "Privacy (draft)" },
-  { href: "/terms", label: "Terms (draft)" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
   { href: "/accessibility", label: "Accessibility" },
   { href: "/fraud-prevention", label: "Fraud prevention" },
   { href: "/contact", label: "Contact" },

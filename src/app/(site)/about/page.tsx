@@ -1,3 +1,4 @@
+import { DEMO_SITE } from "@/config/organization";
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/content/prose";
 import { ORG } from "@/config/organization";
@@ -24,8 +25,8 @@ export default function About() {
       <h2>Transparency principles</h2>
       <ul>
         <li>No guaranteed outcomes, and no invented statistics, beneficiaries or testimonials.</li>
-        <li>No application fee or upfront payment is requested in this prototype. Any future charge would need documented approval and clear disclosure in the programme terms before an applicant proceeds.</li>
-        <li>Opportunities that are demonstrations are always labelled <strong>DEMO — NOT A LIVE FUNDING OPPORTUNITY</strong>.</li>
+        <li>No application fee or upfront payment is requested. Any future charge would need documented approval and clear disclosure in the programme terms before an applicant proceeds.</li>
+        {DEMO_SITE ? <li>Opportunities that are demonstrations are always labelled <strong>DEMO — NOT A LIVE FUNDING OPPORTUNITY</strong>.</li> : null}
         <li>We collect only the data needed to review an application and never ask for government ID numbers, bank details or card data.</li>
       </ul>
       <h2>Who it is for</h2>

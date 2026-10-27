@@ -19,7 +19,7 @@ export function ContactForm({ defaults }: { defaults?: { name?: string; email?: 
             <TextField label="Email address" name="email" type="email" autoComplete="email" required defaultValue={defaults?.email} error={fe(state, "email")} />
           </div>
           <SelectField label="Topic" name="topic" required placeholder="Choose a topic…" error={fe(state, "topic")} options={SUPPORT_TOPICS.map((t) => ({ value: t, label: t }))} />
-          <TextField label="Related opportunity or application reference (optional)" name="relatedRef" defaultValue={defaults?.ref} placeholder="e.g. NEN-DEMO-2026-ABC234" error={fe(state, "relatedRef")} />
+          <TextField label="Related opportunity or application reference (optional)" name="relatedRef" defaultValue={defaults?.ref} placeholder="e.g. NEN-APP-2026-ABC234" error={fe(state, "relatedRef")} />
           <TextArea label="Message" name="message" required rows={6} error={fe(state, "message")} hint="Please don’t include passwords, ID numbers or bank details." />
           {/* Honeypot: hidden from people and assistive tech; bots tend to fill it. */}
           <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden"><label>Website<input tabIndex={-1} autoComplete="off" name="website" /></label></div>

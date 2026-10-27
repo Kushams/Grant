@@ -14,6 +14,7 @@ const env = {
   DATABASE_URL: `file:${db}`,
   DEMO_SEED_PASSWORD: "Demo-Passw0rd!",
   SESSION_COOKIE_SECURE: "false", // plain-HTTP localhost
+  SITE_MODE: "demo", // tests exercise the labelled sample data
   NODE_ENV: "production",
 };
 const run = (cmd, args, extra = {}) => {
