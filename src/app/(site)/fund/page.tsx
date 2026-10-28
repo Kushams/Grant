@@ -45,7 +45,7 @@ export default async function FundPage() {
             <li>Eligible nonprofit organizations, educational institutions and other qualifying organizations.</li>
             <li>Applicants in the United States and eligible international locations.</li>
           </ul>
-          <p>Applicants must satisfy the requirements of the relevant funding tier, applicable laws and any programme-specific restrictions. Not every applicant or proposed activity will necessarily qualify.</p>
+          <p>Applicants must satisfy the requirements of the programme, applicable laws and any programme-specific restrictions. Not every applicant or proposed activity will necessarily qualify.</p>
 
           <h2 id="how-it-works">How it works</h2>
           <ol>
