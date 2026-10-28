@@ -1,5 +1,6 @@
 import { DEMO_SITE } from "@/config/organization";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import { RegisterForm } from "@/components/auth/register-form";
@@ -17,7 +18,7 @@ export default async function RegisterPage() {
       <Alert tone="info" className="mt-6" title={DEMO_SITE ? "Prototype environment" : "Your privacy"}>
         {DEMO_SITE ? "Accounts here are local to this demo database. " : ""}Please do not enter government ID numbers, bank details or other sensitive data — none is ever requested.
       </Alert>
-      <p className="mt-4 text-sm text-ink-700">Don’t want to use an email? <a href="/start" className="font-semibold text-navy-800 underline">Create a quick account</a> with just your name and sign in with a passkey.</p>
+      <p className="mt-4 text-sm text-ink-700">Don’t want to use an email? <Link href="/start" className="font-semibold text-navy-800 underline">Create a quick account</Link> with just your name and sign in with a passkey.</p>
       <Card className="mt-6"><CardBody><RegisterForm /></CardBody></Card>
     </div>
   );
