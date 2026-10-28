@@ -11,7 +11,7 @@ export default function Terms() {
       <h2>1. Who we are</h2>
       <p>This site is run by {ORG.legalName} (“NEN”). NEN is an independent company. It is not a government agency and does not operate an official government programme. You can reach us at <a href={`mailto:${ORG.supportEmail}`}>{ORG.supportEmail}</a>. The state of registration and governing law are <strong>to be confirmed</strong>.</p>
       <h2>2. Using this site</h2>
-      <p>You may browse the site, create an account and apply to programmes listed here. Provide accurate information, keep your sign-in details (passkey and access code) private, and do not attempt to access other people’s records or disrupt the service.</p>
+      <p>You may browse the site and apply using the application form. Provide accurate information, and do not attempt to access other people’s records or disrupt the service.</p>
       <h2>3. Applying and decisions</h2>
       <p>Applying is free. An application is a request for consideration, not a promise of funding. For the General Opportunity Fund you request the amount you need, within the range stated on the programme page, and explain how it would be used. NEN’s Board of Directors decides each application and may approve the amount requested, approve a different amount, or decline. {NO_GUARANTEE_STATEMENT}</p>
       <h2>4. Awards and payment</h2>

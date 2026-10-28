@@ -87,3 +87,7 @@ export const FOOTER_LEGAL = [
   { href: "/faq#safety", label: "Staying safe" },
   { href: "/contact", label: "Contact" },
 ];
+
+/** Live site: no public directory/search or applicant accounts. Demo mode (tests/previews) keeps the full app. */
+export const getNavItems = (): NavItem[] => (DEMO_SITE ? NAV_ITEMS : NAV_ITEMS.filter((i) => i.href !== "/opportunities"));
+export const getPrimaryNav = () => (DEMO_SITE ? PRIMARY_NAV : PRIMARY_NAV.filter((i) => i.href !== "/opportunities"));

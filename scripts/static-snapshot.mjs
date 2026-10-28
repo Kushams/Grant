@@ -60,7 +60,14 @@ const nf = await fetch(`${origin}${base}/does-not-exist`);
 fs.writeFileSync(path.join(out, "404.html"), (await nf.text()).replace("</body>", `${BANNER()}</body>`));
 // Static assets + icon
 fs.cpSync(path.resolve(".next/static"), path.join(out, "_next/static"), { recursive: true });
-for (const f of ["/icon.svg"]) { const r = await fetch(`${origin}${base}${f}`); if (r.ok) fs.writeFileSync(path.join(out, f), Buffer.from(await r.arrayBuffer())); }
+for (const f of ["/icon.png"]) { const r = await fetch(`${origin}${base}${f}`); if (r.ok) fs.writeFileSync(path.join(out, f), Buffer.from(await r.arrayBuffer())); }
+// GitHub Pages cannot redirect, so pages that were merged or removed get a small redirect page.
+const MOVED = { "how-it-works": "fund/#how-it-works", about: "fund/", eligibility: "fund/#who-can-apply", "fraud-prevention": "faq/#safety", accessibility: "terms/#accessibility", opportunities: "fund/", register: "fund/", start: "fund/" };
+for (const [from, to] of Object.entries(MOVED)) {
+  const dest = `${base}/${to}`;
+  fs.mkdirSync(path.join(out, from), { recursive: true });
+  fs.writeFileSync(path.join(out, from, "index.html"), `<!doctype html><meta charset="utf-8"><title>Moved</title><meta http-equiv="refresh" content="0;url=${dest}"><link rel="canonical" href="${dest}"><script>location.replace(${JSON.stringify(dest)})</script><p>This page has moved to <a href="${dest}">${dest}</a>.</p>`);
+}
 fs.writeFileSync(path.join(out, ".nojekyll"), "");
 stopServer();
 console.log(`\nSnapshot: ${out} (${seen.size} routes)`);

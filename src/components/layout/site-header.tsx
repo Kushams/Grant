@@ -1,4 +1,4 @@
-import { DEMO_SITE, NAV_ITEMS, PROTOTYPE_NOTICE } from "@/config/organization";
+import { DEMO_SITE, PROTOTYPE_NOTICE, getNavItems } from "@/config/organization";
 import { getCurrentUser } from "@/lib/auth/session";
 import { unreadCount } from "@/lib/services/notifications";
 import { can } from "@/lib/permissions";
@@ -32,7 +32,7 @@ export async function SiteHeader() {
   return (
     <header>
       <PrototypeBanner />
-      <MainNav variant="bar" items={NAV_ITEMS} account={account} />
+      <MainNav variant="bar" items={getNavItems()} account={account} showAccount={DEMO_SITE} />
     </header>
   );
 }

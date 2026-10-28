@@ -7,14 +7,14 @@ import { NetworkBanner } from "@/components/graphics/network-banner";
 import { Spot } from "@/components/graphics/spots";
 import { StepsGraphic } from "@/components/graphics/steps-graphic";
 import { NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
-import { GENERAL_FUND_SLUG, fundHasOpened, fundOpensLabel } from "@/config/general-fund";
-import { db } from "@/lib/db";
-import { formatMinor } from "@/lib/money";
+import { GENERAL_FUND_RANGE, fundOpensLabel } from "@/config/general-fund";
 
 export const metadata: Metadata = {
   title: "General Opportunity Fund",
   description: "About the National Empowerment Network General Opportunity Fund: who may apply, what it may support, how applications will be evaluated and current application status.",
 };
+
+const RANGE_TEXT = `$${Number(GENERAL_FUND_RANGE.min).toLocaleString("en-US")} to $${Number(GENERAL_FUND_RANGE.max).toLocaleString("en-US")}`;
 
 const SUPPORTS = [
   ["growth", "Personal and professional development", "Skills training, certifications, career development and initiatives that improve access to opportunity."],
@@ -34,10 +34,7 @@ const CRITERIA = [
   ["Accountability", "The applicant’s ability to manage funds and meet reporting requirements."],
 ] as const;
 
-export default async function FundPage() {
-  const row = await db.opportunity.findFirst({ where: { slug: GENERAL_FUND_SLUG, status: "PUBLISHED" }, select: { slug: true, currency: true, minAmountMinor: true, maxAmountMinor: true } });
-  const live = row ? { ...row, range: row.minAmountMinor != null && row.maxAmountMinor != null ? `${formatMinor(row.minAmountMinor, row.currency)} to ${formatMinor(row.maxAmountMinor, row.currency)}` : null } : null;
-  const opened = fundHasOpened();
+export default function FundPage() {
   return (
     <ContentPage wide icon={<Spot name="hand" className="size-16" />} eyebrow="Programme" title="General Opportunity Fund" intro="Expanding access to funding for people, ideas and initiatives with the potential to create meaningful personal, professional, economic and community impact.">
       <NetworkBanner className="mb-10 h-36 w-full rounded-2xl sm:h-44" />
@@ -63,10 +60,9 @@ export default async function FundPage() {
           <h2 id="how-it-works" className="flex items-center gap-3"><Spot name="route" className="size-10" tone="blue" />How it works</h2>
           <StepsGraphic className="my-4 hidden w-full max-w-3xl sm:block" />
           <ol>
-            <li><strong>Create an account.</strong> Use a passkey or access code — no email needed — or register with email and password.</li>
-            <li><strong>Fill in the short application.</strong> Who you are, what the funding is for, the amount you are requesting and a brief budget.</li>
+            <li><strong>Fill in the short application form.</strong> Who you are, what the funding is for, the amount you are requesting and a brief budget. No account is needed.</li>
             <li><strong>Review.</strong> Your application is checked for completeness and eligibility and assessed against the published criteria.</li>
-            <li><strong>Decision.</strong> The Board of Directors decides and records the reason. You can track every step from your dashboard.</li>
+            <li><strong>Decision.</strong> The Board of Directors decides and records the reason. We use the contact details you give to tell you the outcome.</li>
             <li><strong>If approved,</strong> you receive written award terms and instructions for the next steps. Any identity verification happens after approval, through a secure process.</li>
           </ol>
 
@@ -81,7 +77,7 @@ export default async function FundPage() {
           </div>
 
           <h2 className="flex items-center gap-3"><Spot name="slider" className="size-10" tone="blue" />Requesting an amount</h2>
-          <p>You tell us how much you need. Your application explains the purpose of the request, how the money would be used (a short budget) and why the amount is appropriate. The Board may approve the full amount, a different amount, or decline. Requests are never guaranteed.</p>
+          <p>You tell us how much you need, between {RANGE_TEXT}. Your application explains the purpose of the request, how the money would be used (a short budget) and why the amount is appropriate. The Board may approve the full amount, a different amount, or decline. Requests are never guaranteed.</p>
 
           <h2 className="flex items-center gap-3"><Spot name="search" className="size-10" tone="blue" />How applications will be evaluated</h2>
           <p>A consistent review process considers:</p>
@@ -97,15 +93,12 @@ export default async function FundPage() {
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
           <Alert tone="info" title="Application status">
-            {live && opened
-              ? <><strong>Applications are open.</strong> You can apply now.</>
-              : <><strong>Applications open on {fundOpensLabel()}.</strong> Nothing is collected before then.</>}
+            <strong>Applications open on {fundOpensLabel()}.</strong> The application form will be on this page. Nothing is collected before then.
           </Alert>
-          {live && opened ? <LinkButton href={`/opportunities/${GENERAL_FUND_SLUG}`} size="lg" className="w-full">Apply now</LinkButton> : null}
           <dl className="space-y-3 rounded-xl border border-ink-200 bg-white p-4 text-sm shadow-[var(--shadow-card)]">
             <div><dt className="font-semibold text-ink-900">Opening date</dt><dd className="text-ink-700">{fundOpensLabel()}</dd></div>
-            <div><dt className="font-semibold text-ink-900">Amount you can request</dt><dd className="text-ink-700">{live?.range ?? "Shown when applications open"}</dd></div>
-            <div><dt className="font-semibold text-ink-900">Where to apply</dt><dd className="text-ink-700">On this website</dd></div>
+            <div><dt className="font-semibold text-ink-900">Amount you can request</dt><dd className="text-ink-700">{RANGE_TEXT}</dd></div>
+            <div><dt className="font-semibold text-ink-900">Where to apply</dt><dd className="text-ink-700">Application form on this page</dd></div>
             <div><dt className="font-semibold text-ink-900">Countries</dt><dd className="text-ink-700">Worldwide, except Africa</dd></div>
           </dl>
           <LinkButton href="/contact" variant="secondary" className="w-full">Ask a question</LinkButton>

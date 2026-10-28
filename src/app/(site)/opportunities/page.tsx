@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { DEMO_SITE } from "@/config/organization";
 import type { Metadata } from "next";
 import { searchOpportunities } from "@/lib/services/opportunities";
@@ -14,6 +15,7 @@ import Link from "next/link";
 export const metadata: Metadata = { title: "Opportunities", description: "Search and filter funding opportunities on National Empowerment Network." };
 
 export default async function OpportunitiesPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  if (!DEMO_SITE) redirect("/fund"); // live site: no public directory or applicant accounts
   const { params, ignored } = parseDirectoryParams(await searchParams);
   const result = await searchOpportunities(params);
   const base = { q: params.q, applicantType: params.applicantType, category: params.category, region: params.region, status: params.status, deadline: params.deadline, currency: params.currency, minFunding: params.minFunding, sort: params.sort };

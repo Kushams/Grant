@@ -1,3 +1,5 @@
+import { DEMO_SITE } from "@/config/organization";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth/session";
@@ -9,6 +11,7 @@ import { Alert } from "@/components/ui/misc";
 export const metadata: Metadata = { title: "Quick start" };
 
 export default async function StartPage() {
+  if (!DEMO_SITE) redirect("/fund"); // live site: no public directory or applicant accounts
   // Not redirected on the server: creating the account signs the user in, and the access code must stay on screen.
   const signedIn = !!(await getCurrentUser());
   return (

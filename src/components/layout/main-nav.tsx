@@ -11,7 +11,7 @@ import { ORG, type NavItem } from "@/config/organization";
 import { cn } from "@/lib/cn";
 
 export type NavAccount = { signedIn: boolean; homeHref: string; homeLabel: string; unread: number; notificationsHref: string | null };
-type Props = { variant: "overlay" | "bar"; items: NavItem[]; account: NavAccount };
+type Props = { variant: "overlay" | "bar"; items: NavItem[]; account: NavAccount; showAccount?: boolean };
 
 const ghost = "liquid-glass inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm font-medium text-white transition-colors hover:bg-white/5";
 const solid = "inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-medium text-[#0b1220] transition-colors hover:bg-white/90";
@@ -21,7 +21,7 @@ const solid = "inline-flex min-h-11 items-center justify-center rounded-full bg-
  * Menus are disclosures: aria-expanded, Escape closes (focus returns to the trigger), outside click closes,
  * and navigating closes (open state is tied to the path it was opened on, so no effect is needed).
  */
-export function MainNav({ variant, items, account }: Props) {
+export function MainNav({ variant, items, account, showAccount = true }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState<{ id: "mobile" | "resources"; path: string } | null>(null);
   const [mobileRes, setMobileRes] = useState(false);
@@ -49,7 +49,7 @@ export function MainNav({ variant, items, account }: Props) {
   const active = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/"));
   const childActive = (it: NavItem) => !!it.children?.some((c) => active(c.href));
 
-  const cta = account.signedIn ? (
+  const cta = !showAccount ? null : account.signedIn ? (
     <>
       <form action={logoutAction}><button type="submit" className={cn(ghost, "w-full")}>Sign out</button></form>
       <Link href={account.homeHref} className={solid}>{account.homeLabel}</Link>
@@ -91,7 +91,7 @@ export function MainNav({ variant, items, account }: Props) {
         </nav>
 
         <div className="flex items-center gap-2">
-          {account.signedIn && account.notificationsHref ? (
+          {showAccount && account.signedIn && account.notificationsHref ? (
             <Link href={account.notificationsHref} className="liquid-glass relative inline-flex size-11 items-center justify-center rounded-full text-white hover:bg-white/5" aria-label={account.unread ? `Notifications, ${account.unread} unread` : "Notifications, none unread"}>
               <Bell className="size-5" aria-hidden="true" />
               {account.unread > 0 ? <span aria-hidden="true" className="absolute right-0 top-0 grid min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[11px] font-bold text-white">{account.unread > 99 ? "99+" : account.unread}</span> : null}

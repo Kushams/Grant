@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DEMO_SITE, FOOTER_LEGAL, NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG, PRIMARY_NAV } from "@/config/organization";
+import { DEMO_SITE, FOOTER_LEGAL, NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG, getPrimaryNav } from "@/config/organization";
 import { Logo } from "./logo";
 
 export function SiteFooter() {
@@ -17,7 +17,7 @@ export function SiteFooter() {
         <nav aria-label="Explore" className="text-sm">
           <h2 className="font-sans text-xs font-bold uppercase tracking-wider text-white">Explore</h2>
           <ul className="mt-3 space-y-2">
-            {PRIMARY_NAV.map((l) => <li key={l.href}><Link className="text-white/80 underline-offset-4 hover:underline" href={l.href}>{l.label}</Link></li>)}
+            {getPrimaryNav().map((l) => <li key={l.href}><Link className="text-white/80 underline-offset-4 hover:underline" href={l.href}>{l.label}</Link></li>)}
           </ul>
         </nav>
         <nav aria-label="Legal and safety" className="text-sm">

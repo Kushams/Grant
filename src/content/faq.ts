@@ -1,3 +1,4 @@
+import { GENERAL_FUND_RANGE, fundOpensLabel } from "@/config/general-fund";
 import { NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
 
 export const FAQ: Array<{ q: string; a: string }> = [
@@ -13,4 +14,16 @@ export const FAQ: Array<{ q: string; a: string }> = [
   { q: "How can I identify a suspicious funding offer?", a: "Warning signs include requests for upfront payments or gift cards, pressure to act immediately, requests for passwords, one-time codes or bank details, guaranteed approval, and messages from personal email or messaging accounts. Read our fraud-prevention guidance and report anything suspicious to support." },
   { q: "How can I contact support?", a: "Use the contact form. Messages are stored in a support queue for staff and replies appear in the site; no phone number or office address is published until the organization confirms them." },
   { q: "How is applicant data handled?", a: `We aim to collect only what is needed to review an application, and we never ask for government ID numbers, bank details or payment-card data. Our privacy notice is currently a draft (${ORG.policyVersion}) awaiting organizational approval.` },
+];
+
+/** FAQ for the live site (no accounts, no dashboards). */
+export const FAQ_LIVE: Array<{ q: string; a: string }> = [
+  { q: "Who can apply?", a: "Individuals, entrepreneurs and small businesses, creatives, community groups and nonprofits anywhere in the world, except applicants located in Africa. Every application is reviewed against the published criteria, and not every applicant will qualify." },
+  { q: "How do I apply?", a: `Applications open on ${fundOpensLabel()}. The application form will be on the General Opportunity Fund page. It asks who you are, what the funding is for, the amount you are requesting (between $${Number(GENERAL_FUND_RANGE.min).toLocaleString("en-US")} and $${Number(GENERAL_FUND_RANGE.max).toLocaleString("en-US")}) and a short budget.` },
+  { q: "Does applying guarantee funding?", a: `No. ${NO_GUARANTEE_STATEMENT} The Board of Directors decides each application and may approve the amount requested, a different amount, or decline.` },
+  { q: "Are there application or processing fees?", a: `${NO_FEE_STATEMENT} No fees are charged to apply or to receive an award. Never pay an outside agent to “guarantee” a grant, and be very cautious about anyone asking for a payment to “release” or “unlock” funds.` },
+  { q: "How are awards paid?", a: "Approved awards are paid by cheque to the approved recipient, after written approval and acceptance of the written award terms." },
+  { q: "How can I contact you?", a: `Email ${ORG.supportEmail} or use the contact form. ${ORG.supportEmail} is our only official email address.` },
+  { q: "How can I identify a suspicious funding offer?", a: "Warning signs include requests for upfront payments or gift cards, pressure to act immediately, requests for passwords, one-time codes or bank details, guaranteed approval, and messages from personal accounts or messaging apps claiming to be an official body." },
+  { q: "How is my information handled?", a: "We collect only what is needed to review an application, and we never ask for Social Security numbers, ID images, bank details or payment-card data. See the privacy notice for details." },
 ];

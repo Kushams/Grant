@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
@@ -9,7 +9,7 @@ import { checkEligibility } from "@/lib/eligibility";
 import { fundingLabel, applicantTypeLabel } from "@/lib/opportunity-display";
 import { formatDate } from "@/lib/format";
 import { isApplicantRole, INDIVIDUAL_CATEGORIES } from "@/lib/constants";
-import { NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT } from "@/config/organization";
+import { NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, DEMO_SITE } from "@/config/organization";
 import { startApplicationAction, toggleSavedAction } from "@/app/actions/applicant";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Badge, DemoBadge, OpportunityStateBadge } from "@/components/ui/badge";
@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function OpportunityPage({ params, searchParams }: Props) {
+  if (!DEMO_SITE) redirect("/fund"); // live site: no public directory or applicant accounts
   const { slug } = await params;
   const sp = await searchParams;
   const o = await getPublishedBySlug(slug);

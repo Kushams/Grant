@@ -9,6 +9,7 @@ import { Card, CardBody } from "@/components/ui/card";
 import { Alert } from "@/components/ui/misc";
 import { ROLE_LABELS, type Role } from "@/lib/constants";
 import { demoLoginAction } from "@/app/actions/auth";
+import { DEMO_SITE } from "@/config/organization";
 import { safeNext } from "@/lib/safe-redirect";
 import { Button } from "@/components/ui/button";
 
@@ -23,18 +24,20 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-12 lg:grid-cols-[1fr_1fr]">
       <div>
-        <h1 className="text-3xl font-semibold">Sign in</h1>
-        <p className="mt-2 text-ink-600">Access your applications, saved opportunities and notifications.</p>
+        <h1 className="text-3xl font-semibold">{DEMO_SITE ? "Sign in" : "Staff sign in"}</h1>
+        <p className="mt-2 text-ink-600">{DEMO_SITE ? "Access your applications, saved opportunities and notifications." : "For National Empowerment Network staff only."}</p>
         <Card className="mt-6"><CardBody className="space-y-6">
+          {DEMO_SITE ? <>
           <PasskeySignIn next={safeNext(sp.next) ?? undefined} />
           <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-ink-600"><span className="h-px flex-1 bg-ink-200" />or<span className="h-px flex-1 bg-ink-200" /></div>
           <AccessCodeForm next={safeNext(sp.next) ?? undefined} />
           <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-ink-600"><span className="h-px flex-1 bg-ink-200" />or use email<span className="h-px flex-1 bg-ink-200" /></div>
+          </> : null}
           {sp.error === "demo" ? <Alert tone="bad" className="mb-4" title="That demo account is not available." /> : null}
-          <LoginForm next={safeNext(sp.next) ?? undefined} />
+          <LoginForm next={safeNext(sp.next) ?? undefined} staffOnly={!DEMO_SITE} />
         </CardBody></Card>
       </div>
-      {!demoEnabled ? <div className="hidden items-center lg:flex"><SceneKey className="h-auto w-full" /></div> : null}
+      {DEMO_SITE && !demoEnabled ? <div className="hidden items-center lg:flex"><SceneKey className="h-auto w-full" /></div> : null}
       {demoEnabled ? (
         <div>
           <h2 className="text-xl font-semibold">Local demo accounts</h2>

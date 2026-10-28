@@ -11,6 +11,7 @@ import { Alert } from "@/components/ui/misc";
 export const metadata: Metadata = { title: "Create an account" };
 
 export default async function RegisterPage() {
+  if (!DEMO_SITE) redirect("/fund"); // live site: no public directory or applicant accounts
   if (await getCurrentUser()) redirect("/dashboard");
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">

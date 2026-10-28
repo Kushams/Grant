@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/content/prose";
-import { FAQ } from "@/content/faq";
+import { FAQ, FAQ_LIVE } from "@/content/faq";
+import { DEMO_SITE } from "@/config/organization";
 import { Accordion } from "@/components/ui/accordion";
 import { NetworkBanner } from "@/components/graphics/network-banner";
 import { Spot } from "@/components/graphics/spots";
@@ -12,7 +13,7 @@ export default function FaqPage() {
   return (
     <ContentPage wide icon={<Spot name="question" className="size-16" />} eyebrow="Help" title="FAQ & staying safe" intro="Straight answers about applying, and how to protect yourself from fake offers.">
       <NetworkBanner className="mb-8 h-24 w-full rounded-2xl" />
-      <Accordion className="max-w-3xl" items={FAQ.map((f) => ({ title: f.q, content: <p>{f.a}</p> }))} />
+      <Accordion className="max-w-3xl" items={(DEMO_SITE ? FAQ : FAQ_LIVE).map((f) => ({ title: f.q, content: <p>{f.a}</p> }))} />
       <div id="safety" className="prose-nen mt-14 scroll-mt-24">
         <h2 className="flex items-center gap-3"><Spot name="shield" className="size-11" tone="blue" />Staying safe</h2>
         <p>Genuine funding programmes do not charge you to receive money.</p>

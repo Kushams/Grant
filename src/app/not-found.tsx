@@ -15,7 +15,7 @@ export default function NotFound() {
       <p className="mt-3 text-ink-600">The page may have moved, or the opportunity or record may not exist (or may not be available to your account).</p>
       <div className="mt-6 flex justify-center gap-3">
         <LinkButton href="/">Home</LinkButton>
-        <LinkButton href="/opportunities" variant="outline">Browse opportunities</LinkButton>
+        <LinkButton href="/fund" variant="outline">General Opportunity Fund</LinkButton>
       </div>
     </div>
     </main>

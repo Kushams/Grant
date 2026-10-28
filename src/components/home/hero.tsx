@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HERO, NAV_ITEMS, NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
+import { DEMO_SITE, HERO, NO_GUARANTEE_STATEMENT, ORG, getNavItems } from "@/config/organization";
 import { MainNav } from "@/components/layout/main-nav";
 import { PrototypeBanner, getNavAccount } from "@/components/layout/site-header";
 import { BG_POSTER, HERO_TONE, OBJECT_POSITION } from "./hero-assets";
@@ -21,7 +21,7 @@ export async function Hero() {
 
       <div className="relative z-30">
         <PrototypeBanner className="relative z-30" />
-        <MainNav variant="overlay" items={NAV_ITEMS} account={account} />
+        <MainNav variant="overlay" items={getNavItems()} account={account} showAccount={DEMO_SITE} />
       </div>
 
       <div className="relative z-20 mt-auto px-6 pb-24 pt-20 sm:px-12 sm:pb-28 lg:px-16">
@@ -30,8 +30,8 @@ export async function Hero() {
           <h1 id="hero-h" className="hero-in d-1 mb-5 text-balance text-[2.6rem] font-semibold leading-[1.04] tracking-tight text-white sm:text-6xl lg:text-7xl">{HERO.headline}</h1>
           <p className="hero-in d-2 mb-8 max-w-md text-base font-light leading-relaxed text-white/75 sm:text-lg">{HERO.body}</p>
           <div className="hero-in d-3 flex flex-wrap items-center gap-3">
-            <Link href="/opportunities" className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-7 text-base font-medium text-[#0b1220] transition-colors hover:bg-white/90">Explore Opportunities</Link>
-            <Link href="/fund#how-it-works" className="liquid-glass inline-flex min-h-12 items-center justify-center rounded-full px-7 text-base font-medium text-white transition-colors hover:bg-white/5">How It Works</Link>
+            <Link href={DEMO_SITE ? "/opportunities" : "/fund"} className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-7 text-base font-medium text-[#0b1220] transition-colors hover:bg-white/90">{DEMO_SITE ? "Explore Opportunities" : "About the Fund"}</Link>
+            <Link href={DEMO_SITE ? "/fund#how-it-works" : "/other-grants"} className="liquid-glass inline-flex min-h-12 items-center justify-center rounded-full px-7 text-base font-medium text-white transition-colors hover:bg-white/5">{DEMO_SITE ? "How It Works" : "Other Grants"}</Link>
           </div>
           <p className="hero-in d-4 mt-6 max-w-md text-xs text-white/60">{ORG.name} is an independent platform — not a government agency. {NO_GUARANTEE_STATEMENT}</p>
         </div>
