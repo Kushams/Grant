@@ -8,9 +8,12 @@ describe("references", () => {
     expect(REFERENCE_PATTERN.test(r)).toBe(true);
     expect(buildReference("AWD", true)).toMatch(/^NEN-AWD-DEMO-\d{4}-/);
   });
-  it("is unique across many draws", () => {
+  it("is effectively unique across many draws", () => {
+    // Random 6-symbol suffixes can, rarely, collide (birthday effect: ~1% chance of ONE duplicate in 5,000 draws).
+    // Real uniqueness is enforced by the DB unique index plus withUniqueReference's retry (tested below), so this
+    // only checks the generator is not degenerate; it cannot fail from a stray collision.
     const s = new Set(Array.from({ length: 5000 }, () => buildReference("APP", true)));
-    expect(s.size).toBe(5000);
+    expect(s.size).toBeGreaterThanOrEqual(4975);
   });
   it("retries on unique-index collisions only", async () => {
     let calls = 0;
