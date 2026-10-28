@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Bell, ChevronDown, Infinity as InfinityIcon, Menu, X } from "lucide-react";
+import { Bell, ChevronDown, Menu, X } from "lucide-react";
+import emblem from "@/assets/emblem.png";
 import { logoutAction } from "@/app/actions/auth";
 import { ORG, type NavItem } from "@/config/organization";
 import { cn } from "@/lib/cn";
@@ -63,7 +65,7 @@ export function MainNav({ variant, items, account }: Props) {
     <div ref={root} className={cn(variant === "overlay" ? "nav-in relative z-30" : "sticky top-0 z-40 border-b border-white/10 bg-[#0b1220]/85 backdrop-blur-xl")}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2 text-base font-medium text-white" aria-label={`${ORG.name} — home`}>
-          <InfinityIcon size={22} strokeWidth={1.5} aria-hidden="true" />
+          <span className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-full bg-white shadow-sm"><Image src={emblem} alt="" width={40} height={40} unoptimized className="size-10 object-contain" /></span>
           <span className="max-w-[11rem] leading-tight sm:max-w-none">{ORG.name}</span>
         </Link>
 

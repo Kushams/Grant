@@ -7,7 +7,7 @@ export function SiteFooter() {
     <footer className="mt-16 border-t border-white/10 bg-navy-950 text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-[1.4fr_1fr_1fr]">
         <div className="space-y-4">
-          <Logo inverted />
+          <Logo />
           <p className="max-w-md text-sm text-white/60">{ORG.description}</p>
           <p className="max-w-md text-sm text-white/60">
             {ORG.name} is an independent organization. It is not a government agency, and nothing on this site is an official government programme.

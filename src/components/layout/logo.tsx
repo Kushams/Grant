@@ -1,18 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Infinity as InfinityIcon } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { ORG } from "@/config/organization";
 
-/** Neutral typographic mark. No seals, crests, flags or partner logos. */
-export function Logo({ inverted = false }: { inverted?: boolean }) {
+/** The supplied National Empowerment Network logo on a white card (the artwork has a white background). */
+export function Logo() {
   return (
-    <Link href="/" className="group inline-flex items-center gap-3" aria-label={`${ORG.name} — home`}>
-      <span aria-hidden="true" className={`grid size-10 place-items-center rounded-lg  ${inverted ? "border border-white/15 bg-white/10 text-white" : "bg-navy-800 text-white"}`}>
-        <InfinityIcon size={22} strokeWidth={1.75} />
-      </span>
-      <span className="flex flex-col leading-tight">
-        <span className={`font-display text-base font-semibold sm:text-lg ${inverted ? "text-white" : "text-navy-900"}`}>{ORG.name}</span>
-        <span className={`text-[11px] font-semibold uppercase tracking-wider ${inverted ? "text-white/60" : "text-ink-600"}`}>Independent opportunity platform</span>
-      </span>
+    <Link href="/" className="inline-block rounded-xl bg-white p-3 shadow-sm" aria-label={`${ORG.name} — home`}>
+      <Image src={logo} alt={ORG.name} width={260} height={90} unoptimized className="h-auto w-56 sm:w-64" priority={false} />
     </Link>
   );
 }
