@@ -4,6 +4,8 @@ import { LinkButton } from "@/components/ui/button";
 import { Alert } from "@/components/ui/misc";
 import { ContentPage } from "@/components/content/prose";
 import { NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
+import { GENERAL_FUND_SLUG, fundHasOpened, fundOpensLabel } from "@/config/general-fund";
+import { db } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "General Opportunity Fund",
@@ -26,7 +28,9 @@ const CRITERIA = [
   ["Accountability", "The applicant’s ability to manage funds and meet reporting requirements."],
 ] as const;
 
-export default function FundPage() {
+export default async function FundPage() {
+  const live = await db.opportunity.findFirst({ where: { slug: GENERAL_FUND_SLUG, status: "PUBLISHED" }, select: { slug: true } });
+  const opened = fundHasOpened();
   return (
     <ContentPage wide eyebrow="Programme" title="General Opportunity Fund" intro="Expanding access to funding for people, ideas and initiatives with the potential to create meaningful personal, professional, economic and community impact.">
       <div className="grid gap-10 lg:grid-cols-[1fr_22rem]">
@@ -77,10 +81,13 @@ export default function FundPage() {
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
           <Alert tone="info" title="Application status">
-            <strong>Applications are not open yet.</strong> Official guidelines will be published before applications open. Nothing is collected until then.
+            {live && opened
+              ? <><strong>Applications are open.</strong> You can apply now.</>
+              : <><strong>Applications open on {fundOpensLabel()}.</strong> Nothing is collected before then.</>}
           </Alert>
+          {live && opened ? <LinkButton href={`/opportunities/${GENERAL_FUND_SLUG}`} size="lg" className="w-full">Apply now</LinkButton> : null}
           <dl className="space-y-3 rounded-xl border border-ink-200 bg-white p-4 text-sm shadow-[var(--shadow-card)]">
-            <div><dt className="font-semibold text-ink-900">Opening date</dt><dd className="text-ink-700">To be announced</dd></div>
+            <div><dt className="font-semibold text-ink-900">Opening date</dt><dd className="text-ink-700">{fundOpensLabel()}</dd></div>
             <div><dt className="font-semibold text-ink-900">Award ranges by tier</dt><dd className="text-ink-700">To be published in the official guidelines</dd></div>
             <div><dt className="font-semibold text-ink-900">Application portal</dt><dd className="text-ink-700">To be confirmed</dd></div>
             <div><dt className="font-semibold text-ink-900">Geographic eligibility</dt><dd className="text-ink-700">To be published before applications open</dd></div>

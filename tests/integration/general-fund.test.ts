@@ -13,6 +13,7 @@ describe("General Opportunity Fund definition", () => {
     expect(v.minAmount).toBe("25000.00");
     expect(v.maxAmount).toBe("500000.00");
     expect(v.questions.length).toBeGreaterThan(0);
+    expect(v.opensAt?.toISOString().slice(0, 10)).toBe("2026-11-01");
     expect(v.funderVerified).toBe(false);
     expect(v.termsApproved).toBe(false);
   });

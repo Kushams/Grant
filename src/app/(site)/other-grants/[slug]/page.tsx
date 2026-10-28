@@ -30,7 +30,8 @@ export default async function ExternalGrantPage({ params }: { params: Promise<{ 
       </dl>
       <ul className="mt-6 list-disc space-y-1 pl-5 text-sm text-ink-700">
         <li>Apply only on the official site. Official programmes do not charge to apply.</li>
-        <li>Do not pay anyone who promises or “guarantees” this grant, and do not send personal documents to anyone who contacted you first.</li>
+        <li>Never pay an outside agent who promises or “guarantees” this grant. If anyone asks for a payment, confirm with this programme’s own customer service, using the contact details on its official site, before paying anything.</li>
+        <li>Do not send personal documents to anyone who contacted you first.</li>
         <li>Check the address in your browser matches the official page above.</li>
       </ul>
       <a href={g.url} target="_blank" rel="noopener noreferrer nofollow" className={buttonClasses("primary", "lg", "mt-8")}>

@@ -7,11 +7,19 @@
  * may approve a different amount (see the policy). The questions below are placeholders until the organization's
  * own application list replaces them in the opportunity editor.
  */
+/** Public opening date for applications (set by the organization). */
+export const GENERAL_FUND_OPENS = "2026-11-01";
+export const GENERAL_FUND_SLUG = "general-opportunity-fund";
+export const fundOpensLabel = () => new Date(`${GENERAL_FUND_OPENS}T00:00:00Z`).toLocaleDateString("en-GB", { dateStyle: "long", timeZone: "UTC" });
+
+export const fundHasOpened = (now: number = Date.now()) => now >= new Date(`${GENERAL_FUND_OPENS}T00:00:00Z`).getTime();
+
 export const GENERAL_FUND_RANGE = { min: "25000.00", max: "500000.00", currency: "USD" } as const;
 
 export const GENERAL_FUND_INPUT = {
   title: "General Opportunity Fund",
-  slug: "general-opportunity-fund",
+  slug: GENERAL_FUND_SLUG,
+  opensAt: GENERAL_FUND_OPENS,
   shortDescription: "A broad pathway for eligible individuals, entrepreneurs, creatives, community groups and organizations whose goals may not fit a specialized funding category.",
   description:
     "The General Opportunity Fund expands access to funding for people, ideas and initiatives with the potential to create meaningful personal, professional, economic and community impact.\n\n" +
