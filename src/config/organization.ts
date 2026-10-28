@@ -58,6 +58,7 @@ export const PRIMARY_NAV = [
   { href: "/opportunities", label: "Opportunities" },
   { href: "/how-it-works", label: "How it works" },
   { href: "/fund", label: "General Opportunity Fund" },
+  { href: "/other-grants", label: "Other grants" },
   { href: "/eligibility", label: "Eligibility" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
@@ -75,6 +76,7 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/faq", label: "Resources",
     children: [
       { href: "/fund", label: "General Opportunity Fund", hint: "About the fund" },
+      { href: "/other-grants", label: "Other grants", hint: "Programmes from other funders" },
       { href: "/eligibility", label: "Eligibility guide", hint: "Who can apply to what" },
       { href: "/faq", label: "FAQ", hint: "Straight answers" },
       { href: "/fraud-prevention", label: "Fraud prevention", hint: "Stay safe" },

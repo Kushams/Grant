@@ -449,3 +449,18 @@ test("13. quick account: no email, passkey sign-in, access-code backup", async (
   await expect(other.getByText("not recognised")).toBeVisible();
   await ctx.close();
 });
+
+test("14. other grants directory: referral notice names the real funder and links to its official site", async ({ page }) => {
+  await page.goto("/other-grants");
+  await expect(page.getByRole("heading", { level: 1, name: "Other grants" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Healthcare" })).toBeVisible();
+  await page.getByRole("link", { name: "Federal Pell Grant" }).click();
+  await page.waitForURL(/\/other-grants\/federal-pell-grant/);
+  await expect(page.getByText("is offered by U.S. Department of Education")).toBeVisible();
+  await expect(page.getByText(/does not run, fund, endorse or decide/)).toBeVisible();
+  const go = page.getByRole("link", { name: /Continue to the official site/ });
+  await expect(go).toHaveAttribute("href", "https://studentaid.gov/understand-aid/types/grants/pell");
+  await expect(go).toHaveAttribute("rel", /noopener/);
+  await page.goto("/other-grants/not-a-real-grant");
+  await expect(page.getByText(/not found|could not be found|404/i).first()).toBeVisible();
+});

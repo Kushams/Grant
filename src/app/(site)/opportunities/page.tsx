@@ -28,7 +28,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
           These values were ignored: {ignored.join(", ")}. Showing results for the remaining filters.
         </Alert>
       ) : null}
-      {showFund ? <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"><li><FundCard /></li></ul> : <>
+      {showFund ? <><ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"><li><FundCard /></li></ul><p className="mt-8 text-sm text-ink-700">Looking for other funders? Browse <Link href="/other-grants" className="font-semibold text-navy-800 underline">grants from other organizations</Link> — healthcare, education, family, small business and more.</p></> : <>
       <div className="mt-8 flex flex-wrap items-baseline justify-between gap-2" aria-live="polite">
         <h2 className="font-sans text-lg font-bold tracking-normal text-ink-900">{pluralize(result.total, "opportunity", "opportunities")} found</h2>
         <p className="text-sm text-ink-600">Page {result.page} of {result.pages}</p>
