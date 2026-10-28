@@ -1,0 +1,70 @@
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth/session";
+import { SceneKey } from "@/components/graphics/scenes";
+import { LoginForm } from "@/components/auth/login-form";
+import { AccessCodeForm, PasskeySignIn } from "@/components/auth/passkey-signin";
+import { Card, CardBody } from "@/components/ui/card";
+import { Alert } from "@/components/ui/misc";
+import { ROLE_LABELS, type Role } from "@/lib/constants";
+import { demoLoginAction } from "@/app/actions/auth";
+import { DEMO_SITE } from "@/config/organization";
+import { safeNext } from "@/lib/safe-redirect";
+import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = { title: "Sign in" };
+
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string; error?: string }> }) {
+  const sp = await searchParams;
+  const user = await getCurrentUser();
+  if (user) redirect("/dashboard");
+  const demoEnabled = process.env.NODE_ENV !== "production" && process.env.ENABLE_DEMO_LOGIN === "true";
+  const demoUsers = demoEnabled ? await db.user.findMany({ where: { isDemo: true, isActive: true }, orderBy: [{ role: "desc" }, { name: "asc" }], select: { email: true, name: true, role: true } }) : [];
+  return (
+    <div className="mx-auto grid max-w-5xl gap-8 px-4 py-12 lg:grid-cols-[1fr_1fr]">
+      <div>
+        <h1 className="text-3xl font-semibold">{DEMO_SITE ? "Sign in" : "Staff sign in"}</h1>
+        <p className="mt-2 text-ink-600">{DEMO_SITE ? "Access your applications, saved opportunities and notifications." : "For National Empowerment Network staff only."}</p>
+        <Card className="mt-6"><CardBody className="space-y-6">
+          {DEMO_SITE ? <>
+          <PasskeySignIn next={safeNext(sp.next) ?? undefined} />
+          <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-ink-600"><span className="h-px flex-1 bg-ink-200" />or<span className="h-px flex-1 bg-ink-200" /></div>
+          <AccessCodeForm next={safeNext(sp.next) ?? undefined} />
+          <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-ink-600"><span className="h-px flex-1 bg-ink-200" />or use email<span className="h-px flex-1 bg-ink-200" /></div>
+          </> : null}
+          {sp.error === "demo" ? <Alert tone="bad" className="mb-4" title="That demo account is not available." /> : null}
+          <LoginForm next={safeNext(sp.next) ?? undefined} staffOnly={!DEMO_SITE} />
+        </CardBody></Card>
+      </div>
+      {DEMO_SITE && !demoEnabled ? <div className="hidden items-center lg:flex"><SceneKey className="h-auto w-full" /></div> : null}
+      {demoEnabled ? (
+        <div>
+          <h2 className="text-xl font-semibold">Local demo accounts</h2>
+          <p className="mt-2 text-sm text-ink-600">
+            Development helper (hidden in production). Each button signs you in as a <strong>fictional</strong> seeded user — no password is typed or exposed.
+            You can also sign in manually with the seed password from <code className="rounded bg-ink-100 px-1">.env</code> (see README).
+          </p>
+          {demoUsers.length === 0 ? (
+            <Alert tone="warn" className="mt-4" title="No demo users found">Run <code>npm run db:seed</code> to create them.</Alert>
+          ) : (
+            <ul className="mt-4 space-y-2">
+              {demoUsers.map((u) => (
+                <li key={u.email}>
+                  <form action={demoLoginAction} className="flex items-center justify-between gap-3 rounded-lg border border-ink-200 bg-white p-3">
+                    <input type="hidden" name="email" value={u.email} />
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-bold text-ink-900">{u.name}</p>
+                      <p className="truncate text-xs text-ink-600">{ROLE_LABELS[u.role as Role]} · {u.email}</p>
+                    </div>
+                    <Button type="submit" size="sm" variant="secondary" aria-label={`Sign in as ${u.name}, ${ROLE_LABELS[u.role as Role]}`}>Sign in</Button>
+                  </form>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}

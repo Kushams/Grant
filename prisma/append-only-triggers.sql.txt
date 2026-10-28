@@ -1,0 +1,18 @@
+-- ---------------------------------------------------------------------------
+-- Append-only guards. History tables may be INSERTed but never UPDATEd/DELETEd,
+-- even by direct SQL access to the prototype database.
+-- ---------------------------------------------------------------------------
+CREATE TRIGGER "AuditLog_no_update" BEFORE UPDATE ON "AuditLog"
+BEGIN SELECT RAISE(ABORT, 'AuditLog is append-only'); END;
+CREATE TRIGGER "AuditLog_no_delete" BEFORE DELETE ON "AuditLog"
+BEGIN SELECT RAISE(ABORT, 'AuditLog is append-only'); END;
+
+CREATE TRIGGER "ApplicationStatusEvent_no_update" BEFORE UPDATE ON "ApplicationStatusEvent"
+BEGIN SELECT RAISE(ABORT, 'ApplicationStatusEvent is append-only'); END;
+CREATE TRIGGER "ApplicationStatusEvent_no_delete" BEFORE DELETE ON "ApplicationStatusEvent"
+BEGIN SELECT RAISE(ABORT, 'ApplicationStatusEvent is append-only'); END;
+
+CREATE TRIGGER "DisbursementEvent_no_update" BEFORE UPDATE ON "DisbursementEvent"
+BEGIN SELECT RAISE(ABORT, 'DisbursementEvent is append-only'); END;
+CREATE TRIGGER "DisbursementEvent_no_delete" BEFORE DELETE ON "DisbursementEvent"
+BEGIN SELECT RAISE(ABORT, 'DisbursementEvent is append-only'); END;

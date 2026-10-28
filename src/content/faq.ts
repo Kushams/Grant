@@ -1,0 +1,29 @@
+import { GENERAL_FUND_RANGE, fundOpensLabel } from "@/config/general-fund";
+import { NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
+
+export const FAQ: Array<{ q: string; a: string }> = [
+  { q: "Who can apply?", a: "It depends on the opportunity. Each programme states which applicant types it accepts — for example individuals, entrepreneurs, small or registered businesses, nonprofits or community organizations — and which countries or regions are eligible. Always read the eligibility section on the opportunity page before you start." },
+  { q: "How do I find an opportunity?", a: "Use the opportunity directory to search by keyword and filter by applicant type, category, region, status, deadline or funding amount. Each opportunity page shows its status and anything still to be confirmed." },
+  { q: "Can I save an application and return later?", a: "Yes. Applications are saved as drafts as you move between steps. Sign in again at any time and choose “Continue your draft” — you will resume at the last step you saved. Your application is not submitted until you confirm on the final step." },
+  { q: "How do I track my application?", a: "After you submit, you receive a reference number. Your dashboard and the application page show the current status, a timeline of every change, any messages or information requests from reviewers, and — if an award is later recorded — the award and planned instalments." },
+  { q: "How are applications reviewed?", a: "A reviewer checks completeness and eligibility, then assesses the application against the programme’s criteria. Reviewers can record a recommendation, but a separate administrator records the final decision. Internal reviewer notes are never shown to applicants." },
+  { q: "What happens if information is missing?", a: "A reviewer can ask for additional information (you reply from your application page) or ask you to revise and resubmit. You will see a notification and the exact request. Your application stays open while you respond." },
+  { q: "Does applying guarantee funding?", a: `No. ${NO_GUARANTEE_STATEMENT} Funding decisions depend on each programme’s verified terms, eligibility and available resources.` },
+  { q: "How are awards and disbursements communicated?", a: "If an application is approved, staff may record an award and a planned schedule of instalments. You will see these on your application page and receive an in-app notification. Statuses such as “Paid — manually recorded” are entries made by authorized staff; this platform does not move money or verify bank transfers." },
+  { q: "Are there application or processing fees?", a: `${NO_FEE_STATEMENT} No fees are charged to apply. Be very cautious about anyone asking for a payment to apply, to “release” or “unlock” funds, or to guarantee approval.` },
+  { q: "How can I identify a suspicious funding offer?", a: "Warning signs include requests for upfront payments or gift cards, pressure to act immediately, requests for passwords, one-time codes or bank details, guaranteed approval, and messages from personal email or messaging accounts. Read our fraud-prevention guidance and report anything suspicious to support." },
+  { q: "How can I contact support?", a: "Use the contact form. Messages are stored in a support queue for staff and replies appear in the site; no phone number or office address is published until the organization confirms them." },
+  { q: "How is applicant data handled?", a: `We aim to collect only what is needed to review an application, and we never ask for government ID numbers, bank details or payment-card data. Our privacy notice is currently a draft (${ORG.policyVersion}) awaiting organizational approval.` },
+];
+
+/** FAQ for the live site (no accounts, no dashboards). */
+export const FAQ_LIVE: Array<{ q: string; a: string }> = [
+  { q: "Who can apply?", a: "Individuals, entrepreneurs and small businesses, creatives, community groups and nonprofits anywhere in the world, except applicants located in Africa. Every application is reviewed against the published criteria, and not every applicant will qualify." },
+  { q: "How do I apply?", a: `Applications open on ${fundOpensLabel()}. The application form will be on the General Opportunity Fund page. It asks who you are, what the funding is for, the amount you are requesting (between $${Number(GENERAL_FUND_RANGE.min).toLocaleString("en-US")} and $${Number(GENERAL_FUND_RANGE.max).toLocaleString("en-US")}) and a short budget.` },
+  { q: "Does applying guarantee funding?", a: `No. ${NO_GUARANTEE_STATEMENT} The Board of Directors decides each application and may approve the amount requested, a different amount, or decline.` },
+  { q: "Are there application or processing fees?", a: `${NO_FEE_STATEMENT} No fees are charged to apply or to receive an award. Never pay an outside agent to “guarantee” a grant, and be very cautious about anyone asking for a payment to “release” or “unlock” funds.` },
+  { q: "How are awards paid?", a: "Approved awards are paid by cheque to the approved recipient, after written approval and acceptance of the written award terms." },
+  { q: "How can I contact you?", a: `Email ${ORG.supportEmail} or use the contact form. ${ORG.supportEmail} is our only official email address.` },
+  { q: "How can I identify a suspicious funding offer?", a: "Warning signs include requests for upfront payments or gift cards, pressure to act immediately, requests for passwords, one-time codes or bank details, guaranteed approval, and messages from personal accounts or messaging apps claiming to be an official body." },
+  { q: "How is my information handled?", a: "We collect only what is needed to review an application, and we never ask for Social Security numbers, ID images, bank details or payment-card data. See the privacy notice for details." },
+];

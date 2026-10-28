@@ -1,0 +1,492 @@
+// National Empowerment Network (NEN) — prototype data model.
+//
+// Design notes
+//  * SQLite has no native enums/arrays/decimals, so statuses are validated strings
+//    (see src/lib/constants.ts + Zod) and list-like fields are JSON-encoded text.
+//  * Money is stored as integer MINOR UNITS (e.g. cents) next to an ISO currency
+//    code. Never use floats for amounts. Prisma `Int` is 32-bit, which caps a single
+//    amount at 2,147,483,647 minor units; src/lib/money.ts enforces a lower ceiling.
+//  * Financial / audit / history rows are never cascade-deleted. Opportunities are
+//    archived, not deleted (Restrict on every FK that points at them).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String // INDIVIDUAL_APPLICANT | ORGANIZATION_APPLICANT | REVIEWER | ADMIN
+  isActive     Boolean  @default(true)
+  isDemo       Boolean  @default(false)
+  // "Quick" accounts have no real email (placeholder address) and sign in with a passkey or access code.
+  isQuickAccount      Boolean   @default(false)
+  accessCodeHash      String?   @unique // SHA-256 of the normalized high-entropy access code; the code itself is never stored
+  accessCodeCreatedAt DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  passkeys        Passkey[]
+  sessions        Session[]
+  individual      IndividualProfile?
+  memberships     OrganizationMembership[]
+  applications    Application[]            @relation("ApplicantApplications")
+  assignments     ApplicationAssignment[]  @relation("AssignmentReviewer")
+  notifications   Notification[]
+  savedOpps       SavedOpportunity[]
+  supportRequests SupportRequest[]         @relation("SupportRequester")
+  consents        ConsentRecord[]
+
+  @@index([role])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique // sha256 of the cookie token; the raw token is never stored
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model IndividualProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  fullName          String
+  country           String?
+  city              String?
+  phone             String?
+  applicantCategory String   @default("INDIVIDUAL") // INDIVIDUAL | ENTREPRENEUR
+  background        String?
+  interests         String   @default("[]") // JSON string[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model OrganizationProfile {
+  id           String   @id @default(cuid())
+  name         String
+  type         String // SMALL_BUSINESS | REGISTERED_BUSINESS | NONPROFIT | COMMUNITY_ORG | OTHER
+  country      String?
+  city         String?
+  contactEmail String?
+  phone        String?
+  website      String?
+  description  String?
+  sectors      String   @default("[]") // JSON string[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships  OrganizationMembership[]
+  applications Application[]
+}
+
+// Access to an organization is granted ONLY through an explicit membership row.
+// The first implementation creates a single OWNER membership per organization;
+// inviting additional members is not implemented (documented limitation).
+model OrganizationMembership {
+  id             String              @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String              @default("OWNER") // OWNER | MEMBER
+  createdAt      DateTime            @default(now())
+  organization   OrganizationProfile @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+}
+
+model Opportunity {
+  id                   String    @id @default(cuid())
+  slug                 String    @unique
+  reference            String    @unique
+  title                String
+  shortDescription     String
+  description          String
+  category             String
+  status               String    @default("DRAFT") // DRAFT | PUBLISHED | ARCHIVED
+  classification       String    @default("DEMO") // DEMO | LIVE
+  verifiedAt           DateTime? // set only when a LIVE opportunity's details were explicitly verified
+  verifiedById         String?
+  verificationNote     String?
+  applicantTypes       String    @default("[]") // JSON string[] of APPLICANT_TYPES
+  eligibleRegions      String    @default("[]") // JSON string[]; empty = "to be confirmed"
+  keywords             String    @default("[]") // JSON string[]
+  fundingSpecified     Boolean   @default(false)
+  currency             String    @default("USD")
+  minAmountMinor       Int?
+  maxAmountMinor       Int?
+  fixedAmountMinor     Int?
+  awardType            String?
+  fundingPurpose       String?
+  fundingTerms         String?
+  plannedInstallments  Int?
+  installmentPlan      String?
+  milestones           String?
+  paymentSchedule      String?
+  disbursementConditions String?
+  feePolicyStatus      String    @default("NONE") // NONE | APPROVED (APPROVED requires documented sign-off)
+  feePolicyNote        String?
+  eligibilityCriteria  String    @default("[]") // JSON string[]
+  requiredInformation  String    @default("[]") // JSON string[]
+  requiredDocuments    String    @default("[]") // JSON string[]
+  opensAt              DateTime?
+  deadline             DateTime?
+  selectionProcess     String?
+  decisionTimeline     String?
+  programmeTerms       String?
+  termsApproved        Boolean   @default(false)
+  funderName           String?
+  funderVerified       Boolean   @default(false)
+  faq                  String    @default("[]") // JSON {q,a}[]
+  allowMultipleApplications Boolean @default(false)
+  requireProposal      Boolean   @default(false)
+  createdById          String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  archivedAt           DateTime?
+
+  questions    OpportunityQuestion[]
+  applications Application[]
+  saved        SavedOpportunity[]
+
+  @@index([status, classification])
+  @@index([category])
+  @@index([deadline])
+}
+
+model OpportunityQuestion {
+  id            String      @id @default(cuid())
+  opportunityId String
+  key           String
+  label         String
+  helpText      String?
+  type          String // SHORT_TEXT | LONG_TEXT | NUMBER | DATE | SINGLE_CHOICE | MULTI_CHOICE | YES_NO | URL | SUPPORTING_INFO
+  options       String      @default("[]") // JSON string[]
+  required      Boolean     @default(false)
+  section       String      @default("GENERAL") // GENERAL | PROJECT | SUPPORTING
+  sortOrder     Int         @default(0)
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Restrict)
+
+  @@unique([opportunityId, key])
+}
+
+model Application {
+  id                 String               @id @default(cuid())
+  reference          String?              @unique // allocated at submission; drafts have none
+  opportunityId      String
+  applicantUserId    String
+  organizationId     String?
+  applicantMode      String // INDIVIDUAL | ORGANIZATION
+  applicantCategory  String // one of APPLICANT_TYPES (checked against opportunity)
+  status             String               @default("DRAFT")
+  currentStep        Int                  @default(1)
+  requestedAmountMinor Int?
+  consentAcceptedAt  DateTime?
+  submittedAt        DateTime?
+  decidedAt          DateTime?
+  lastActivityAt     DateTime             @default(now())
+  // Non-null while this application "occupies" the applicant's single slot for an
+  // opportunity that forbids duplicates. UNIQUE => DB-enforced duplicate prevention.
+  activeKey          String?              @unique
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  opportunity  Opportunity           @relation(fields: [opportunityId], references: [id], onDelete: Restrict)
+  applicant    User                  @relation("ApplicantApplications", fields: [applicantUserId], references: [id], onDelete: Restrict)
+  organization OrganizationProfile?  @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  answers      ApplicationAnswer[]
+  events       ApplicationStatusEvent[]
+  assignments  ApplicationAssignment[]
+  notes        ReviewNote[]
+  messages     ApplicationMessage[]
+  decisions    DecisionRecord[]
+  award        Award?
+
+  @@index([status])
+  @@index([opportunityId])
+  @@index([applicantUserId])
+  @@index([organizationId])
+}
+
+model ApplicationAnswer {
+  id            String      @id @default(cuid())
+  applicationId String
+  questionKey   String
+  questionLabel String
+  section       String
+  value         String // plain text, or JSON string[] for MULTI_CHOICE
+  updatedAt     DateTime    @updatedAt
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@unique([applicationId, questionKey])
+}
+
+// Append-only timeline (also guarded by DB triggers, see migration).
+model ApplicationStatusEvent {
+  id            String      @id @default(cuid())
+  applicationId String
+  fromStatus    String?
+  toStatus      String
+  actorId       String?
+  actorRole     String?
+  internalNote  String?
+  publicNote    String? // visible to the applicant
+  createdAt     DateTime    @default(now())
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, createdAt])
+}
+
+model ApplicationAssignment {
+  id            String      @id @default(cuid())
+  applicationId String
+  reviewerId    String
+  assignedById  String
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  endedAt       DateTime?
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+  reviewer      User        @relation("AssignmentReviewer", fields: [reviewerId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, isActive])
+  @@index([reviewerId, isActive])
+}
+
+// INTERNAL ONLY — never selected into applicant-facing queries.
+model ReviewNote {
+  id             String      @id @default(cuid())
+  applicationId  String
+  authorId       String
+  kind           String      @default("NOTE") // NOTE | RECOMMENDATION
+  recommendation String? // APPROVE | DECLINE (when kind = RECOMMENDATION)
+  body           String
+  createdAt      DateTime    @default(now())
+  application    Application @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, createdAt])
+}
+
+// Applicant-visible conversation (information requests, revision requests, replies, decisions).
+model ApplicationMessage {
+  id            String      @id @default(cuid())
+  applicationId String
+  authorId      String?
+  authorRole    String?
+  kind          String // INFO_REQUEST | REVISION_REQUEST | APPLICANT_RESPONSE | DECISION | GENERAL
+  body          String
+  createdAt     DateTime    @default(now())
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, createdAt])
+}
+
+model DecisionRecord {
+  id               String      @id @default(cuid())
+  applicationId    String
+  kind             String // RECOMMENDATION | FINAL
+  outcome          String // APPROVE | DECLINE
+  decidedById      String
+  decidedAt        DateTime    @default(now())
+  reason           String
+  internalNotes    String?
+  applicantMessage String?
+  application      Application @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId])
+}
+
+// Award record: stored separately from the approval decision so that a status change
+// can never silently alter financial data.
+model Award {
+  id                String         @id @default(cuid())
+  reference         String         @unique
+  applicationId     String         @unique
+  decisionId        String?
+  amountMinor       Int
+  currency          String
+  approvedAt        DateTime
+  approvedById      String
+  status            String         @default("ACTIVE") // ACTIVE | ON_HOLD | CANCELLED | COMPLETED
+  acceptanceStatus  String         @default("NOT_REQUIRED") // NOT_REQUIRED | PENDING | ACCEPTED | DECLINED
+  conditions        String?
+  applicantSummary  String?
+  internalNotes     String?
+  createdById       String
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  application       Application    @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+  disbursements     Disbursement[]
+
+  @@index([status])
+}
+
+model Disbursement {
+  id               String   @id @default(cuid())
+  reference        String   @unique
+  awardId          String
+  amountMinor      Int
+  currency         String
+  plannedDate      DateTime
+  milestone        String?
+  status           String   @default("SCHEDULED")
+  internalNotes    String?
+  applicantNote    String?
+  manualRecordNote String? // required when a status is manually recorded as paid
+  updatedById      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  award            Award    @relation(fields: [awardId], references: [id], onDelete: Restrict)
+  events           DisbursementEvent[]
+
+  @@index([awardId])
+  @@index([status, plannedDate])
+}
+
+// Append-only disbursement status history.
+model DisbursementEvent {
+  id             String       @id @default(cuid())
+  disbursementId String
+  fromStatus     String?
+  toStatus       String
+  amountMinor    Int
+  actorId        String
+  reason         String?
+  createdAt      DateTime     @default(now())
+  disbursement   Disbursement @relation(fields: [disbursementId], references: [id], onDelete: Restrict)
+
+  @@index([disbursementId, createdAt])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String
+  href      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+}
+
+model SupportRequest {
+  id           String   @id @default(cuid())
+  reference    String   @unique
+  userId       String?
+  name         String
+  email        String
+  topic        String
+  relatedRef   String?
+  message      String
+  status       String   @default("OPEN") // OPEN | IN_PROGRESS | RESOLVED | CLOSED
+  assignedToId String?
+  consentAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User?    @relation("SupportRequester", fields: [userId], references: [id], onDelete: SetNull)
+  notes        SupportNote[]
+
+  @@index([status, createdAt])
+}
+
+model SupportNote {
+  id               String         @id @default(cuid())
+  supportRequestId String
+  authorId         String
+  body             String
+  isInternal       Boolean        @default(true) // false => reply visible to the requester
+  createdAt        DateTime       @default(now())
+  supportRequest   SupportRequest @relation(fields: [supportRequestId], references: [id], onDelete: Restrict)
+
+  @@index([supportRequestId, createdAt])
+}
+
+// Append-only (also guarded by DB triggers, see migration). The application code only
+// ever INSERTs; there is intentionally no update/delete path in src/lib/services/audit.ts.
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actorRole  String?
+  actorName  String?
+  action     String
+  entityType String
+  entityId   String
+  summary    String
+  before     String?
+  after      String?
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entityType, entityId])
+  @@index([action])
+}
+
+model SavedOpportunity {
+  id            String      @id @default(cuid())
+  userId        String
+  opportunityId String
+  createdAt     DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, opportunityId])
+}
+
+model ConsentRecord {
+  id              String   @id @default(cuid())
+  userId          String?
+  subject         String // REGISTRATION | APPLICATION_SUBMISSION | SUPPORT_REQUEST
+  documentVersion String
+  applicationId   String?
+  supportRequestId String?
+  acceptedAt      DateTime @default(now())
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+}
+
+
+// WebAuthn credential (passkey). Only the PUBLIC key is stored.
+model Passkey {
+  id           String    @id @default(cuid())
+  userId       String
+  credentialId String    @unique // base64url
+  publicKey    String // base64url COSE public key
+  counter      Int       @default(0)
+  transports   String? // JSON string[]
+  label        String?
+  createdAt    DateTime  @default(now())
+  lastUsedAt   DateTime?
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Single-use, short-lived WebAuthn challenge. The browser holds only a random token; we store its hash.
+model WebAuthnChallenge {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  challenge String
+  kind      String // REGISTER | LOGIN
+  userId    String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+}
