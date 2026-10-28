@@ -56,11 +56,8 @@ export const PROTOTYPE_NOTICE =
 
 export const PRIMARY_NAV = [
   { href: "/opportunities", label: "Opportunities" },
-  { href: "/how-it-works", label: "How it works" },
   { href: "/fund", label: "General Opportunity Fund" },
   { href: "/other-grants", label: "Other grants" },
-  { href: "/eligibility", label: "Eligibility" },
-  { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
@@ -69,20 +66,10 @@ export type NavItem = { href: string; label: string; children?: Array<{ href: st
 /** Header navigation. "Resources" is a dropdown; every entry maps to an existing route. */
 export const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "Home" },
+  { href: "/fund", label: "General Fund" },
+  { href: "/other-grants", label: "Other Grants" },
   { href: "/opportunities", label: "Opportunities" },
-  { href: "/how-it-works", label: "How It Works" },
-  { href: "/about", label: "About" },
-  {
-    href: "/faq", label: "Resources",
-    children: [
-      { href: "/fund", label: "General Opportunity Fund", hint: "About the fund" },
-      { href: "/other-grants", label: "Other grants", hint: "Programmes from other funders" },
-      { href: "/eligibility", label: "Eligibility guide", hint: "Who can apply to what" },
-      { href: "/faq", label: "FAQ", hint: "Straight answers" },
-      { href: "/fraud-prevention", label: "Fraud prevention", hint: "Stay safe" },
-      { href: "/accessibility", label: "Accessibility", hint: "Our commitments" },
-    ],
-  },
+  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -95,7 +82,6 @@ export const HERO = {
 export const FOOTER_LEGAL = [
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
-  { href: "/accessibility", label: "Accessibility" },
-  { href: "/fraud-prevention", label: "Fraud prevention" },
+  { href: "/faq#safety", label: "Staying safe" },
   { href: "/contact", label: "Contact" },
 ];

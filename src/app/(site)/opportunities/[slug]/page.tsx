@@ -107,7 +107,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
             {o.disbursementConditions ? <p><strong className="text-ink-900">Conditions attached to disbursement:</strong> {o.disbursementConditions}</p> : null}
             <Alert tone="info" title="Fees and guarantees">
               <p>{feeClean ? NO_FEE_STATEMENT : "See the verified programme terms for any charges."}</p>
-              <p>{NO_GUARANTEE_STATEMENT} Never pay anyone to “release” or “unlock” an award — see <Link className="underline" href="/fraud-prevention">fraud prevention</Link>.</p>
+              <p>{NO_GUARANTEE_STATEMENT} Never pay anyone to “release” or “unlock” an award — see <Link className="underline" href="/faq#safety">fraud prevention</Link>.</p>
             </Alert>
           </Section>
 

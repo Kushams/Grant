@@ -323,24 +323,24 @@ test("9. mobile layout: navigation menu is usable and no horizontal page scroll"
   await ctx.close();
 });
 
-test("10. redesigned navigation: dropdown, Escape, outside click, active state, keyboard", async ({ page }) => {
+test("10. navigation: active state, links to the simplified pages, old URLs redirect", async ({ page }) => {
   await page.goto("/");
-  const res = page.getByRole("button", { name: "Resources" });
-  await expect(res).toHaveAttribute("aria-expanded", "false");
-  await res.click();
-  await expect(res).toHaveAttribute("aria-expanded", "true");
-  await expect(page.getByRole("link", { name: /Fraud prevention/ }).first()).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(res).toHaveAttribute("aria-expanded", "false");
-  await expect(res).toBeFocused();
-  await res.click();
-  await page.mouse.click(700, 600); // outside
-  await expect(res).toHaveAttribute("aria-expanded", "false");
   await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("aria-current", "page");
-  await page.getByRole("link", { name: "Opportunities", exact: true }).first().click();
-  await page.waitForURL(/\/opportunities/);
-  await expect(page.getByRole("link", { name: "Opportunities", exact: true }).first()).toHaveAttribute("aria-current", "page");
-  // keyboard: tab reaches the primary nav links
+  for (const [name, url] of [["General Fund", /\/fund/], ["Other Grants", /\/other-grants/], ["FAQ", /\/faq/]] as const) {
+    await page.getByRole("link", { name, exact: true }).first().click();
+    await page.waitForURL(url);
+    await expect(page.getByRole("link", { name, exact: true }).first()).toHaveAttribute("aria-current", "page");
+  }
+  // Pages that were merged still work for old links.
+  await page.goto("/how-it-works");
+  await page.waitForURL(/\/fund/);
+  await expect(page.locator("#how-it-works")).toBeVisible();
+  await page.goto("/fraud-prevention");
+  await page.waitForURL(/\/faq/);
+  await expect(page.locator("#safety")).toBeVisible();
+  await page.goto("/accessibility");
+  await page.waitForURL(/\/terms/);
+  await expect(page.locator("#accessibility")).toBeVisible();
   await page.keyboard.press("Tab");
   expect(await page.evaluate(() => document.activeElement?.tagName)).toBeTruthy();
 });
@@ -382,8 +382,8 @@ test("12. mobile menu closes on Escape, on outside tap and after navigating", as
   await page.mouse.click(200, 760);
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   await toggle.click();
-  await page.getByRole("navigation", { name: "Mobile primary" }).getByRole("link", { name: "About" }).click();
-  await page.waitForURL(/\/about/);
+  await page.getByRole("navigation", { name: "Mobile primary" }).getByRole("link", { name: "FAQ" }).click();
+  await page.waitForURL(/\/faq/);
   await expect(page.getByRole("button", { name: /Menu/ })).toHaveAttribute("aria-expanded", "false");
   await ctx.close();
 });
@@ -412,7 +412,7 @@ test("13. quick account: no email, passkey sign-in, access-code backup", async (
   await expect(page.getByText("Passkey added to this device.")).toBeVisible();
   await page.getByRole("link", { name: "Continue to my dashboard" }).click();
   await page.waitForURL(/\/dashboard/);
-  await expect(page.getByText("Welcome, Quinn")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Welcome, Quinn" })).toBeVisible();
 
   // The security page lists the passkey and never shows the old code again.
   await page.getByRole("link", { name: "Sign-in & security" }).click();
@@ -424,7 +424,7 @@ test("13. quick account: no email, passkey sign-in, access-code backup", async (
   await page.goto("/login");
   await page.getByRole("button", { name: "Sign in with a passkey" }).click();
   await page.waitForURL(/\/dashboard/);
-  await expect(page.getByText("Welcome, Quinn")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Welcome, Quinn" })).toBeVisible();
 
   // Backup: the access code works from a fresh browser with no passkey; wrong codes are refused.
   await page.getByRole("button", { name: "Sign out" }).click();
@@ -436,7 +436,7 @@ test("13. quick account: no email, passkey sign-in, access-code backup", async (
   await other.getByLabel("Access code").fill(code.toLowerCase());
   await other.getByRole("button", { name: "Sign in with access code" }).click();
   await other.waitForURL(/\/dashboard/);
-  await expect(other.getByText("Welcome, Quinn")).toBeVisible();
+  await expect(other.getByRole("heading", { name: "Welcome, Quinn" })).toBeVisible();
 
   // Creating a new code on the security page revokes the old one.
   await other.getByRole("link", { name: "Sign-in & security" }).click();

@@ -31,7 +31,7 @@ export async function Hero() {
           <p className="hero-in d-2 mb-8 max-w-md text-base font-light leading-relaxed text-white/75 sm:text-lg">{HERO.body}</p>
           <div className="hero-in d-3 flex flex-wrap items-center gap-3">
             <Link href="/opportunities" className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-7 text-base font-medium text-[#0b1220] transition-colors hover:bg-white/90">Explore Opportunities</Link>
-            <Link href="/how-it-works" className="liquid-glass inline-flex min-h-12 items-center justify-center rounded-full px-7 text-base font-medium text-white transition-colors hover:bg-white/5">How It Works</Link>
+            <Link href="/fund#how-it-works" className="liquid-glass inline-flex min-h-12 items-center justify-center rounded-full px-7 text-base font-medium text-white transition-colors hover:bg-white/5">How It Works</Link>
           </div>
           <p className="hero-in d-4 mt-6 max-w-md text-xs text-white/60">{ORG.name} is an independent platform — not a government agency. {NO_GUARANTEE_STATEMENT}</p>
         </div>

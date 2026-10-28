@@ -28,6 +28,8 @@ export default function Terms() {
       <h2>8. Changes</h2>
       <p>These terms are a draft and will change before any public launch.</p>
       <p><em>Version: {ORG.policyVersion}</em></p>
+      <h2 id="accessibility">Accessibility</h2>
+      <p>We aim to follow WCAG 2.2 level AA practices wherever feasible: keyboard operation with visible focus, labelled form fields, sufficient colour contrast, reduced-motion support and responsive layouts. This is an aim, not a certification, and no formal third-party audit has been completed yet. If something is hard to use, tell us through the <a href="/contact">contact form</a> (topic “Accessibility”).</p>
     </ContentPage>
   );
 }
