@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Info, TriangleAlert, CircleCheck, CircleAlert } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { Spot } from "@/components/graphics/spots";
 import { buttonClasses } from "./button";
 
 const alertStyles = {
@@ -27,7 +28,7 @@ export function Alert({ tone = "info", title, children, className }: { tone?: ke
 export function EmptyState({ title, description, action, icon }: { title: string; description?: string; action?: { href: string; label: string }; icon?: ReactNode }) {
   return (
     <div className="flex flex-col items-center rounded-xl border border-dashed border-ink-300 bg-white/60 px-6 py-10 text-center">
-      {icon ? <div className="mb-3 text-navy-400" aria-hidden="true">{icon}</div> : null}
+      <div className="mb-3 text-navy-400" aria-hidden="true">{icon ?? <Spot name="document" className="size-14" />}</div>
       <p className="font-display text-lg font-semibold text-navy-900">{title}</p>
       {description ? <p className="mt-1 max-w-md text-sm text-ink-600">{description}</p> : null}
       {action ? <Link href={action.href} className={buttonClasses("primary", "md", "mt-4")}>{action.label}</Link> : null}
@@ -59,13 +60,16 @@ export function Stat({ label, value, hint, href, tone = "navy" }: { label: strin
   return href ? <Link href={href} className="block">{body}</Link> : body;
 }
 
-export function PageHeader({ title, description, actions, eyebrow }: { title: ReactNode; description?: ReactNode; actions?: ReactNode; eyebrow?: string }) {
+export function PageHeader({ title, description, actions, eyebrow, icon }: { title: ReactNode; description?: ReactNode; actions?: ReactNode; eyebrow?: string; icon?: ReactNode }) {
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-      <div className="max-w-3xl">
+      <div className="flex max-w-3xl items-end gap-5">
+      {icon ? <div className="hidden self-start sm:block">{icon}</div> : null}
+      <div className="flex-1">
         {eyebrow ? <p className="mb-1 text-xs font-bold uppercase tracking-wider text-teal-700">{eyebrow}</p> : null}
         <h1 className="text-3xl font-semibold sm:text-4xl">{title}</h1>
         {description ? <p className="mt-2 text-base text-ink-600">{description}</p> : null}
+      </div>
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
     </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
+import { SceneKey } from "@/components/graphics/scenes";
 import { LoginForm } from "@/components/auth/login-form";
 import { AccessCodeForm, PasskeySignIn } from "@/components/auth/passkey-signin";
 import { Card, CardBody } from "@/components/ui/card";
@@ -33,6 +34,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <LoginForm next={safeNext(sp.next) ?? undefined} />
         </CardBody></Card>
       </div>
+      {!demoEnabled ? <div className="hidden items-center lg:flex"><SceneKey className="h-auto w-full" /></div> : null}
       {demoEnabled ? (
         <div>
           <h2 className="text-xl font-semibold">Local demo accounts</h2>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CalendarClock, Coins, MapPin, Users } from "lucide-react";
+import { Spot } from "@/components/graphics/spots";
 import { Badge } from "@/components/ui/badge";
 import { fundOpensLabel } from "@/config/general-fund";
 
@@ -7,7 +8,7 @@ import { fundOpensLabel } from "@/config/general-fund";
 export function FundCard() {
   return (
     <article className="relative flex h-full flex-col rounded-xl border border-ink-200 bg-white p-5 shadow-[var(--shadow-card)] transition-shadow focus-within:shadow-md hover:shadow-md">
-      <div className="mb-3 flex flex-wrap items-center gap-2"><Badge tone="navy">Programme</Badge></div>
+      <div className="mb-3 flex items-center justify-between gap-2"><Spot name="hand" className="size-12" /><Badge tone="navy">Programme</Badge></div>
       <p className="text-xs font-bold uppercase tracking-wider text-teal-700">General</p>
       <h3 className="mt-1 text-xl font-semibold">
         <Link href="/fund" className="after:absolute after:inset-0 hover:underline">General Opportunity Fund</Link>

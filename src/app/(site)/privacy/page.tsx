@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Spot } from "@/components/graphics/spots";
 import { ContentPage } from "@/components/content/prose";
 import { ORG } from "@/config/organization";
 
@@ -6,7 +7,7 @@ export const metadata: Metadata = { title: "Privacy notice" };
 
 export default function Privacy() {
   return (
-    <ContentPage draftPolicy eyebrow="Policies" title="Privacy notice" intro="How this platform handles personal information.">
+    <ContentPage icon={<Spot name="lock" className="size-16" />} draftPolicy eyebrow="Policies" title="Privacy notice" intro="How this platform handles personal information.">
       <h2>Who is responsible</h2>
       <p>{ORG.legalName} is the controller of data collected through this platform. Privacy questions and requests: <a href={`mailto:${ORG.supportEmail}`}>{ORG.supportEmail}</a>. Registration details and a postal address will be added when confirmed.</p>
       <h2>What we collect</h2>

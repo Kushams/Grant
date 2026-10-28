@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
+import { Spot, type SpotName } from "@/components/graphics/spots";
 import { ORG } from "@/config/organization";
 import { Alert, PageHeader } from "@/components/ui/misc";
 import { buttonClasses } from "@/components/ui/button";
@@ -12,13 +13,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: g ? g.name : "Other grants" };
 }
 
+const CAT_SPOT: Record<string, SpotName> = { "Education": "education", "Healthcare": "health", "Family & housing": "home", "Small business": "business", "Arts & humanities": "arts", "Research": "research", "Find more grants": "search" };
+
 export default async function ExternalGrantPage({ params }: { params: Promise<{ slug: string }> }) {
   const g = externalGrantBySlug((await params).slug);
   if (!g) notFound();
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <p className="mb-4 text-sm"><Link href="/other-grants" className="font-semibold text-navy-800 underline">← All other grants</Link></p>
-      <PageHeader eyebrow={g.category} title={g.name} description={g.summary} />
+      <PageHeader icon={<Spot name={CAT_SPOT[g.category]} className="size-16" />} eyebrow={g.category} title={g.name} description={g.summary} />
       <Alert tone="warn" className="mt-2" title={`This grant is offered by ${g.by}, not by ${ORG.name}`}>
         {ORG.name} does not run, fund, endorse or decide this programme, and cannot tell you whether you qualify. To apply you will go to the official site, where you register and apply with them directly.
       </Alert>

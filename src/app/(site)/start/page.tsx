@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth/session";
+import { Spot } from "@/components/graphics/spots";
 import { QuickStartForm } from "@/components/auth/quick-start-form";
 import { Card, CardBody } from "@/components/ui/card";
 import { Alert } from "@/components/ui/misc";
@@ -12,6 +13,7 @@ export default async function StartPage() {
   const signedIn = !!(await getCurrentUser());
   return (
     <div className="mx-auto max-w-xl px-4 py-12">
+      <Spot name="fingerprint" className="mb-4 size-16" />
       <h1 className="text-3xl font-semibold">Quick start</h1>
       <p className="mt-2 text-ink-600">Create an account with just your name — no email and no password. You sign in later with a passkey (fingerprint, face or device unlock) or a personal access code.</p>
       <Alert tone="info" className="mt-6" title="Your privacy">We never ask for ID numbers, bank details or card data. Applying is free and does not guarantee funding.</Alert>

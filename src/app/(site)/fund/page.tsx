@@ -4,6 +4,7 @@ import { LinkButton } from "@/components/ui/button";
 import { Alert } from "@/components/ui/misc";
 import { ContentPage } from "@/components/content/prose";
 import { NetworkBanner } from "@/components/graphics/network-banner";
+import { Spot } from "@/components/graphics/spots";
 import { StepsGraphic } from "@/components/graphics/steps-graphic";
 import { NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
 import { GENERAL_FUND_SLUG, fundHasOpened, fundOpensLabel } from "@/config/general-fund";
@@ -14,6 +15,15 @@ export const metadata: Metadata = {
   title: "General Opportunity Fund",
   description: "About the National Empowerment Network General Opportunity Fund: who may apply, what it may support, how applications will be evaluated and current application status.",
 };
+
+const SUPPORTS = [
+  ["growth", "Personal and professional development", "Skills training, certifications, career development and initiatives that improve access to opportunity."],
+  ["business", "Entrepreneurship and economic empowerment", "Qualifying business development, early-stage ventures, tools, equipment and resources for an approved project."],
+  ["arts", "Creative projects and innovation", "Artistic initiatives, new concepts, research and practical solutions to identified challenges."],
+  ["education", "Education and learning", "Learning resources, training initiatives and programmes that expand access to knowledge and skills."],
+  ["home", "Community initiatives", "Projects that strengthen communities or deliver demonstrable public benefit."],
+  ["star", "Other qualifying opportunities", "Anything that meets the Fund’s published objectives and eligibility criteria."],
+] as const;
 
 const CRITERIA = [
   ["Purpose and relevance", "How well the proposal fits the Fund’s objectives."],
@@ -29,15 +39,15 @@ export default async function FundPage() {
   const live = row ? { ...row, range: row.minAmountMinor != null && row.maxAmountMinor != null ? `${formatMinor(row.minAmountMinor, row.currency)} to ${formatMinor(row.maxAmountMinor, row.currency)}` : null } : null;
   const opened = fundHasOpened();
   return (
-    <ContentPage wide eyebrow="Programme" title="General Opportunity Fund" intro="Expanding access to funding for people, ideas and initiatives with the potential to create meaningful personal, professional, economic and community impact.">
+    <ContentPage wide icon={<Spot name="hand" className="size-16" />} eyebrow="Programme" title="General Opportunity Fund" intro="Expanding access to funding for people, ideas and initiatives with the potential to create meaningful personal, professional, economic and community impact.">
       <NetworkBanner className="mb-10 h-36 w-full rounded-2xl sm:h-44" />
       <div className="grid gap-10 lg:grid-cols-[1fr_22rem]">
         <div className="prose-nen max-w-none space-y-2">
-          <h2>About the Fund</h2>
+          <h2 className="flex items-center gap-3"><Spot name="globe" className="size-10" tone="blue" />About the Fund</h2>
           <p>The {ORG.name} General Opportunity Fund provides a broad pathway for eligible applicants whose goals and projects may not fit within a specialized funding category — from individuals pursuing new opportunities to entrepreneurs, creatives and organizations delivering community initiatives.</p>
           <p>The approach is built around accessibility, fairness, responsible funding, transparent evaluation and measurable impact.</p>
 
-          <h2 id="who-can-apply">Who can apply</h2>
+          <h2 id="who-can-apply" className="flex items-center gap-3"><Spot name="people" className="size-10" tone="blue" />Who can apply</h2>
           <p>Subject to the final eligibility rules, applications may be considered from:</p>
           <ul>
             <li>Individuals pursuing meaningful personal or professional opportunities.</li>
@@ -50,7 +60,7 @@ export default async function FundPage() {
           </ul>
           <p>Applicants must satisfy the requirements of the programme, applicable laws and any programme-specific restrictions. Not every applicant or proposed activity will necessarily qualify.</p>
 
-          <h2 id="how-it-works">How it works</h2>
+          <h2 id="how-it-works" className="flex items-center gap-3"><Spot name="route" className="size-10" tone="blue" />How it works</h2>
           <StepsGraphic className="my-4 hidden w-full max-w-3xl sm:block" />
           <ol>
             <li><strong>Create an account.</strong> Use a passkey or access code — no email needed — or register with email and password.</li>
@@ -60,28 +70,28 @@ export default async function FundPage() {
             <li><strong>If approved,</strong> you receive written award terms and instructions for the next steps. Any identity verification happens after approval, through a secure process.</li>
           </ol>
 
-          <h2>What the Fund may support</h2>
-          <ul>
-            <li><strong>Personal and professional development</strong> — skills training, certifications, career development and initiatives that improve access to opportunity.</li>
-            <li><strong>Entrepreneurship and economic empowerment</strong> — qualifying business development, early-stage ventures, tools, equipment and resources for an approved project.</li>
-            <li><strong>Creative projects and innovation</strong> — artistic initiatives, new concepts, research and practical solutions to identified challenges.</li>
-            <li><strong>Education and learning</strong> — learning resources, training initiatives and programmes that expand access to knowledge and skills.</li>
-            <li><strong>Community initiatives</strong> — projects that strengthen communities or deliver demonstrable public benefit.</li>
-            <li><strong>Other qualifying opportunities</strong> that meet the Fund’s published objectives and eligibility criteria.</li>
-          </ul>
+          <h2 className="flex items-center gap-3"><Spot name="spark" className="size-10" tone="blue" />What the Fund may support</h2>
+          <div className="not-prose grid gap-3 sm:grid-cols-2">
+            {SUPPORTS.map(([icon, t, d]) => (
+              <div key={t} className="flex gap-3 rounded-xl border border-ink-200 bg-white p-4 shadow-[var(--shadow-card)]">
+                <Spot name={icon} className="size-12" />
+                <div><p className="font-semibold text-ink-900">{t}</p><p className="mt-0.5 text-sm text-ink-700">{d}</p></div>
+              </div>
+            ))}
+          </div>
 
-          <h2>Requesting an amount</h2>
+          <h2 className="flex items-center gap-3"><Spot name="slider" className="size-10" tone="blue" />Requesting an amount</h2>
           <p>You tell us how much you need. Your application explains the purpose of the request, how the money would be used (a short budget) and why the amount is appropriate. The Board may approve the full amount, a different amount, or decline. Requests are never guaranteed.</p>
 
-          <h2>How applications will be evaluated</h2>
+          <h2 className="flex items-center gap-3"><Spot name="search" className="size-10" tone="blue" />How applications will be evaluated</h2>
           <p>A consistent review process considers:</p>
           <ul>{CRITERIA.map(([t, d]) => <li key={t}><strong>{t}:</strong> {d}</li>)}</ul>
           <p>Additional verification or documentation may be required depending on the size, nature and location of the proposed award.</p>
 
-          <h2>Fairness, transparency and accountability</h2>
+          <h2 className="flex items-center gap-3"><Spot name="scales" className="size-10" tone="blue" />Fairness, transparency and accountability</h2>
           <p>Applications are assessed under published criteria and consistent procedures. Decisions are subject to eligibility checks, conflict-of-interest safeguards, available programme funds, applicable law and formal authorization by the Board of Directors or its authorized delegates. Successful applicants may be required to sign a grant agreement, use funds only for approved purposes and report on expenditure and outcomes.</p>
 
-          <h2>Staying safe</h2>
+          <h2 className="flex items-center gap-3"><Spot name="shield" className="size-10" tone="blue" />Staying safe</h2>
           <p>Applying is free. {ORG.name} will never ask you to pay a fee to apply or to receive an award, and never needs your Social Security number, ID, bank or card details to consider an application. Approved awards are paid by cheque. Read our <Link href="/faq#safety">fraud prevention guidance</Link>.</p>
         </div>
 

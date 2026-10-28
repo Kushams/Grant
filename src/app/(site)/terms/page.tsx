@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Spot } from "@/components/graphics/spots";
 import { ContentPage } from "@/components/content/prose";
 import { NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
 
@@ -6,7 +7,7 @@ export const metadata: Metadata = { title: "Terms of use" };
 
 export default function Terms() {
   return (
-    <ContentPage draftPolicy eyebrow="Policies" title="Terms of use" intro="Terms for using this platform.">
+    <ContentPage icon={<Spot name="document" className="size-16" />} draftPolicy eyebrow="Policies" title="Terms of use" intro="Terms for using this platform.">
       <h2>1. Who we are</h2>
       <p>This site is run by {ORG.legalName} (“NEN”). NEN is an independent company. It is not a government agency and does not operate an official government programme. You can reach us at <a href={`mailto:${ORG.supportEmail}`}>{ORG.supportEmail}</a>. The state of registration and governing law are <strong>to be confirmed</strong>.</p>
       <h2>2. Using this site</h2>

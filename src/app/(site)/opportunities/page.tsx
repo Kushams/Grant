@@ -4,6 +4,7 @@ import { searchOpportunities } from "@/lib/services/opportunities";
 import { parseDirectoryParams } from "@/lib/search-params";
 import { DirectoryFilters } from "@/components/opportunities/filters";
 import { OpportunityCard } from "@/components/opportunities/opportunity-card";
+import { NetworkBanner } from "@/components/graphics/network-banner";
 import { FundCard } from "@/components/opportunities/fund-card";
 import { Alert, EmptyState, PageHeader, Pagination } from "@/components/ui/misc";
 import { qs, pluralize } from "@/lib/format";
@@ -20,6 +21,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
   const showFund = !DEMO_SITE && result.total === 0 && unfiltered;
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
+      <NetworkBanner className="mb-6 h-24 w-full rounded-2xl" />
       <PageHeader eyebrow="Opportunity directory" title="Find an opportunity"
         description={DEMO_SITE ? "Every opportunity currently listed is a fictional demonstration for testing this platform. None is a live funding offer." : "Funding opportunities listed on the network. Each page shows its status, eligibility and what is still to be confirmed."} />
       <DirectoryFilters p={params} />
