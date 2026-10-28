@@ -8,7 +8,7 @@ export default function Privacy() {
   return (
     <ContentPage draftPolicy eyebrow="Policies" title="Privacy notice" intro="How this platform handles personal information.">
       <h2>Who is responsible</h2>
-      <p>{ORG.name} is the intended controller of data collected through this platform. The legal entity name, registration details, address and data-protection contact <strong>have not been confirmed</strong> and are intentionally not shown.</p>
+      <p>{ORG.legalName} is the controller of data collected through this platform. Privacy questions and requests: <a href={`mailto:${ORG.supportEmail}`}>{ORG.supportEmail}</a>. Registration details and a postal address will be added when confirmed.</p>
       <h2>What we collect</h2>
       <ul>
         <li><strong>Account data:</strong> name, email address and a securely hashed password.</li>

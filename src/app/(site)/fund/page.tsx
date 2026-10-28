@@ -3,6 +3,8 @@ import Link from "next/link";
 import { LinkButton } from "@/components/ui/button";
 import { Alert } from "@/components/ui/misc";
 import { ContentPage } from "@/components/content/prose";
+import { NetworkBanner } from "@/components/graphics/network-banner";
+import { StepsGraphic } from "@/components/graphics/steps-graphic";
 import { NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
 import { GENERAL_FUND_SLUG, fundHasOpened, fundOpensLabel } from "@/config/general-fund";
 import { db } from "@/lib/db";
@@ -28,6 +30,7 @@ export default async function FundPage() {
   const opened = fundHasOpened();
   return (
     <ContentPage wide eyebrow="Programme" title="General Opportunity Fund" intro="Expanding access to funding for people, ideas and initiatives with the potential to create meaningful personal, professional, economic and community impact.">
+      <NetworkBanner className="mb-10 h-36 w-full rounded-2xl sm:h-44" />
       <div className="grid gap-10 lg:grid-cols-[1fr_22rem]">
         <div className="prose-nen max-w-none space-y-2">
           <h2>About the Fund</h2>
@@ -43,11 +46,12 @@ export default async function FundPage() {
             <li>Students and people seeking skills development or career advancement.</li>
             <li>Community groups and grassroots initiatives.</li>
             <li>Eligible nonprofit organizations, educational institutions and other qualifying organizations.</li>
-            <li>Applicants in the United States and eligible international locations.</li>
+            <li>Applicants anywhere in the world, <strong>except applicants located in Africa</strong>.</li>
           </ul>
           <p>Applicants must satisfy the requirements of the programme, applicable laws and any programme-specific restrictions. Not every applicant or proposed activity will necessarily qualify.</p>
 
           <h2 id="how-it-works">How it works</h2>
+          <StepsGraphic className="my-4 hidden w-full max-w-3xl sm:block" />
           <ol>
             <li><strong>Create an account.</strong> Use a passkey or access code — no email needed — or register with email and password.</li>
             <li><strong>Fill in the short application.</strong> Who you are, what the funding is for, the amount you are requesting and a brief budget.</li>
@@ -78,7 +82,7 @@ export default async function FundPage() {
           <p>Applications are assessed under published criteria and consistent procedures. Decisions are subject to eligibility checks, conflict-of-interest safeguards, available programme funds, applicable law and formal authorization by the Board of Directors or its authorized delegates. Successful applicants may be required to sign a grant agreement, use funds only for approved purposes and report on expenditure and outcomes.</p>
 
           <h2>Staying safe</h2>
-          <p>Applying is free. {ORG.name} will never ask you to pay a fee to receive an award, and never needs your Social Security number, bank or card details to consider an application. Read our <Link href="/faq#safety">fraud prevention guidance</Link>.</p>
+          <p>Applying is free. {ORG.name} will never ask you to pay a fee to apply or to receive an award, and never needs your Social Security number, ID, bank or card details to consider an application. Approved awards are paid by cheque. Read our <Link href="/faq#safety">fraud prevention guidance</Link>.</p>
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
@@ -92,7 +96,7 @@ export default async function FundPage() {
             <div><dt className="font-semibold text-ink-900">Opening date</dt><dd className="text-ink-700">{fundOpensLabel()}</dd></div>
             <div><dt className="font-semibold text-ink-900">Amount you can request</dt><dd className="text-ink-700">{live?.range ?? "Shown when applications open"}</dd></div>
             <div><dt className="font-semibold text-ink-900">Where to apply</dt><dd className="text-ink-700">On this website</dd></div>
-            <div><dt className="font-semibold text-ink-900">Countries</dt><dd className="text-ink-700">United States and eligible international locations</dd></div>
+            <div><dt className="font-semibold text-ink-900">Countries</dt><dd className="text-ink-700">Worldwide, except Africa</dd></div>
           </dl>
           <LinkButton href="/contact" variant="secondary" className="w-full">Ask a question</LinkButton>
           <p className="text-xs text-ink-600">{NO_GUARANTEE_STATEMENT} All awards are subject to formal approval, applicable law, verified funding availability and final programme rules. {ORG.name} is an independent organization and not a government agency.</p>

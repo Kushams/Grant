@@ -9,6 +9,8 @@
 
 export const ORG = {
   name: "National Empowerment Network",
+  legalName: "National Empowerment Network, LLC",
+  supportEmail: "info@nen.org",
   abbreviation: "NEN",
   tagline: "Discover Opportunities. Build Your Future.",
   description:
@@ -28,10 +30,10 @@ export const UNCONFIRMED_FACTS: Array<{
   value: string | null;
   why: string;
 }> = [
-  { key: "legalEntityName", label: "Registered legal entity name", value: null, why: "Required for Terms, Privacy and any agreement." },
+  { key: "legalEntityName", label: "Registered legal entity name", value: "National Empowerment Network, LLC", why: "Required for Terms, Privacy and any agreement." },
   { key: "registrationNumber", label: "Company / registration number", value: null, why: "Never shown until supplied and verified." },
   { key: "registeredAddress", label: "Registered address / office locations", value: null, why: "No addresses are invented." },
-  { key: "officialEmail", label: "Official contact email", value: null, why: "Contact form is stored in-app only until this is set." },
+  { key: "officialEmail", label: "Official contact email", value: "info@nen.org", why: "Contact form is stored in-app only until this is set." },
   { key: "officialPhone", label: "Official phone number", value: null, why: "No phone number is published until confirmed." },
   { key: "privacyContact", label: "Privacy / data-protection contact", value: null, why: "Needed for the approved Privacy Notice." },
   { key: "governingLaw", label: "Governing law and jurisdiction", value: null, why: "Needs legal review for the Terms." },

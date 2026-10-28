@@ -29,7 +29,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-navy-800">
         <p className="mx-auto max-w-7xl px-4 py-4 text-xs text-white/60">
-          © {new Date().getFullYear()} {ORG.name}.{DEMO_SITE ? " Prototype for internal review — policy pages are drafts and no real programme, partner or funding is represented." : " An independent organization; not a government agency."}
+          © {new Date().getFullYear()} {ORG.legalName}.{DEMO_SITE ? " Prototype for internal review — policy pages are drafts and no real programme, partner or funding is represented." : " An independent organization; not a government agency."}
         </p>
       </div>
     </footer>

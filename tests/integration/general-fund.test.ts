@@ -14,6 +14,10 @@ describe("General Opportunity Fund definition", () => {
     expect(v.maxAmount).toBe("500000.00");
     expect(v.questions.length).toBeGreaterThan(0);
     expect(v.opensAt?.toISOString().slice(0, 10)).toBe("2026-11-01");
+    expect(v.funderName).toBe("National Empowerment Network, LLC");
+    expect(v.paymentSchedule).toMatch(/cheque/i);
+    expect(v.eligibleRegions).toContain("Global (all countries)");
+    expect(v.eligibilityCriteria.join(" ")).toMatch(/outside Africa/);
     expect(v.funderVerified).toBe(false);
     expect(v.termsApproved).toBe(false);
   });

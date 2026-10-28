@@ -17,7 +17,7 @@ export function FundCard() {
         <li className="flex gap-2"><Coins className="mt-0.5 size-4 shrink-0 text-navy-500" aria-hidden="true" /><span><span className="sr-only">Funding: </span>You request the amount you need</span></li>
         <li className="flex gap-2"><CalendarClock className="mt-0.5 size-4 shrink-0 text-navy-500" aria-hidden="true" /><span><span className="sr-only">Dates: </span>Opens {fundOpensLabel()}</span></li>
         <li className="flex gap-2"><Users className="mt-0.5 size-4 shrink-0 text-navy-500" aria-hidden="true" /><span><span className="sr-only">Open to: </span>Individuals, entrepreneurs, creatives, community groups, organizations</span></li>
-        <li className="flex gap-2"><MapPin className="mt-0.5 size-4 shrink-0 text-navy-500" aria-hidden="true" /><span><span className="sr-only">Regions: </span>United States and eligible international locations</span></li>
+        <li className="flex gap-2"><MapPin className="mt-0.5 size-4 shrink-0 text-navy-500" aria-hidden="true" /><span><span className="sr-only">Regions: </span>Worldwide, except Africa</span></li>
       </ul>
       <div className="mt-auto flex items-center justify-between pt-4">
         <Badge tone="info">Opens {fundOpensLabel()}</Badge>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContentPage } from "@/components/content/prose";
+import { NetworkBanner } from "@/components/graphics/network-banner";
 import { Alert } from "@/components/ui/misc";
 import { EXTERNAL_CATEGORIES, EXTERNAL_GRANTS } from "@/content/external-grants";
 
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function OtherGrants() {
   return (
     <ContentPage wide eyebrow="Directory" title="Other grants" intro="Programmes run by other organizations. NEN does not offer, fund or decide these — we point you to the official source.">
+      <NetworkBanner className="mb-8 h-28 w-full rounded-2xl" />
       <Alert tone="info" className="mb-8 max-w-3xl" title="Read this first">
         Each programme has its own rules and its own official application. Many grants are for organizations rather than individuals. Never pay an outside agent to “guarantee” a grant — official programmes do not charge to apply. If anyone asks you for money, first confirm with that programme’s own customer service, using the contact details on its official site, before paying anything.
       </Alert>

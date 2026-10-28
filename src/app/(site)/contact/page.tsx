@@ -3,6 +3,7 @@ import { isPlaceholderEmail } from "@/lib/auth/access-code";
 import { getCurrentUser } from "@/lib/auth/session";
 import { ContactForm } from "@/components/content/contact-form";
 import { ContentPage } from "@/components/content/prose";
+import { ORG } from "@/config/organization";
 import { Alert } from "@/components/ui/misc";
 import { Card, CardBody } from "@/components/ui/card";
 
@@ -18,8 +19,8 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
           <Alert tone="info" title="How messages are handled">
             Your message is saved to a support queue that staff can read. <strong>Replies appear in the site</strong>; signed-in users see them on their dashboard.
           </Alert>
-          <Alert tone="warn" title="Contact details">
-            No official email address, phone number or office address is published yet — they will be added once the organization confirms them. Be wary of anyone claiming to be us from another channel.
+          <Alert tone="info" title="Email us">
+            <a className="font-semibold underline" href={`mailto:${ORG.supportEmail}`}>{ORG.supportEmail}</a> is our only official email address. Be wary of anyone claiming to be us from another channel.
           </Alert>
         </aside>
       </div>
