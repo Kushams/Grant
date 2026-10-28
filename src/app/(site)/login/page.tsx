@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
 import { LoginForm } from "@/components/auth/login-form";
+import { AccessCodeForm, PasskeySignIn } from "@/components/auth/passkey-signin";
 import { Card, CardBody } from "@/components/ui/card";
 import { Alert } from "@/components/ui/misc";
 import { ROLE_LABELS, type Role } from "@/lib/constants";
@@ -23,7 +24,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <div>
         <h1 className="text-3xl font-semibold">Sign in</h1>
         <p className="mt-2 text-ink-600">Access your applications, saved opportunities and notifications.</p>
-        <Card className="mt-6"><CardBody>
+        <Card className="mt-6"><CardBody className="space-y-6">
+          <PasskeySignIn next={safeNext(sp.next) ?? undefined} />
+          <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-ink-600"><span className="h-px flex-1 bg-ink-200" />or<span className="h-px flex-1 bg-ink-200" /></div>
+          <AccessCodeForm next={safeNext(sp.next) ?? undefined} />
+          <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-ink-600"><span className="h-px flex-1 bg-ink-200" />or use email<span className="h-px flex-1 bg-ink-200" /></div>
           {sp.error === "demo" ? <Alert tone="bad" className="mb-4" title="That demo account is not available." /> : null}
           <LoginForm next={safeNext(sp.next) ?? undefined} />
         </CardBody></Card>

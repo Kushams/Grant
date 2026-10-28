@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getActor, getCurrentUser } from "@/lib/auth/session";
+import { isPlaceholderEmail } from "@/lib/auth/access-code";
 import { safeAction, formString, formStrings, type ActionState } from "@/lib/action";
 import { isApplicantRole } from "@/lib/constants";
 import { ForbiddenError } from "@/lib/permissions";
@@ -134,7 +135,7 @@ export async function contactAction(_p: ActionState, fd: FormData): Promise<Acti
     const user = await getCurrentUser();
     const req = await createSupportRequest(
       {
-        name: formString(fd, "name"), email: formString(fd, "email"), topic: formString(fd, "topic"), relatedRef: formString(fd, "relatedRef"),
+        name: formString(fd, "name"), email: formString(fd, "email") || (user && isPlaceholderEmail(user.email) ? user.email : ""), topic: formString(fd, "topic"), relatedRef: formString(fd, "relatedRef"),
         message: formString(fd, "message"), consent: fd.get("consent") === "on", website: formString(fd, "website"),
       },
       user?.id ?? null,

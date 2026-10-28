@@ -2,7 +2,7 @@
   "name": "national-empowerment-network",
   "version": "0.1.0",
   "private": true,
-  "description": "National Empowerment Network (NEN) \u2014 opportunity-access platform prototype",
+  "description": "National Empowerment Network (NEN) — opportunity-access platform prototype",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -51,6 +51,8 @@
     "@hookform/resolvers": "^6.0.0",
     "@prisma/adapter-better-sqlite3": "^7.10.1",
     "@prisma/client": "^7.10.1",
+    "@simplewebauthn/browser": "^14.0.0",
+    "@simplewebauthn/server": "^14.0.3",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^13.0.3",
     "clsx": "^2.1.1",

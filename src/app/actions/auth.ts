@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { safeAction, formString, type ActionState } from "@/lib/action";
 import { endSession, startSession } from "@/lib/auth/session";
 import { authenticate, registerUser } from "@/lib/services/users";
+import { createQuickAccount, authenticateWithAccessCode } from "@/lib/services/quick-access";
 import { can } from "@/lib/permissions";
 import { ValidationError } from "@/lib/permissions";
 import { safeNext } from "@/lib/safe-redirect";
@@ -42,6 +43,25 @@ export async function registerAction(_prev: ActionState, fd: FormData): Promise<
     });
     await startSession(userId);
     return { redirectTo: `${homeFor(role)}${role.includes("APPLICANT") ? "/profile?welcome=1" : ""}` };
+  });
+  if (res.ok && res.redirectTo) redirect(res.redirectTo);
+  return res;
+}
+
+/** Quick account: no email or password. Returns the access code once; the user is signed in immediately. */
+export async function startQuickAccountAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  return safeAction(async () => {
+    const { userId, code } = await createQuickAccount({ name: formString(fd, "name"), consentPrivacy: fd.get("consentPrivacy") === "on" });
+    await startSession(userId);
+    return { data: { code } };
+  });
+}
+
+export async function accessCodeLoginAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  const res = await safeAction(async () => {
+    const r = await authenticateWithAccessCode(formString(fd, "code"), await clientKey());
+    await startSession(r.userId);
+    return { redirectTo: safeNext(formString(fd, "next")) ?? homeFor(r.role) };
   });
   if (res.ok && res.redirectTo) redirect(res.redirectTo);
   return res;

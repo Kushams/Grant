@@ -387,3 +387,65 @@ test("12. mobile menu closes on Escape, on outside tap and after navigating", as
   await expect(page.getByRole("button", { name: /Menu/ })).toHaveAttribute("aria-expanded", "false");
   await ctx.close();
 });
+
+test("13. quick account: no email, passkey sign-in, access-code backup", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await ctx.newPage();
+  // A virtual authenticator stands in for a fingerprint / face / device-unlock passkey.
+  const cdp = await ctx.newCDPSession(page);
+  await cdp.send("WebAuthn.enable");
+  await cdp.send("WebAuthn.addVirtualAuthenticator", { options: { protocol: "ctap2", transport: "internal", hasResidentKey: true, hasUserVerification: true, isUserVerified: true, automaticPresenceSimulation: true } });
+
+  await page.goto("/start");
+  await page.getByLabel("Your name").fill("Quinn Quick");
+  await page.getByRole("button", { name: "Create my account" }).click();
+  await expect(page.getByText("acknowledge the privacy notice")).toBeVisible(); // no consent, no account
+  await expect(page.getByTestId("access-code-panel")).toHaveCount(0);
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "Create my account" }).click();
+  const panel = page.getByTestId("access-code-panel");
+  await expect(panel).toBeVisible();
+  const code = (await panel.getByLabel("Your access code").innerText()).trim();
+  expect(code).toMatch(/^NEN-([A-Z2-9]{4}-){3}[A-Z2-9]{4}$/);
+
+  await page.getByRole("button", { name: "Add a passkey" }).click();
+  await expect(page.getByText("Passkey added to this device.")).toBeVisible();
+  await page.getByRole("link", { name: "Continue to my dashboard" }).click();
+  await page.waitForURL(/\/dashboard/);
+  await expect(page.getByText("Welcome, Quinn")).toBeVisible();
+
+  // The security page lists the passkey and never shows the old code again.
+  await page.getByRole("link", { name: "Sign-in & security" }).click();
+  await expect(page.getByText("This device").first()).toBeVisible();
+  await expect(page.getByText(code)).toHaveCount(0);
+
+  // Sign out, then sign back in with ONE tap on the passkey (no email, no password, no code).
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await page.goto("/login");
+  await page.getByRole("button", { name: "Sign in with a passkey" }).click();
+  await page.waitForURL(/\/dashboard/);
+  await expect(page.getByText("Welcome, Quinn")).toBeVisible();
+
+  // Backup: the access code works from a fresh browser with no passkey; wrong codes are refused.
+  await page.getByRole("button", { name: "Sign out" }).click();
+  const other = await (await browser.newContext()).newPage();
+  await other.goto("/login");
+  await other.getByLabel("Access code").fill("NEN-AAAA-BBBB-CCCC-DDDD");
+  await other.getByRole("button", { name: "Sign in with access code" }).click();
+  await expect(other.getByText("not recognised")).toBeVisible();
+  await other.getByLabel("Access code").fill(code.toLowerCase());
+  await other.getByRole("button", { name: "Sign in with access code" }).click();
+  await other.waitForURL(/\/dashboard/);
+  await expect(other.getByText("Welcome, Quinn")).toBeVisible();
+
+  // Creating a new code on the security page revokes the old one.
+  await other.getByRole("link", { name: "Sign-in & security" }).click();
+  await other.getByRole("button", { name: /Create a new access code/ }).click();
+  await expect(other.getByText("shown only once")).toBeVisible();
+  await other.getByRole("button", { name: "Sign out" }).click();
+  await other.goto("/login");
+  await other.getByLabel("Access code").fill(code);
+  await other.getByRole("button", { name: "Sign in with access code" }).click();
+  await expect(other.getByText("not recognised")).toBeVisible();
+  await ctx.close();
+});

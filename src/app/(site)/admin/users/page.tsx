@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isPlaceholderEmail } from "@/lib/auth/access-code";
 import { requirePermission } from "@/lib/auth/session";
 import { listUsers } from "@/lib/services/users";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
@@ -26,7 +27,7 @@ export default async function Users() {
           return (
             <tr key={u.id}>
               <Td className="font-medium">{u.name}{u.isDemo ? <Badge tone="warn" className="ml-2">demo</Badge> : null}</Td>
-              <Td>{u.email}</Td><Td>{ROLE_LABELS[u.role as Role]}</Td>
+              <Td>{isPlaceholderEmail(u.email) ? <span className="italic text-ink-600">Quick account (no email)</span> : u.email}</Td><Td>{ROLE_LABELS[u.role as Role]}</Td>
               <Td>{u.isActive ? <Badge tone="ok">Active</Badge> : <Badge tone="bad">Deactivated</Badge>}</Td>
               <Td className="whitespace-nowrap">{formatDate(u.createdAt)}</Td>
               <Td>{self ? <span className="text-xs text-ink-600">This is you</span> : <div className="flex flex-wrap items-start gap-3">{staff ? <RoleForm id={u.id} role={u.role} /> : null}<ActiveForm id={u.id} active={u.isActive} /></div>}</Td>

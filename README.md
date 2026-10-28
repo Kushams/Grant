@@ -168,3 +168,19 @@ Demo copy and sample data appear only when `SITE_MODE=demo` (the test suites and
 - `/fund` describes the General Opportunity Fund. It shows no amounts and states that applications are not yet open.
 - Policy pages are marked "Pending formal approval" until the organization approves them.
 - The site is still `noindex` (see `src/app/layout.tsx` and `src/app/robots.ts`); change that deliberately at launch.
+
+## Passkey and access-code sign-in
+
+Applicants can skip email and passwords:
+
+- **Quick start (`/start`)** creates an individual account from just a name (plus privacy consent). The account gets a placeholder
+  address on the reserved `.invalid` domain, so no real email is stored. A personal **access code** (`NEN-XXXX-XXXX-XXXX-XXXX`, ~79 bits)
+  is shown **once**; only its SHA-256 hash is stored. The page then offers to add a **passkey** to the device.
+- **Sign in (`/login`)** offers one-tap passkey sign-in (discoverable credentials, user verification required), then the access code, then email + password.
+- **Sign-in & security (`/dashboard/security`)** lists passkeys, adds/removes them, and creates/regenerates/removes the access code
+  (a new code revokes the old one). The last way to sign in cannot be removed from a quick account.
+- Access codes work for **applicant** roles only; staff use a password or passkey. Code attempts are rate-limited per client (in-memory, see limitations).
+- WebAuthn runs through `@simplewebauthn`. Set **`WEBAUTHN_ORIGIN`** (e.g. `https://example.org`, optionally `WEBAUTHN_RP_ID`) in production so the
+  origin is never derived from request headers. Passkeys are bound to that domain: changing the domain invalidates them (the access code still works).
+- Tests: unit + integration for codes, rate limits, revocation and challenges; an e2e test drives a virtual authenticator through passkey sign-in and the code backup.
+- A dashboard that opens with **no** sign-in at all is deliberately not offered: it would expose each person's application data to anyone with a link.

@@ -26,9 +26,14 @@ model User {
   role         String // INDIVIDUAL_APPLICANT | ORGANIZATION_APPLICANT | REVIEWER | ADMIN
   isActive     Boolean  @default(true)
   isDemo       Boolean  @default(false)
+  // "Quick" accounts have no real email (placeholder address) and sign in with a passkey or access code.
+  isQuickAccount      Boolean   @default(false)
+  accessCodeHash      String?   @unique // SHA-256 of the normalized high-entropy access code; the code itself is never stored
+  accessCodeCreatedAt DateTime?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  passkeys        Passkey[]
   sessions        Session[]
   individual      IndividualProfile?
   memberships     OrganizationMembership[]
@@ -454,4 +459,34 @@ model ConsentRecord {
   user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([userId])
+}
+
+
+// WebAuthn credential (passkey). Only the PUBLIC key is stored.
+model Passkey {
+  id           String    @id @default(cuid())
+  userId       String
+  credentialId String    @unique // base64url
+  publicKey    String // base64url COSE public key
+  counter      Int       @default(0)
+  transports   String? // JSON string[]
+  label        String?
+  createdAt    DateTime  @default(now())
+  lastUsedAt   DateTime?
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Single-use, short-lived WebAuthn challenge. The browser holds only a random token; we store its hash.
+model WebAuthnChallenge {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  challenge String
+  kind      String // REGISTER | LOGIN
+  userId    String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
 }

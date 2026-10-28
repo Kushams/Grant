@@ -6,7 +6,7 @@ import { useActionForm } from "@/lib/use-action-form";
 import { CheckboxField, FormMessage, SelectField, SubmitButton, TextArea, TextField, fe } from "@/components/ui/form";
 import { SUPPORT_TOPICS } from "@/lib/constants";
 
-export function ContactForm({ defaults }: { defaults?: { name?: string; email?: string; ref?: string } }) {
+export function ContactForm({ defaults }: { defaults?: { name?: string; email?: string; ref?: string; emailOptional?: boolean } }) {
   const { state, onSubmit, pending } = useActionForm(contactAction);
   const sent = state?.ok === true;
   return (
@@ -16,7 +16,7 @@ export function ContactForm({ defaults }: { defaults?: { name?: string; email?: 
         <>
           <div className="grid gap-5 sm:grid-cols-2">
             <TextField label="Your name" name="name" autoComplete="name" required defaultValue={defaults?.name} error={fe(state, "name")} />
-            <TextField label="Email address" name="email" type="email" autoComplete="email" required defaultValue={defaults?.email} error={fe(state, "email")} />
+            <TextField label={defaults?.emailOptional ? "Email address (optional)" : "Email address"} name="email" type="email" autoComplete="email" required={!defaults?.emailOptional} hint={defaults?.emailOptional ? "Not needed — replies appear on your dashboard." : undefined} defaultValue={defaults?.email} error={fe(state, "email")} />
           </div>
           <SelectField label="Topic" name="topic" required placeholder="Choose a topic…" error={fe(state, "topic")} options={SUPPORT_TOPICS.map((t) => ({ value: t, label: t }))} />
           <TextField label="Related opportunity or application reference (optional)" name="relatedRef" defaultValue={defaults?.ref} placeholder="e.g. NEN-APP-2026-ABC234" error={fe(state, "relatedRef")} />

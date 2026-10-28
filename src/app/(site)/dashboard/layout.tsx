@@ -1,4 +1,4 @@
-import { Award, Bell, Bookmark, FileText, LayoutDashboard, LifeBuoy, UserRound, Building2 } from "lucide-react";
+import { Award, Bell, Bookmark, FileText, LayoutDashboard, KeyRound, LifeBuoy, UserRound, Building2 } from "lucide-react";
 import { requireApplicant } from "@/lib/auth/session";
 import { unreadCount } from "@/lib/services/notifications";
 import { SideNav } from "@/components/layout/side-nav";
@@ -17,6 +17,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         { href: "/dashboard/awards", label: "Awards & payments", icon: <Award className={ic} /> },
         { href: "/dashboard/notifications", label: "Notifications", icon: <Bell className={ic} />, badge: unread },
         { href: "/dashboard/support", label: "Support", icon: <LifeBuoy className={ic} /> },
+        { href: "/dashboard/security", label: "Sign-in & security", icon: <KeyRound className={ic} /> },
         { href: "/dashboard/profile", label: isOrg ? "Organization profile" : "My profile", icon: isOrg ? <Building2 className={ic} /> : <UserRound className={ic} /> },
       ]} />
       <div className="min-w-0">{children}</div>
