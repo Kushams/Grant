@@ -47,6 +47,7 @@ export const PROGRAMME_CATEGORIES = [
   "Technology & innovation",
   "Arts & culture",
   "Environment & climate",
+  "General opportunity",
 ] as const;
 
 export const REGIONS = [
