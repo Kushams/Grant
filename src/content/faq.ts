@@ -1,4 +1,4 @@
-import { GENERAL_FUND_RANGE, fundOpensLabel } from "@/config/general-fund";
+import { GENERAL_FUND_RANGE } from "@/config/general-fund";
 import { NO_FEE_STATEMENT, NO_GUARANTEE_STATEMENT, ORG } from "@/config/organization";
 
 export const FAQ: Array<{ q: string; a: string }> = [
@@ -19,7 +19,7 @@ export const FAQ: Array<{ q: string; a: string }> = [
 /** FAQ for the live site (no accounts, no dashboards). */
 export const FAQ_LIVE: Array<{ q: string; a: string }> = [
   { q: "Who can apply?", a: "Individuals, entrepreneurs and small businesses, creatives, community groups and nonprofits anywhere in the world, except applicants located in Africa. Every application is reviewed against the published criteria, and not every applicant will qualify." },
-  { q: "How do I apply?", a: `Applications open on ${fundOpensLabel()}. The application form will be on the General Opportunity Fund page. It asks who you are, what the funding is for, the amount you are requesting (between $${Number(GENERAL_FUND_RANGE.min).toLocaleString("en-US")} and $${Number(GENERAL_FUND_RANGE.max).toLocaleString("en-US")}) and a short budget.` },
+  { q: "How do I apply?", a: `Applications are open. Use the short application form on the General Opportunity Fund page — no account is needed. It asks who you are, what the funding is for, the amount you are requesting (between $${Number(GENERAL_FUND_RANGE.min).toLocaleString("en-US")} and $${Number(GENERAL_FUND_RANGE.max).toLocaleString("en-US")}) and a short budget. You will be given a reference (for example NEN-APP-2026-ABC234) when you submit; keep it safe. We contact you about the outcome using the details you give.` },
   { q: "Does applying guarantee funding?", a: `No. ${NO_GUARANTEE_STATEMENT} The Board of Directors decides each application and may approve the amount requested, a different amount, or decline.` },
   { q: "Are there application or processing fees?", a: `${NO_FEE_STATEMENT} No fees are charged to apply or to receive an award. Never pay an outside agent to “guarantee” a grant, and be very cautious about anyone asking for a payment to “release” or “unlock” funds.` },
   { q: "How are awards paid?", a: "Approved awards are paid by cheque to the approved recipient, after written approval and acceptance of the written award terms." },

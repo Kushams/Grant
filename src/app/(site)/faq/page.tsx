@@ -3,21 +3,21 @@ import { ContentPage } from "@/components/content/prose";
 import { FAQ, FAQ_LIVE } from "@/content/faq";
 import { DEMO_SITE } from "@/config/organization";
 import { Accordion } from "@/components/ui/accordion";
-import { NetworkBanner } from "@/components/graphics/network-banner";
-import { Spot } from "@/components/graphics/spots";
+import { PhotoBand } from "@/components/graphics/photos";
+import faqHeader from "@/assets/photos/faq-header.jpg";
 import { LinkButton } from "@/components/ui/button";
 
 export const metadata: Metadata = { title: "FAQ & staying safe" };
 
 export default function FaqPage() {
   return (
-    <ContentPage wide icon={<Spot name="question" className="size-16" />} eyebrow="Help" title="FAQ & staying safe" intro="Straight answers about applying, and how to protect yourself from fake offers.">
-      <NetworkBanner className="mb-8 h-24 w-full rounded-2xl" />
+    <ContentPage wide eyebrow="Help" title="FAQ & staying safe" intro="Straight answers about applying, and how to protect yourself from fake offers.">
+      <PhotoBand src={faqHeader} alt="Two people in conversation across a table" className="mb-8 h-24 sm:h-32" />
       <Accordion className="max-w-3xl" items={(DEMO_SITE ? FAQ : FAQ_LIVE).map((f) => ({ title: f.q, content: <p>{f.a}</p> }))} />
       <div id="safety" className="prose-nen mt-14 scroll-mt-24">
-        <h2 className="flex items-center gap-3"><Spot name="shield" className="size-11" tone="blue" />Staying safe</h2>
+        <h2>Staying safe</h2>
         <p>Genuine funding programmes do not charge you to receive money.</p>
-        <h3 className="flex items-center gap-2"><Spot name="clock" className="size-8" tone="blue" />Red flags</h3>
+        <h3>Red flags</h3>
         <ul>
           <li>Requests for an <strong>upfront payment</strong> — to “release”, “unlock”, “clear”, “insure” or “deliver” funds, or to “guarantee” approval.</li>
           <li>Any <strong>outside agent</strong> who promises or guarantees a grant for a fee.</li>
@@ -26,13 +26,13 @@ export default function FaqPage() {
           <li>Promises of guaranteed funding, or pressure to act within hours.</li>
           <li>Messages from free email accounts or social media claiming to be an official body.</li>
         </ul>
-        <h3 className="flex items-center gap-2"><Spot name="check" className="size-8" tone="blue" />Our commitments</h3>
+        <h3>Our commitments</h3>
         <ul>
           <li>Applying is free, and we never ask you to pay a fee to receive an award.</li>
           <li>This site has no checkout or payment page and never asks for card, bank, wallet or cryptocurrency details.</li>
           <li>We will not ask for sensitive information by social media or personal messaging apps.</li>
         </ul>
-        <h3 className="flex items-center gap-2"><Spot name="mail" className="size-8" tone="blue" />If you are targeted</h3>
+        <h3>If you are targeted</h3>
         <ol>
           <li>Stop communicating and do not send money or personal data.</li>
           <li>Keep screenshots and any reference numbers.</li>

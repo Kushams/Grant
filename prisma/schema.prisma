@@ -416,6 +416,49 @@ model SupportNote {
   @@index([supportRequestId, createdAt])
 }
 
+// Public General Opportunity Fund application (NO account). Deliberately holds only
+// the short-form fields the organization approved: identity/contact, country,
+// applicant type, purpose, use of funds, amount requested (integer minor units, USD),
+// a short budget and a conflict-of-interest declaration. It must NEVER gain SSN,
+// ID-document, date-of-birth, bank/card or payment fields (see HANDOFF.md §0).
+model FundApplication {
+  id                 String   @id @default(cuid())
+  reference          String   @unique
+  fullName           String
+  email              String
+  phone              String?
+  country            String
+  applicantType      String // INDIVIDUAL | ENTREPRENEUR | SMALL_BUSINESS | NONPROFIT | COMMUNITY_ORG | OTHER_ENTITY
+  story              String?
+  purpose            String
+  useOfFunds         String
+  amountMinor        Int
+  currency           String   @default("USD")
+  budgetSummary      String
+  hasConflict        Boolean  @default(false)
+  conflictDetails    String?
+  status             String   @default("RECEIVED") // RECEIVED | IN_REVIEW | APPROVED | DECLINED | CLOSED
+  consentAt          DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  notes              FundApplicationNote[]
+  consentRecords     ConsentRecord[] @relation("FundApplicationConsents")
+
+  @@index([status, createdAt])
+  @@index([email, createdAt])
+}
+
+model FundApplicationNote {
+  id                String          @id @default(cuid())
+  fundApplicationId String
+  authorId          String
+  body              String
+  createdAt         DateTime        @default(now())
+  fundApplication   FundApplication @relation(fields: [fundApplicationId], references: [id], onDelete: Restrict)
+
+  @@index([fundApplicationId, createdAt])
+}
+
 // Append-only (also guarded by DB triggers, see migration). The application code only
 // ever INSERTs; there is intentionally no update/delete path in src/lib/services/audit.ts.
 model AuditLog {
@@ -451,12 +494,14 @@ model SavedOpportunity {
 model ConsentRecord {
   id              String   @id @default(cuid())
   userId          String?
-  subject         String // REGISTRATION | APPLICATION_SUBMISSION | SUPPORT_REQUEST
+  subject         String // REGISTRATION | APPLICATION_SUBMISSION | SUPPORT_REQUEST | FUND_APPLICATION
   documentVersion String
   applicationId   String?
   supportRequestId String?
+  fundApplicationId String?
   acceptedAt      DateTime @default(now())
   user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  fundApplication FundApplication? @relation("FundApplicationConsents", fields: [fundApplicationId], references: [id], onDelete: SetNull)
 
   @@index([userId])
 }

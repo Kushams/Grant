@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { isPlaceholderEmail } from "@/lib/auth/access-code";
 import { getCurrentUser } from "@/lib/auth/session";
 import { ContactForm } from "@/components/content/contact-form";
-import { Spot } from "@/components/graphics/spots";
 import { ContentPage } from "@/components/content/prose";
+import { PhotoBand } from "@/components/graphics/photos";
+import contactHeader from "@/assets/photos/contact-header.jpg";
 import { ORG } from "@/config/organization";
 import { Alert } from "@/components/ui/misc";
 import { Card, CardBody } from "@/components/ui/card";
@@ -13,7 +14,8 @@ export const metadata: Metadata = { title: "Contact and support" };
 export default async function Contact({ searchParams }: { searchParams: Promise<{ ref?: string }> }) {
   const [user, sp] = await Promise.all([getCurrentUser(), searchParams]);
   return (
-    <ContentPage icon={<Spot name="envelope" className="size-16" />} wide eyebrow="Support" title="Contact and support" intro="Ask a question, report a suspicious offer, or tell us about an accessibility barrier.">
+    <ContentPage wide eyebrow="Support" title="Contact and support" intro="Ask a question, report a suspicious offer, or tell us about an accessibility barrier.">
+      <PhotoBand src={contactHeader} alt="Two people talking over coffee with a laptop" className="mb-8 h-28 sm:h-36" />
       <div className="grid gap-8 lg:grid-cols-[1fr_20rem]">
         <Card><CardBody><ContactForm defaults={{ name: user?.name, email: isPlaceholderEmail(user?.email) ? "" : user?.email, ref: sp.ref, emailOptional: isPlaceholderEmail(user?.email) }} /></CardBody></Card>
         <aside className="space-y-4">

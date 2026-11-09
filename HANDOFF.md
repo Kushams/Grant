@@ -1,6 +1,6 @@
 # HANDOFF — National Empowerment Network (NEN) website
 
-Last updated: 2026-11-08 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08)
+Last updated: 2026-11-09 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08; application form + visual overhaul added 2026-11-09)
 Repo: https://github.com/Kushams/Grant · Working branch: `ccr-6cf6c9bd-qjbfrs` · Open **draft PR #1** into `main` (not merged)
 Static preview (GitHub Pages, branch `gh-pages`): https://kushams.github.io/Grant/
 Owner / requester: Kushams (the user). Read this whole file before changing anything.
@@ -36,7 +36,7 @@ Public pages (all inline-illustrated, navy/white/grey palette, Geist font):
 | Route | Content |
 |---|---|
 | `/` | Cinematic hero (owner-supplied Earth video + poster, hue-shifted to navy), headline "Opportunity starts here.", CTAs **About the Fund** → `/fund` and **Other Grants** → `/other-grants`; General Opportunity Fund card + globe scene; "Four simple steps"; "Applying is free" safety cards; FAQ preview; skyline scene |
-| `/fund` | General Opportunity Fund: about, who can apply (worldwide **except applicants located in Africa**), 4-step "How it works" (id `how-it-works`), what it may support (6 illustrated cards), requesting an amount (**$25,000 to $500,000**), evaluation criteria, fairness, staying safe. Status box: "Applications open on 1 November 2026. The application form will be on this page. Nothing is collected before then." |
+| `/fund` | General Opportunity Fund: about, who can apply (worldwide **except applicants located in Africa**), 4-step "How it works" (id `how-it-works`), what it may support (6 illustrated cards), requesting an amount (**$25,000 to $500,000**), evaluation criteria, fairness, staying safe. Status box: "Applications are open." The short application form is on this page (see §2.13). |
 | `/other-grants`, `/other-grants/[slug]` | Directory of 17 real programmes run by other organizations (Pell, FSEOG, TEACH, HRSA Health Center, NIH, Head Start, LIHEAP, TANF, WIC, HUD vouchers, CDBG, SBA, SBIR/STTR, NEA, NEH, NSF, Grants.gov, USAGov). Each has a referral page naming who really offers it, "NEN does not run, fund, endorse or decide this", safety bullets, and a button to the official `.gov` page. Data in `src/content/external-grants.ts` (links checked 2026-10-28; unit test requires https + `.gov`). |
 | `/faq` | FAQ (live list `FAQ_LIVE`) + "Staying safe" section (id `safety`) |
 | `/contact` | Contact form (stored in staff support queue) + info@nen.org notice |
@@ -53,14 +53,14 @@ Removed from live mode (code retained, hidden): applicant registration, quick-st
 Keeps the whole original app: public directory/search, applicant accounts, wizard, dashboards, reviewer/admin, awards, passkeys. Used by tests and local previews. Seeded with **fictional** data (`npm run db:seed`).
 
 ### Not built / not working
-- **The application form** (the main missing piece). No way to apply exists on the live site yet.
+- ~~The application form~~ — **built 2026-11-09** (§2.13). The live site's /fund page now carries the short no-account form; submissions are stored for staff in `/admin/fund-applications`.
 - No hosted dynamic version of the app (only the static preview). Nothing is deployed beyond GitHub Pages.
 - **Opening date has passed:** the pages still say "Applications open on 1 November 2026… The application form will be on this page", but the date was 2026-11-01 and today is 2026-11-08 and there is no form. Text appears in: `src/app/(site)/fund/page.tsx` (status box), `src/components/opportunities/fund-card.tsx` ("Opens 1 November 2026" ×2), `src/content/faq.ts` (`FAQ_LIVE` "How do I apply?"), `src/config/general-fund.ts` (`GENERAL_FUND_OPENS`). Needs an owner decision (new date, "opening soon", or build the form and say open).
 - Fund deadline and decision timeline were never supplied (owner said November 12 "is now anything", i.e. ignore it).
 - Site is `noindex` (`src/app/layout.tsx`, `src/app/robots.ts`) — deliberate until launch.
 
-### Quality gates (last verified 2026-10-28)
-`npm run lint`, `npm run typecheck`, `npm test` (133 tests, vitest, 19 files), `npx playwright test` (14 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to and including `f6f95b3` (the latest). Two CI failures happened and were fixed: (a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to ≥4975 unique of 5000; real uniqueness is a DB unique index + retry); (b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`).
+### Quality gates (last verified 2026-11-09)
+`npm run lint`, `npm run typecheck`, `npm test` (142 tests, vitest, 21 files), `npx playwright test` (16 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to and including `f6f95b3` (the latest). Two CI failures happened and were fixed: (a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to ≥4975 unique of 5000; real uniqueness is a DB unique index + retry); (b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`).
 
 ---
 
@@ -107,6 +107,38 @@ The owner's reported 404 on "How It Works" came from the old `/how-it-works` pag
 ### 2.12 Hosting questions (not done)
 Owner asked about connecting **Supabase** to store application data (including ID). Answered: technically possible; Supabase suits a hosted Postgres DB and private file storage; I would not collect ID/SSN at application stage; moving from SQLite to Supabase Postgres needs a Prisma provider change and a new Supabase project and requires the owner's explicit go-ahead. **Nothing was created or deployed.** A Netlify deploy was offered and never requested/approved.
 
+### 2.13 Application form (2026-11-09)
+
+Owner: "Build the short application form." Built exactly to §5 step 3: a **no-account public form** on `/fund`
+(`src/components/content/fund-application-form.tsx`, action `fundApplicationAction` in `src/app/actions/applicant.ts`)
+with only the approved short fields (§3) — full name, email, optional phone, country, applicant type, optional story,
+purpose, use of funds, amount requested (USD, validated into integer minor units against the $25,000–$500,000 range),
+budget summary, conflict-of-interest yes/no + details, privacy consent. Server-side Zod validation
+(`src/lib/validation/fund-application.ts`), honeypot, and a per-email rate limit (3/hour, `src/lib/rate-limit.ts`
+submission limiter). Submissions land in a new `FundApplication` table (migration `20261109164957_fund_applications`)
+with a `NEN-APP-YYYY-XXXXXX` reference and a `ConsentRecord` (subject `FUND_APPLICATION`); admins are notified in-app.
+Staff manage them at `/admin/fund-applications` (list/search/filter, detail, status Received → In review → Approved /
+Declined / Closed with audit entries, internal-only notes) gated by `support:manage`
+(`src/lib/services/fund-applications.ts`). Eligibility screening: the schema rejects country names matching the
+African sovereign-states list (published rule: worldwide except Africa) — a screening aid; staff make the final call.
+Copy states applying is free and that staff contact applicants about the outcome using the details supplied.
+**No SSN/ID/DOB/bank/payment fields exist, and a unit test proves such payload keys are stripped, never stored.**
+Still true: nothing dynamic is deployed — the GitHub Pages snapshot disables all forms, so no real submissions can
+arrive until a hosting decision (§4 #8) is made.
+
+### 2.14 Visual overhaul — photography replaces all SVG illustrations (2026-11-09)
+
+Owner: "remove all the svg images and replace with better images to enhance the whole website." Done: the whole
+illustration library is deleted (`spots.tsx`, `scenes.tsx`, `network-banner.tsx`, `steps-graphic.tsx`) and replaced
+with 13 real photographs from Pexels (free to use; credits + source pages in `docs/photo-credits.md`, files in
+`src/assets/photos/`), wired through `src/components/graphics/photos.tsx` (`PhotoBand` / `PhotoFigure`): fund banner,
+all six "What the Fund may support" cards, home fund scene + skyline bottom band, Other Grants banner, FAQ and
+Contact header bands, login/404/opportunities reuse. Small heading tiles were dropped (photos at 40px would be mud);
+home step cards are now numbered, and small functional icons are Lucide (a separate UI icon system, not the removed
+illustrations). The StepsGraphic diagram was removed — the numbered list beside it already carried the content.
+Alt text describes activities only; **no photo is captioned or placed as a recipient, beneficiary or testimonial**
+(§0.6 stands). Terms/Privacy headers are now plain, by design.
+
 ---
 
 ## 3. Decisions and instructions from the owner (their words where possible)
@@ -125,14 +157,18 @@ Owner asked about connecting **Supabase** to store application data (including I
 - "I want the site to be so basic, nothing like them signing up. Just go to the website, fill up the form with the details. I'm going to maybe include a form."
 - "Do that first, then I'll go through the site again, then check what is left." (owner is reviewing; expects further removal/change requests.)
 
+- (2026-11-09) "Build the short application form" — the §4 #1/#2 decisions: build it with the approved short fields and say applications are open.
+
+- (2026-11-09) "remove all the svg images and replace with better images" — all decorative SVG illustrations replaced with real photography (§2.14).
+
 ---
 
 ## 4. Open items and who they wait on
 
 | # | Item | Waiting on |
 |---|---|---|
-| 1 | Final application **form fields** (owner said they would send/include a form) and whether to build it | Owner |
-| 2 | Decide what the pages should say now that 2026-11-01 has passed | Owner |
+| 1 | ~~Final application **form fields** and whether to build it~~ — DONE 2026-11-09 with the approved short list (§2.13) | — |
+| 2 | ~~Decide what the pages should say now that 2026-11-01 has passed~~ — DONE 2026-11-09: pages say applications are open, form on /fund | — |
 | 3 | Fund **deadline** and **decision timeline** (needed by the publish gate if an opportunity record is used) | Owner |
 | 4 | Admin attestation: tick funder verified / terms approved on the draft fund (or decide to drop the opportunity-record gate in favour of the plain form) | Owner |
 | 5 | Legal review of Terms/Privacy; state of registration and governing law (shown as "to be confirmed") | Owner / counsel |
@@ -161,7 +197,13 @@ Owner asked about connecting **Supabase** to store application data (including I
 - Layout/UI: `src/components/layout/{main-nav,site-header,site-footer,logo}.tsx`, `src/components/home/*`, `src/components/graphics/{spots,scenes,network-banner,steps-graphic}.tsx`, `src/components/ui/*`, `src/app/globals.css`.
 - Auth: `src/lib/auth/*`, `src/lib/services/{users,quick-access,passkeys}.ts`, `src/app/api/auth/passkey/**`, `src/app/actions/{auth,security,applicant,admin}.ts`.
 - Data: `prisma/schema.prisma`, `prisma/migrations/*` (init + passkeys), `prisma/seed.ts` (demo), `prisma/seed-live.ts`, `prisma.config.ts`, `scripts/reset-db.mjs`, `scripts/static-snapshot.mjs`.
-- Assets: `src/assets/{logo,emblem}.png`, `src/app/icon.png`, `src/types/assets.d.ts`.
+- Assets: `src/assets/{logo,emblem}.png`, `src/app/icon.png`, `src/types/assets.d.ts`. Photography (2026-11-09): `src/assets/photos/*.jpg`
+(13 Pexels images, credits in `docs/photo-credits.md`), rendered via `src/components/graphics/photos.tsx` — the only file left in
+`src/components/graphics/`; the SVG illustration library was deleted (§2.14).
+
+- Fund applications (2026-11-09): `src/lib/validation/fund-application.ts`, `src/lib/services/fund-applications.ts`,
+`src/components/content/fund-application-form.tsx`, `src/app/(site)/admin/fund-applications/…`, Prisma models `FundApplication` /
+`FundApplicationNote` (migration `20261109164957_fund_applications`).
 - Tests: `tests/unit/*`, `tests/integration/*` (incl. `general-fund`, `quick-access`), `e2e/journey.spec.ts` (+ `e2e/prepare-and-serve.mjs`, sets `SITE_MODE=demo`).
 - Docs: `README.md` (has "Static preview", "Live mode vs demo mode", "Passkey and access-code sign-in"), `docs/screenshots/` (v1 numbered shots; `v2`…`v9-home.png` per phase), `docs/graphics/`, `.github/workflows/ci.yml`, `AGENTS.md` (Next.js version warning: read `node_modules/next/dist/docs/` before writing Next code).
 

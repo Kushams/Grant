@@ -214,6 +214,19 @@ export const PAID_RECORDED: DisbursementStatus[] = ["PAID_MANUAL", "RECONCILED"]
 /** Statuses excluded from the "scheduled amount" so cancelled plans free up balance. */
 export const NON_COUNTING: DisbursementStatus[] = ["CANCELLED", "FAILED_MANUAL", "NOT_SCHEDULED"];
 
+// ---- public fund applications (no account) --------------------------------------
+export const FUND_APPLICATION_STATUSES = ["RECEIVED", "IN_REVIEW", "APPROVED", "DECLINED", "CLOSED"] as const;
+export type FundApplicationStatus = (typeof FUND_APPLICATION_STATUSES)[number];
+export const FUND_APPLICATION_STATUS_LABELS: Record<FundApplicationStatus, string> = {
+  RECEIVED: "Received",
+  IN_REVIEW: "In review",
+  APPROVED: "Approved",
+  DECLINED: "Declined",
+  CLOSED: "Closed",
+};
+/** Applicant types the General Opportunity Fund accepts (mirrors GENERAL_FUND_INPUT). */
+export const FUND_APPLICANT_TYPES = ["INDIVIDUAL", "ENTREPRENEUR", "SMALL_BUSINESS", "NONPROFIT", "COMMUNITY_ORG", "OTHER_ENTITY"] as const;
+
 // ---- support ------------------------------------------------------------------
 export const SUPPORT_STATUSES = ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"] as const;
 export const SUPPORT_TOPICS = [

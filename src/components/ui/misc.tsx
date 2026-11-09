@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Info, TriangleAlert, CircleCheck, CircleAlert } from "lucide-react";
+import { Info, TriangleAlert, CircleCheck, CircleAlert, FileText } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { Spot } from "@/components/graphics/spots";
 import { buttonClasses } from "./button";
 
 const alertStyles = {
@@ -28,7 +27,7 @@ export function Alert({ tone = "info", title, children, className }: { tone?: ke
 export function EmptyState({ title, description, action, icon }: { title: string; description?: string; action?: { href: string; label: string }; icon?: ReactNode }) {
   return (
     <div className="flex flex-col items-center rounded-xl border border-dashed border-ink-300 bg-white/60 px-6 py-10 text-center">
-      <div className="mb-3 text-navy-400" aria-hidden="true">{icon ?? <Spot name="document" className="size-14" />}</div>
+      <div className="mb-3 text-navy-400" aria-hidden="true">{icon ?? <span className="flex size-14 items-center justify-center rounded-2xl bg-navy-800 text-white"><FileText className="size-7" /></span>}</div>
       <p className="font-display text-lg font-semibold text-navy-900">{title}</p>
       {description ? <p className="mt-1 max-w-md text-sm text-ink-600">{description}</p> : null}
       {action ? <Link href={action.href} className={buttonClasses("primary", "md", "mt-4")}>{action.label}</Link> : null}

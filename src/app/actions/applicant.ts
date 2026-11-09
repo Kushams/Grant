@@ -14,6 +14,7 @@ import {
 import { updateIndividualProfile, updateOrganizationProfile } from "@/lib/services/users";
 import { markAllRead, markRead } from "@/lib/services/notifications";
 import { createSupportRequest } from "@/lib/services/support";
+import { createFundApplication } from "@/lib/services/fund-applications";
 import { safeNext } from "@/lib/safe-redirect";
 
 async function applicant() {
@@ -128,6 +129,32 @@ export async function markAllNotificationsReadAction(fd: FormData): Promise<void
   const back = safeNext(formString(fd, "back")) ?? "/dashboard/notifications";
   revalidatePath(back);
   redirect(back);
+}
+
+/** Public General Opportunity Fund application — no account, short form only. */
+export async function fundApplicationAction(_p: ActionState, fd: FormData): Promise<ActionState> {
+  return safeAction(async () => {
+    const app = await createFundApplication({
+      fullName: formString(fd, "fullName"),
+      email: formString(fd, "email"),
+      phone: formString(fd, "phone"),
+      country: formString(fd, "country"),
+      applicantType: formString(fd, "applicantType"),
+      story: formString(fd, "story"),
+      purpose: formString(fd, "purpose"),
+      useOfFunds: formString(fd, "useOfFunds"),
+      amountRequested: formString(fd, "amountRequested"),
+      budgetSummary: formString(fd, "budgetSummary"),
+      hasConflict: formString(fd, "hasConflict") === "yes",
+      conflictDetails: formString(fd, "conflictDetails"),
+      consent: fd.get("consent") === "on",
+      website: formString(fd, "website"),
+    });
+    return {
+      message: `Thank you — your application was received. Your reference is ${app.reference}. Please keep it safe. We will contact you about the outcome using the details you gave. Applying is free: we will never ask you to pay a fee to apply or to receive an award.`,
+      data: { reference: app.reference },
+    };
+  });
 }
 
 export async function contactAction(_p: ActionState, fd: FormData): Promise<ActionState> {

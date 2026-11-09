@@ -36,4 +36,24 @@ export function clearLoginFailures(key: string): void {
 
 export function resetRateLimits(): void {
   buckets.clear();
+  submissionBuckets.clear();
+}
+
+// ---- generic submission limiter (public forms) -----------------------------------
+// Counts ALL submissions in the window (not just failures), keyed by a caller-supplied
+// string such as a contact email. Same in-memory limitation as the login limiter.
+type SubmissionBucket = { times: number[] };
+const submissionBuckets = new Map<string, SubmissionBucket>();
+
+export function submissionAllowed(key: string, max: number, windowMs: number, now = Date.now()): boolean {
+  const b = submissionBuckets.get(key);
+  if (!b) return true;
+  b.times = b.times.filter((t) => now - t < windowMs);
+  return b.times.length < max;
+}
+
+export function recordSubmission(key: string, now = Date.now()): void {
+  const b = submissionBuckets.get(key) ?? { times: [] };
+  b.times.push(now);
+  submissionBuckets.set(key, b);
 }

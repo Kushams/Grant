@@ -1,4 +1,4 @@
-import { Award, Bell, ClipboardList, FileDown, History, LayoutDashboard, LifeBuoy, Megaphone, Settings, Users } from "lucide-react";
+import { Award, Bell, ClipboardList, FileDown, History, Inbox, LayoutDashboard, LifeBuoy, Megaphone, Settings, Users } from "lucide-react";
 import { requirePermission } from "@/lib/auth/session";
 import { unreadCount } from "@/lib/services/notifications";
 import { can } from "@/lib/permissions";
@@ -15,6 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ];
   if (can(user.role, "opportunity:manage")) items.push({ href: "/admin/opportunities", label: "Opportunities", icon: <Megaphone className={ic} /> });
   if (can(user.role, "award:view")) items.push({ href: "/admin/awards", label: "Awards & payments", icon: <Award className={ic} /> });
+  if (can(user.role, "support:manage")) items.push({ href: "/admin/fund-applications", label: "Fund applications", icon: <Inbox className={ic} /> });
   if (can(user.role, "support:manage")) items.push({ href: "/admin/support", label: "Support inbox", icon: <LifeBuoy className={ic} /> });
   items.push({ href: "/admin/notifications", label: "Notifications", icon: <Bell className={ic} />, badge: unread });
   if (can(user.role, "audit:view")) items.push({ href: "/admin/audit", label: "Audit log", icon: <History className={ic} /> });

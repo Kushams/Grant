@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
-import { SceneKey } from "@/components/graphics/scenes";
+import { PhotoFigure } from "@/components/graphics/photos";
+import communityGeneral from "@/assets/photos/community-general.jpg";
 import { LoginForm } from "@/components/auth/login-form";
 import { AccessCodeForm, PasskeySignIn } from "@/components/auth/passkey-signin";
 import { Card, CardBody } from "@/components/ui/card";
@@ -37,7 +38,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <LoginForm next={safeNext(sp.next) ?? undefined} staffOnly={!DEMO_SITE} />
         </CardBody></Card>
       </div>
-      {DEMO_SITE && !demoEnabled ? <div className="hidden items-center lg:flex"><SceneKey className="h-auto w-full" /></div> : null}
+      {DEMO_SITE && !demoEnabled ? <div className="hidden items-center lg:flex"><PhotoFigure src={communityGeneral} alt="Colleagues brainstorming around a table" className="aspect-[4/3] w-full" /></div> : null}
       {demoEnabled ? (
         <div>
           <h2 className="text-xl font-semibold">Local demo accounts</h2>

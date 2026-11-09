@@ -9,6 +9,7 @@ import { saveOpportunity, setOpportunityStatus, verifyAndMarkLive } from "@/lib/
 import { addReviewNote, assignReviewer, decide, moveStatus, recommend, requestInformation, requestRevision } from "@/lib/services/review";
 import { changeAwardAmount, changeDisbursementStatus, createAward, createDisbursement, updateAward, updateDisbursement } from "@/lib/services/awards";
 import { addSupportNote, updateSupportStatus } from "@/lib/services/support";
+import { addFundApplicationNote, updateFundApplicationStatus } from "@/lib/services/fund-applications";
 import { changeStaffRole, createStaffUser, setUserActive } from "@/lib/services/users";
 
 const bool = (fd: FormData, k: string) => fd.get(k) === "on";
@@ -134,6 +135,27 @@ export const updateDisbursementAction = awardAction("Instalment updated and audi
 export const changeDisbursementStatusAction = awardAction("Status recorded (manual entry) and audited.", (a, id, fd) => changeDisbursementStatus(a, id, {
   to: formString(fd, "to"), reason: formString(fd, "reason"), acknowledgeManual: bool(fd, "acknowledgeManual"),
 }));
+
+// ---- public fund applications
+export async function fundApplicationStatusAction(_p: ActionState, fd: FormData): Promise<ActionState> {
+  return safeAction(async () => {
+    const actor = await getActor();
+    const id = formString(fd, "id");
+    await updateFundApplicationStatus(actor, id, { status: formString(fd, "status") });
+    revalidatePath(`/admin/fund-applications/${id}`);
+    revalidatePath("/admin/fund-applications");
+    return { message: "Application status updated." };
+  });
+}
+export async function fundApplicationNoteAction(_p: ActionState, fd: FormData): Promise<ActionState> {
+  return safeAction(async () => {
+    const actor = await getActor();
+    const id = formString(fd, "id");
+    await addFundApplicationNote(actor, id, { body: formString(fd, "body") });
+    revalidatePath(`/admin/fund-applications/${id}`);
+    return { message: "Internal note saved." };
+  });
+}
 
 // ---- support & users
 export async function supportStatusAction(_p: ActionState, fd: FormData): Promise<ActionState> {
