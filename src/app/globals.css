@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/*
+ * NEN design tokens. Deep institutional navy, white and cool greys; green only for success states.
+ * Brand navy #142B45 (navy-800), dark cinematic #0B1220 (navy-950), content white / #F5F7FA (sand-50),
+ * text #17212F (ink-900), secondary #526579 (ink-600), borders #D9E0E8 (ink-200 / sand-200).
+ * Contrast: ink-900 / ink-600 on white are >= 14:1 / 6:1; navy-800 on white 13:1.
+ */
+@theme {
+  /* Geist (self-hosted via the `geist` package) everywhere, with the system stack as fallback. */
+  --font-sans: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --color-navy-50: #f2f5f9;
+  --color-navy-100: #e3e9f1;
+  --color-navy-200: #c3d0e0;
+  --color-navy-300: #94a9c4;
+  --color-navy-400: #647f9f;
+  --color-navy-500: #44607f;
+  --color-navy-600: #2f4b6a;
+  --color-navy-700: #223c5a;
+  --color-navy-800: #142b45;
+  --color-navy-900: #0f2036;
+  --color-navy-950: #0b1220;
+
+  /* "teal" is kept as a name for the secondary interactive tone, now a mid institutional blue (not green). */
+  --color-teal-50: #eef3f8;
+  --color-teal-100: #dce6f0;
+  --color-teal-200: #b9cce0;
+  --color-teal-500: #2e5c8a;
+  --color-teal-600: #254f7a;
+  --color-teal-700: #1d4268;
+  --color-teal-800: #142b45;
+
+  --color-sand-50: #f5f7fa;
+  --color-sand-100: #eef2f6;
+  --color-sand-200: #d9e0e8;
+  --color-sand-300: #c3ccd8;
+
+  --color-ink-900: #17212f;
+  --color-ink-800: #212d3d;
+  --color-ink-700: #2d3a4c;
+  --color-ink-600: #526579;
+  --color-ink-500: #5b6d80;
+  --color-ink-300: #aab5c3;
+  --color-ink-200: #d9e0e8;
+  --color-ink-100: #e8edf2;
+  --color-ink-50: #f5f7fa;
+
+  --color-ok-50: #ecf6f0;
+  --color-ok-700: #276749;
+  --color-warn-50: #fff6e5;
+  --color-warn-700: #8a5300;
+  --color-bad-50: #fdeeee;
+  --color-bad-700: #a42626;
+  --color-info-50: #eaf0f8;
+  --color-info-700: #1d4f9c;
+
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(23 33 47 / 0.05), 0 1px 3px rgb(23 33 47 / 0.04);
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-sand-50);
+  color: var(--color-ink-800);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--color-navy-900);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+}
+
+a { text-underline-offset: 3px; }
+
+/* Visible focus for every interactive element (WCAG 2.4.7 / 2.4.11). */
+:focus-visible {
+  outline: 3px solid var(--color-teal-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection { background: var(--color-navy-100); color: var(--color-navy-900); }
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -4rem;
+  z-index: 100;
+  background: #fff;
+  color: #0b1220;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* Long-form policy / prose pages */
+.prose-nen { max-width: 68ch; }
+.prose-nen h2 { font-size: 1.5rem; margin: 2.25rem 0 0.75rem; }
+.prose-nen h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+.prose-nen p { margin: 0 0 1rem; color: var(--color-ink-700); }
+.prose-nen ul { margin: 0 0 1rem 1.25rem; list-style: disc; color: var(--color-ink-700); }
+.prose-nen ol { margin: 0 0 1rem 1.25rem; list-style: decimal; color: var(--color-ink-700); }
+.prose-nen li { margin: 0.35rem 0; }
+.prose-nen a { color: var(--color-teal-700); text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  header, footer, nav, .no-print { display: none !important; }
+}
+
+@layer components {
+  /* Liquid glass: subtle translucent surface with a gradient hairline border. Use over imagery / dark chrome,
+     NOT for dense forms or tables (use .bg-surface for those). */
+  .liquid-glass {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: rgba(255, 255, 255, 0.025);
+    background-blend-mode: luminosity;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 8px 28px rgba(0, 0, 0, 0.12);
+  }
+  .liquid-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.14) 24%, rgba(255,255,255,0) 48%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.14) 80%, rgba(255,255,255,0.4) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+  /* Denser tint where glass sits on a busy image so text keeps AA contrast. */
+  .liquid-glass-strong { background: rgba(11, 18, 32, 0.55); }
+
+  /* Fallbacks: no backdrop-filter, or the user asked for less transparency -> a readable solid surface. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .liquid-glass { background: rgba(15, 32, 54, 0.94); }
+  }
+  @supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+    .liquid-glass::before { display: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .liquid-glass, .liquid-glass-strong { background: #0f2036; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
+
+}
+
+/* ------------------------------------------------------------------ hero entrance (restrained, 400-800ms) */
+@keyframes nen-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes nen-fade { from { opacity: 0; } to { opacity: 1; } }
+.hero-in { opacity: 0; animation: nen-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.hero-in-fade { opacity: 0; animation: nen-fade 0.7s ease-out forwards; }
+.nav-in { opacity: 0; animation: nen-fade 0.5s ease-out 0.05s forwards; }
+.d-1 { animation-delay: 0.12s; } .d-2 { animation-delay: 0.28s; } .d-3 { animation-delay: 0.44s; } .d-4 { animation-delay: 0.6s; }
+@media (prefers-reduced-motion: reduce) { .hero-in, .hero-in-fade, .nav-in { opacity: 1; animation: none; transform: none; } }
+@media (scripting: none) { .hero-in, .hero-in-fade, .nav-in { opacity: 1; animation: none; } }
+
+/* ------------------------------------------------------------------ scroll reveal */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-visible { opacity: 1; transform: none; }
+@media (scripting: none) { .reveal { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* Height animation for the accordion without JS measuring */
+.acc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+.acc-panel[data-open="true"] { grid-template-rows: 1fr; }
+.acc-panel > div { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .acc-panel { transition: none; } }

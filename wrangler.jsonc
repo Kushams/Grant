@@ -1,0 +1,25 @@
+{
+  // National Empowerment Network — production deployment on Cloudflare Workers.
+  // App: Next.js via @opennextjs/cloudflare. Database: D1 (binding "DB", see src/lib/db.ts).
+  "name": "nen",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-12-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": true,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nen-db",
+      "database_id": "217190d7-2c9a-49eb-b7f0-67bc2b628056"
+    }
+  ],
+  "vars": {
+    // Live mode (public pages + application form + staff admin). Demo mode stays local-only.
+    "SITE_MODE": "",
+    "SESSION_COOKIE_SECURE": "true"
+  }
+}
