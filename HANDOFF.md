@@ -197,6 +197,9 @@ How it works:
   verified: zero optimizer references, direct media paths). GitHub Pages itself was still serving the previous
   build hours later — the preview is superseded by the live deployment above.
 
+
+**Post-deploy checks by Claude, 2026-11-09 (read-only, against https://nen.kushams-og.workers.dev):**
+signed-out requests to `/admin`, `/admin/fund-applications` and `/dashboard` return a redirect page to `/login?next=…` and the response contains no application/staff data; pages send `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, are served over HTTPS by Cloudflare, carry `noindex, nofollow` and `robots.txt` disallows everything; `/opportunities` is a redirect (live mode). Repo scan: no secrets tracked (only `.env.example` with fictional demo values and `wrangler.jsonc`, which holds the D1 `database_id` — an identifier, not a credential). No forms were submitted. Not checked: admin password strength/rotation for the seeded staff account, Cloudflare account access controls, backups of D1, rate limiting beyond the in-process per-email limit (which does not persist across Workers isolates), HTTP security headers beyond those listed (no CSP).
 ---
 
 ## 3. Decisions and instructions from the owner (their words where possible)
