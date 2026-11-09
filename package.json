@@ -2,7 +2,7 @@
   "name": "national-empowerment-network",
   "version": "0.1.0",
   "private": true,
-  "description": "National Empowerment Network (NEN) — opportunity-access platform prototype",
+  "description": "National Empowerment Network (NEN) \u2014 opportunity-access platform prototype",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -19,12 +19,17 @@
     "db:seed:live": "tsx prisma/seed-live.ts",
     "db:reset": "node scripts/reset-db.mjs",
     "postinstall": "prisma generate",
-    "preview:snapshot": "node scripts/static-snapshot.mjs /Grant preview-site"
+    "preview:snapshot": "node scripts/static-snapshot.mjs /Grant preview-site",
+    "cf:build": "npm run cf:generate && opennextjs-cloudflare build",
+    "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
+    "cf:deploy": "npm run cf:build && opennextjs-cloudflare deploy",
+    "cf:generate": "prisma generate --schema prisma/schema.cf.prisma"
   },
   "engines": {
     "node": ">=20.19"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.16",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/dom": "^10.4.2",
@@ -45,11 +50,13 @@
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "vite": "^8.3.5",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "wrangler": "^4.159.0"
   },
   "dependencies": {
     "@hookform/resolvers": "^6.0.0",
     "@prisma/adapter-better-sqlite3": "^7.10.1",
+    "@prisma/adapter-d1": "^7.10.1",
     "@prisma/client": "^7.10.1",
     "@simplewebauthn/browser": "^14.0.0",
     "@simplewebauthn/server": "^14.0.3",
@@ -58,7 +65,7 @@
     "clsx": "^2.1.1",
     "geist": "^1.8.2",
     "lucide-react": "^1.61.0",
-    "next": "^16.4.3",
+    "next": "^16.4.5",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-hook-form": "^7.91.0",

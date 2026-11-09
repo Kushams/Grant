@@ -47,14 +47,14 @@ Public pages (all inline-illustrated, navy/white/grey palette, Geist font):
 Removed from live mode (code retained, hidden): applicant registration, quick-start account, passkey/access-code sign-in UI, applicant dashboards, the public opportunity directory + search + hero search, "Log in / Get Started" buttons.
 
 ### Static preview (GitHub Pages)
-`gh-pages` branch = static snapshot of the **live-mode** site (read-only; forms/sign-in disabled via an injected banner; `fetch('/api/…')` is blocked with an alert). Built by `scripts/static-snapshot.mjs`; it also writes small meta-refresh redirect pages for moved URLs and copies `icon.png`. Last published: gh-pages `adfa041` (2026-11-09; includes the §2.15 Regions wording, media files verified live). Pages are served from the `gh-pages` branch root; the repo is public.
+`gh-pages` branch = static snapshot of the **live-mode** site (read-only; forms/sign-in disabled via an injected banner; `fetch('/api/…')` is blocked with an alert). Built by `scripts/static-snapshot.mjs`; it also writes small meta-refresh redirect pages for moved URLs and copies `icon.png`. Last published: gh-pages `248047a` (2026-11-09; Regions wording + direct image URLs instead of the `/_next/image` optimizer — branch content verified, though GitHub Pages was still serving the previous build hours later; the preview is superseded by the live Cloudflare deployment, §2.16). Pages are served from the `gh-pages` branch root; the repo is public.
 
 ### Demo mode (`SITE_MODE=demo`)
 Keeps the whole original app: public directory/search, applicant accounts, wizard, dashboards, reviewer/admin, awards, passkeys. Used by tests and local previews. Seeded with **fictional** data (`npm run db:seed`).
 
 ### Not built / not working
 - ~~The application form~~ — **built 2026-11-09** (§2.13). The live site's /fund page now carries the short no-account form; submissions are stored for staff in `/admin/fund-applications`.
-- No hosted dynamic version of the app (only the static preview). Nothing is deployed beyond GitHub Pages.
+- ~~No hosted dynamic version of the app~~ — **deployed 2026-11-09** (§2.16): the real app runs on Cloudflare Workers + D1 at **https://nen.kushams-og.workers.dev** with working forms and staff admin. No custom domain yet — the owner will buy one and link it in Cloudflare.
 - **Opening date has passed:** the pages still say "Applications open on 1 November 2026… The application form will be on this page", but the date was 2026-11-01 and today is 2026-11-08 and there is no form. Text appears in: `src/app/(site)/fund/page.tsx` (status box), `src/components/opportunities/fund-card.tsx` ("Opens 1 November 2026" ×2), `src/content/faq.ts` (`FAQ_LIVE` "How do I apply?"), `src/config/general-fund.ts` (`GENERAL_FUND_OPENS`). Needs an owner decision (new date, "opening soon", or build the form and say open).
 - Fund deadline and decision timeline were never supplied (owner said November 12 "is now anything", i.e. ignore it).
 - Site is `noindex` (`src/app/layout.tsx`, `src/app/robots.ts`) — deliberate until launch.
@@ -109,8 +109,8 @@ Owner supplied a navy+gold logo (white background): processed into `src/assets/l
 Merged About, How It Works, Eligibility, Fraud prevention, Accessibility into `/fund`, `/faq`, `/terms`. Then: no accounts/search/directory in live mode (see §1). Added `getNavItems()` / `getPrimaryNav()` (mode-aware nav), `FAQ_LIVE`, staff-only login copy, `tests/unit/live-nav.test.ts`.
 The owner's reported 404 on "How It Works" came from the old `/how-it-works` page; fixed by redirect pages in the static snapshot.
 
-### 2.12 Hosting questions (not done)
-Owner asked about connecting **Supabase** to store application data (including ID). Answered: technically possible; Supabase suits a hosted Postgres DB and private file storage; I would not collect ID/SSN at application stage; moving from SQLite to Supabase Postgres needs a Prisma provider change and a new Supabase project and requires the owner's explicit go-ahead. **Nothing was created or deployed.** A Netlify deploy was offered and never requested/approved.
+### 2.12 Hosting questions (superseded by §2.16)
+Owner asked about connecting **Supabase** to store application data (including ID). Answered: technically possible; Supabase suits a hosted Postgres DB and private file storage; I would not collect ID/SSN at application stage; moving from SQLite to Supabase Postgres needs a Prisma provider change and a new Supabase project and requires the owner's explicit go-ahead. A Netlify deploy was offered and never requested/approved. **Resolved 2026-11-09: the owner chose "Cloudflare for everything — app + its built-in database" instead (§2.16); Supabase was not used.**
 
 ### 2.13 Application form (2026-11-09)
 
@@ -128,8 +128,8 @@ Declined / Closed with audit entries, internal-only notes) gated by `support:man
 African sovereign-states list (published rule: worldwide except Africa) — a screening aid; staff make the final call.
 Copy states applying is free and that staff contact applicants about the outcome using the details supplied.
 **No SSN/ID/DOB/bank/payment fields exist, and a unit test proves such payload keys are stripped, never stored.**
-Still true: nothing dynamic is deployed — the GitHub Pages snapshot disables all forms, so no real submissions can
-arrive until a hosting decision (§4 #8) is made.
+(Update 2026-11-09 evening: the app is now deployed with working forms — see §2.16. The GitHub Pages snapshot
+still disables all forms; real submissions arrive on the Cloudflare deployment.)
 
 ### 2.14 Visual overhaul — photography replaces all SVG illustrations (2026-11-09)
 
@@ -152,6 +152,50 @@ America, South America and Oceania"** (the eligible continents listed positively
 the fund rules (`src/config/general-fund.ts`), the FAQ "Who can apply?" answer and the form's Africa screening still
 say/apply worldwide-except-Africa. Also fixed the static-preview banner, which still claimed "Applications are not
 open yet"; it now says applications are open on the live site and the preview cannot take them.
+
+### 2.16 Hosting — Cloudflare Workers + D1 (2026-11-09)
+
+Owner: "Cloudflare for everything — app + its built-in database (fastest, nothing else changes)" and "I want the
+forms and everything to be working… before I buy a domain… we'll just link it." **Live:
+https://nen.kushams-og.workers.dev** (Worker name `nen`, Cloudflare account `kushams-og`). The app runs in live mode
+(`SITE_MODE` empty) against a D1 database **`nen-db`** (id `217190d7-2c9a-49eb-b7f0-67bc2b628056`) bound as `DB`.
+
+How it works:
+- Build/deploy: `@opennextjs/cloudflare` (`open-next.config.ts`, `wrangler.jsonc`). `npm run cf:deploy` =
+  generate the Cloudflare Prisma client, build, deploy. Next was raised 16.4.3 → **16.4.5** (OpenNext peer range).
+- Prisma stays on the `sqlite` provider so Node dev/tests/CI are untouched. `src/lib/db.ts` picks the adapter at
+  runtime: `PrismaD1` when the Workers `DB` binding exists, otherwise better-sqlite3 via `createRequire` (Node-only,
+  never bundled for Workers). The `db` export is a lazy proxy because the D1 binding only exists per-request.
+- **Two Prisma client variants**: `prisma/schema.prisma` (default Node runtime) for dev/tests, and
+  `prisma/schema.cf.prisma` (same schema + `runtime = "cloudflare"` in the generator block) for the Workers build —
+  the Node variant embeds the query-compiler Wasm as base64 and calls `new WebAssembly.Module(bytes)`, which workerd
+  forbids ("Wasm code generation disallowed by embedder"); the cloudflare variant imports the `.wasm` as a bundled
+  module. `npm run cf:generate` regenerates the CF client into `src/generated/prisma`; run `npm run db:generate`
+  (plain `prisma generate`) to switch back for local Node work. `src/generated` is git-ignored.
+- **D1 has no interactive transactions.** The service layer uses `db.$transaction(async tx => …)` in ~38 places;
+  Prisma's D1 adapter throws for that form. In `src/lib/db.ts` the D1 client therefore runs an interactive callback
+  against the client itself — operations execute sequentially, in order, **without atomic rollback**. The array
+  form `$transaction([...])` is a real D1 batch and passes through unchanged. Do not remove this shim without
+  converting every call site.
+- D1 schema: the three Prisma migration SQL files were applied directly (`wrangler d1 execute nen-db --remote
+  --file prisma/migrations/<name>/migration.sql`, in order). There is no `_prisma_migrations` bookkeeping on D1;
+  apply future migration SQL the same way after `prisma migrate dev` locally.
+- Seeding: `db:seed:live` was run against a local SQLite DB, the created rows (admin `User`, the DRAFT LIVE
+  `Opportunity` for the fund, its questions, the audit row) were dumped as INSERTs and replayed into remote D1.
+  Admin login: **info@nen.org**; the password is NOT in this repo — it is in the owner's assistant workspace file
+  `nen-admin-credentials.txt` (chmod 600). The fund record is still a DRAFT; publishing still needs the §4 #4
+  attestation in `/admin/opportunities`.
+- Verified end to end on the live URL (2026-11-09): all public pages 200; a real browser submission of the fund
+  form returned reference `NEN-APP-2026-VUWDAT` and the row + consent record were confirmed in D1 (then deleted,
+  with its staff notifications, as test data). Admin sign-in and the `/admin/fund-applications` list were verified
+  against the same code + seed locally (Node runtime).
+- The Cloudflare API token in use is the owner's "Edit Cloudflare Workers" template token **plus Account · D1 ·
+  Edit** (added by the owner 2026-11-09); Wrangler authenticates with the same token.
+- The static GitHub Pages preview also got a fix the same evening: page HTML referenced Next's `/_next/image`
+  optimizer endpoint, which 404s on GitHub Pages, so photos broke. `scripts/static-snapshot.mjs` now rewrites
+  optimizer URLs to the direct `/_next/static/media/…` files; republished as gh-pages `248047a` (branch content
+  verified: zero optimizer references, direct media paths). GitHub Pages itself was still serving the previous
+  build hours later — the preview is superseded by the live deployment above.
 
 ---
 
@@ -190,7 +234,8 @@ open yet"; it now says applications are open on the live site and the preview ca
 | 5 | Legal review of Terms/Privacy; state of registration and governing law (shown as "to be confirmed") | Owner / counsel |
 | 6 | Evidence of entity and funding (LLC registration, funder commitment). Strongly recommended before any form goes live | Owner |
 | 7 | Transparent-background logo (optional) | Owner |
-| 8 | Where to host the real (dynamic) app, and whether to move to Supabase Postgres | Owner decision, then assistant |
+| 8 | ~~Where to host the real (dynamic) app~~ — DONE 2026-11-09: Cloudflare Workers + D1, live at nen.kushams-og.workers.dev (§2.16) | — |
+| 11 | Buy a custom domain and link it to the Worker (Cloudflare dashboard → Workers → nen → Settings → Domains & Routes) | Owner, when ready |
 | 9 | Merge draft PR #1 into `main` (not done; owner must say so) | Owner |
 | 10 | Any further pages/sections the owner wants removed after their walkthrough | Owner |
 
@@ -201,7 +246,7 @@ open yet"; it now says applications are open on the live site and the preview ca
 1. Ask the owner the open questions in §4 (especially #1, #2, #3, #4, #6) — do not assume answers.
 2. Resolve the stale "opens 1 November 2026" wording (files in §1) according to the owner's answer; rebuild and republish the snapshot (§7).
 3. If a form is approved: build a **no-account public form** with only the short field list (§3), consent checkbox, server-side Zod validation, honeypot, rate limit, reference number, storage in a new table visible to staff in `/admin` with status + notes; **no SSN/ID/DOB/bank/payment fields**; copy must say NEN never asks for money and staff contact applicants only about the outcome. Add unit/e2e tests. Keep submission disabled until the open-date/verification decisions are made.
-4. If the dynamic app is to be hosted: pick a host, set env (`DATABASE_URL`, `WEBAUTHN_ORIGIN` if passkeys are re-enabled, `ADMIN_*` for `db:seed:live`, `SESSION_COOKIE_SECURE`), run `db:deploy` then `db:seed:live`. Do not deploy without the owner's explicit yes.
+4. ~~Hosting~~ — done (§2.16). Remaining deployment chores: when the owner buys a domain, attach it to the `nen` Worker in Cloudflare; after any schema change, apply the new migration SQL to remote D1 (§2.16) before/with the deploy; keep `wrangler.jsonc` vars in mind (`SESSION_COOKIE_SECURE=true` is set for the live site).
 5. Keep `HANDOFF.md` current (update §1–§5 rather than appending conflicting text).
 
 ---
@@ -213,6 +258,7 @@ open yet"; it now says applications are open on the live site and the preview ca
 - Layout/UI: `src/components/layout/{main-nav,site-header,site-footer,logo}.tsx`, `src/components/home/*`, `src/components/graphics/{spots,scenes,network-banner,steps-graphic}.tsx`, `src/components/ui/*`, `src/app/globals.css`.
 - Auth: `src/lib/auth/*`, `src/lib/services/{users,quick-access,passkeys}.ts`, `src/app/api/auth/passkey/**`, `src/app/actions/{auth,security,applicant,admin}.ts`.
 - Data: `prisma/schema.prisma`, `prisma/migrations/*` (init + passkeys), `prisma/seed.ts` (demo), `prisma/seed-live.ts`, `prisma.config.ts`, `scripts/reset-db.mjs`, `scripts/static-snapshot.mjs`.
+- Hosting (2026-11-09, §2.16): `wrangler.jsonc` (Worker `nen`, D1 binding `DB` → `nen-db`, vars), `open-next.config.ts`, `prisma/schema.cf.prisma` (Cloudflare-runtime client variant), `src/lib/db.ts` (adapter selection + D1 transaction shim).
 - Assets: `src/assets/{logo,emblem}.png`, `src/app/icon.png`, `src/types/assets.d.ts`. Photography (2026-11-09): `src/assets/photos/*.jpg`
 (13 Pexels images, credits in `docs/photo-credits.md`), rendered via `src/components/graphics/photos.tsx` — the only file left in
 `src/components/graphics/`; the SVG illustration library was deleted (§2.14).
@@ -239,6 +285,11 @@ ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run db:seed:live
 # refresh the GitHub Pages preview:
 npm run preview:snapshot                 # builds live-mode snapshot into preview-site/ (SNAPSHOT_MODE=demo for demo)
 # then copy preview-site/ onto the gh-pages branch (git worktree add … origin/gh-pages; remove old files; copy; add .nojekyll; commit; push)
+# deploy the real app to Cloudflare (§2.16) — needs CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID in env:
+npm run cf:deploy                        # CF-runtime prisma generate + OpenNext build + wrangler deploy
+npm run db:generate                      # switch the local client back to the Node variant afterwards
+# apply a new migration to the live D1 after `prisma migrate dev`:
+npx wrangler d1 execute nen-db --remote --file prisma/migrations/<name>/migration.sql
 ```
 Demo-only credentials exist for the fictional seeded accounts (`DEMO_SEED_PASSWORD` in `.env.example`, used by tests). They are fictional and local-only; never reuse them anywhere real. No real secrets are stored in this repo and none should be added.
 

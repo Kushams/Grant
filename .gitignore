@@ -17,3 +17,5 @@ src/generated
 e2e/.tmp
 tests/.tmp
 preview-site
+.open-next
+.wrangler
