@@ -1,6 +1,6 @@
 # HANDOFF — National Empowerment Network (NEN) website
 
-Last updated: 2026-11-09 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08; application form + visual overhaul added 2026-11-09 by the owner's account; missing photo files added and CI build fixed 2026-11-09 by Claude)
+Last updated: 2026-11-09 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08; application form + visual overhaul added 2026-11-09)
 Repo: https://github.com/Kushams/Grant · Working branch: `ccr-6cf6c9bd-qjbfrs` · Open **draft PR #1** into `main` (not merged)
 Static preview (GitHub Pages, branch `gh-pages`): https://kushams.github.io/Grant/
 Owner / requester: Kushams (the user). Read this whole file before changing anything.
@@ -35,7 +35,7 @@ If a future assistant is asked to build an intake form, outreach tooling, paymen
 Public pages (all inline-illustrated, navy/white/grey palette, Geist font):
 | Route | Content |
 |---|---|
-| `/` | Cinematic hero (owner-supplied Earth video + poster, hue-shifted to navy), headline "Opportunity starts here.", CTAs **About the Fund** → `/fund` and **Other Grants** → `/other-grants`; General Opportunity Fund card + globe scene; "Four simple steps"; "Applying is free" safety cards; FAQ preview; skyline scene |
+| `/` | Cinematic hero (owner-supplied Earth video + poster, hue-shifted to navy), headline "Opportunity starts here.", CTAs **About the Fund** → `/fund` and **Other Grants** → `/other-grants`; General Opportunity Fund card + fund photo; "Four simple steps"; "Applying is free" safety cards; FAQ preview; skyline photo band |
 | `/fund` | General Opportunity Fund: about, who can apply (worldwide **except applicants located in Africa**), 4-step "How it works" (id `how-it-works`), what it may support (6 illustrated cards), requesting an amount (**$25,000 to $500,000**), evaluation criteria, fairness, staying safe. Status box: "Applications are open." The short application form is on this page (see §2.13). |
 | `/other-grants`, `/other-grants/[slug]` | Directory of 17 real programmes run by other organizations (Pell, FSEOG, TEACH, HRSA Health Center, NIH, Head Start, LIHEAP, TANF, WIC, HUD vouchers, CDBG, SBA, SBIR/STTR, NEA, NEH, NSF, Grants.gov, USAGov). Each has a referral page naming who really offers it, "NEN does not run, fund, endorse or decide this", safety bullets, and a button to the official `.gov` page. Data in `src/content/external-grants.ts` (links checked 2026-10-28; unit test requires https + `.gov`). |
 | `/faq` | FAQ (live list `FAQ_LIVE`) + "Staying safe" section (id `safety`) |
@@ -47,7 +47,7 @@ Public pages (all inline-illustrated, navy/white/grey palette, Geist font):
 Removed from live mode (code retained, hidden): applicant registration, quick-start account, passkey/access-code sign-in UI, applicant dashboards, the public opportunity directory + search + hero search, "Log in / Get Started" buttons.
 
 ### Static preview (GitHub Pages)
-`gh-pages` branch = static snapshot of the **live-mode** site (read-only; forms/sign-in disabled via an injected banner; `fetch('/api/…')` is blocked with an alert). Built by `scripts/static-snapshot.mjs`; it also writes small meta-refresh redirect pages for moved URLs and copies `icon.png`. Last published: gh-pages `0dca5d2`. Pages are served from the `gh-pages` branch root; the repo is public.
+`gh-pages` branch = static snapshot of the **live-mode** site (read-only; forms/sign-in disabled via an injected banner; `fetch('/api/…')` is blocked with an alert). Built by `scripts/static-snapshot.mjs`; it also writes small meta-refresh redirect pages for moved URLs and copies `icon.png`. Last published: gh-pages `f74e6cc` (2026-11-09 text snapshot; media files uploaded in follow-up commits the same day). Pages are served from the `gh-pages` branch root; the repo is public.
 
 ### Demo mode (`SITE_MODE=demo`)
 Keeps the whole original app: public directory/search, applicant accounts, wizard, dashboards, reviewer/admin, awards, passkeys. Used by tests and local previews. Seeded with **fictional** data (`npm run db:seed`).
@@ -60,11 +60,7 @@ Keeps the whole original app: public directory/search, applicant accounts, wizar
 - Site is `noindex` (`src/app/layout.tsx`, `src/app/robots.ts`) — deliberate until launch.
 
 ### Quality gates (last verified 2026-11-09)
-`npm run lint`, `npm run typecheck`, `npm test` (142 tests, vitest, 21 files), `npx playwright test` (16 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to `6fc7b81`. Three CI failures have happened and were fixed:
-(a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to >=4975 unique of 5000; real uniqueness is a DB unique index + retry);
-(b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`);
-(c) **2026-11-09: `next build` failed on commits `bf5f39d`…`6678672` because the code imported 11 photo files (`src/assets/photos/*.jpg`) that were never committed (only `.gitkeep` existed)**. Fixed by adding the 13 files named in `docs/photo-credits.md`, downloaded from the Pexels photo IDs listed there (`https://images.pexels.com/photos/<id>/pexels-photo-<id>.jpeg?auto=compress&cs=tinysrgb&w=1600`, 1600px wide, ~2.3 MB total) and visually checked against the credit descriptions (no cheques/awards/government imagery). **Lesson: binary assets referenced by imports must be committed with the code that imports them; run `next build` before pushing.**
-(d) **2026-11-09: the published GitHub Pages snapshot (`gh-pages` `f74e6cc`) also had no photos** — its HTML referenced `_next/static/media/*.jpg` but zero `.jpg` files existed on the branch, so every photo 404ed. Same root cause (binary files were not pushed). Fixed by rebuilding the snapshot from the branch that now has `src/assets/photos/*.jpg` and republishing: `gh-pages` `bca3e2a` (13 jpgs present; verified HTTP 200 on the live URLs). **When publishing, check `git ls-tree -r origin/gh-pages | grep -c '\.jpg$'` is 13, and open a photo URL.** Likely cause for both: whichever tool pushed the earlier commits cannot push binary files; use plain `git push` from a checkout for images.
+`npm run lint`, `npm run typecheck`, `npm test` (142 tests, vitest, 21 files), `npx playwright test` (16 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to and including `f6f95b3` (the latest). Two CI failures happened and were fixed: (a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to ≥4975 unique of 5000; real uniqueness is a DB unique index + retry); (b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`).
 
 ---
 
@@ -143,6 +139,15 @@ illustrations). The StepsGraphic diagram was removed — the numbered list besid
 Alt text describes activities only; **no photo is captioned or placed as a recipient, beneficiary or testimonial**
 (§0.6 stands). Terms/Privacy headers are now plain, by design.
 
+### 2.15 Regions wording (2026-11-09)
+
+Owner: "the part about countries i need it changed to regions and then use continents, then remove 'except africa'" —
+chosen scope: **display only**. The fund page sidebar and the fund card now read **Regions: "Asia, Europe, North
+America, South America and Oceania"** (the eligible continents listed positively). Eligibility itself is unchanged:
+the fund rules (`src/config/general-fund.ts`), the FAQ "Who can apply?" answer and the form's Africa screening still
+say/apply worldwide-except-Africa. Also fixed the static-preview banner, which still claimed "Applications are not
+open yet"; it now says applications are open on the live site and the preview cannot take them.
+
 ---
 
 ## 3. Decisions and instructions from the owner (their words where possible)
@@ -164,6 +169,8 @@ Alt text describes activities only; **no photo is captioned or placed as a recip
 - (2026-11-09) "Build the short application form" — the §4 #1/#2 decisions: build it with the approved short fields and say applications are open.
 
 - (2026-11-09) "remove all the svg images and replace with better images" — all decorative SVG illustrations replaced with real photography (§2.14).
+
+- (2026-11-09) "change countries to regions, use continents, remove 'except africa'" — owner picked the display-only scope: eligible continents listed, eligibility unchanged (§2.15).
 
 ---
 

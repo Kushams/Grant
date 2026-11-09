@@ -109,7 +109,7 @@ export default function FundPage() {
             <div><dt className="font-semibold text-ink-900">{fundHasOpened() ? "Opened" : "Opening date"}</dt><dd className="text-ink-700">{fundOpensLabel()}</dd></div>
             <div><dt className="font-semibold text-ink-900">Amount you can request</dt><dd className="text-ink-700">{RANGE_TEXT}</dd></div>
             <div><dt className="font-semibold text-ink-900">Where to apply</dt><dd className="text-ink-700">Application form on this page</dd></div>
-            <div><dt className="font-semibold text-ink-900">Countries</dt><dd className="text-ink-700">Worldwide, except Africa</dd></div>
+            <div><dt className="font-semibold text-ink-900">Regions</dt><dd className="text-ink-700">Asia, Europe, North America, South America and Oceania</dd></div>
           </dl>
           {fundHasOpened() ? <LinkButton href="#apply" className="w-full">Apply now</LinkButton> : null}
           <LinkButton href="/contact" variant="secondary" className="w-full">Ask a question</LinkButton>
