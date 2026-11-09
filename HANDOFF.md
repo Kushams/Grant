@@ -1,6 +1,6 @@
 # HANDOFF — National Empowerment Network (NEN) website
 
-Last updated: 2026-11-09 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08; application form + visual overhaul added 2026-11-09)
+Last updated: 2026-11-09 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08; application form + visual overhaul added 2026-11-09 by the owner's account; missing photo files added and CI build fixed 2026-11-09 by Claude)
 Repo: https://github.com/Kushams/Grant · Working branch: `ccr-6cf6c9bd-qjbfrs` · Open **draft PR #1** into `main` (not merged)
 Static preview (GitHub Pages, branch `gh-pages`): https://kushams.github.io/Grant/
 Owner / requester: Kushams (the user). Read this whole file before changing anything.
@@ -47,7 +47,7 @@ Public pages (all inline-illustrated, navy/white/grey palette, Geist font):
 Removed from live mode (code retained, hidden): applicant registration, quick-start account, passkey/access-code sign-in UI, applicant dashboards, the public opportunity directory + search + hero search, "Log in / Get Started" buttons.
 
 ### Static preview (GitHub Pages)
-`gh-pages` branch = static snapshot of the **live-mode** site (read-only; forms/sign-in disabled via an injected banner; `fetch('/api/…')` is blocked with an alert). Built by `scripts/static-snapshot.mjs`; it also writes small meta-refresh redirect pages for moved URLs and copies `icon.png`. Last published: gh-pages `f74e6cc` (2026-11-09 text snapshot; media files uploaded in follow-up commits the same day). Pages are served from the `gh-pages` branch root; the repo is public.
+`gh-pages` branch = static snapshot of the **live-mode** site (read-only; forms/sign-in disabled via an injected banner; `fetch('/api/…')` is blocked with an alert). Built by `scripts/static-snapshot.mjs`; it also writes small meta-refresh redirect pages for moved URLs and copies `icon.png`. Last published: gh-pages `adfa041` (2026-11-09; includes the §2.15 Regions wording, media files verified live). Pages are served from the `gh-pages` branch root; the repo is public.
 
 ### Demo mode (`SITE_MODE=demo`)
 Keeps the whole original app: public directory/search, applicant accounts, wizard, dashboards, reviewer/admin, awards, passkeys. Used by tests and local previews. Seeded with **fictional** data (`npm run db:seed`).
@@ -60,7 +60,12 @@ Keeps the whole original app: public directory/search, applicant accounts, wizar
 - Site is `noindex` (`src/app/layout.tsx`, `src/app/robots.ts`) — deliberate until launch.
 
 ### Quality gates (last verified 2026-11-09)
-`npm run lint`, `npm run typecheck`, `npm test` (142 tests, vitest, 21 files), `npx playwright test` (16 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to and including `f6f95b3` (the latest). Two CI failures happened and were fixed: (a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to ≥4975 unique of 5000; real uniqueness is a DB unique index + retry); (b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`).
+`npm run lint`, `npm run typecheck`, `npm test` (142 tests, vitest, 21 files), `npx playwright test` (16 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to `6fc7b81`. Three CI failures have happened and were fixed:
+(a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to >=4975 unique of 5000; real uniqueness is a DB unique index + retry);
+(b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`);
+(c) **2026-11-09: `next build` failed on commits `bf5f39d`…`6678672` because the code imported 11 photo files (`src/assets/photos/*.jpg`) that were never committed (only `.gitkeep` existed)**. Fixed by adding the 13 files named in `docs/photo-credits.md`, downloaded from the Pexels photo IDs listed there (`https://images.pexels.com/photos/<id>/pexels-photo-<id>.jpeg?auto=compress&cs=tinysrgb&w=1600`, 1600px wide, ~2.3 MB total) and visually checked against the credit descriptions (no cheques/awards/government imagery). **Lesson: binary assets referenced by imports must be committed with the code that imports them; run `next build` before pushing.**
+(d) **2026-11-09: the published GitHub Pages snapshot (`gh-pages` `f74e6cc`) also had no photos** — its HTML referenced `_next/static/media/*.jpg` but zero `.jpg` files existed on the branch, so every photo 404ed. Same root cause (binary files were not pushed). Fixed by rebuilding the snapshot from the branch that now has `src/assets/photos/*.jpg` and republishing: `gh-pages` `bca3e2a` (13 jpgs present; verified HTTP 200 on the live URLs). **When publishing, check `git ls-tree -r origin/gh-pages | grep -c '\.jpg$'` is 13, and open a photo URL.** Likely cause for both: whichever tool pushed the earlier commits cannot push binary files; use plain `git push` from a checkout for images.
+(e) Later the same day the snapshot was republished again (`gh-pages` `adfa041`) with the §2.15 Regions wording; all 13 photo files were verified present on the live site (fund page HTML references them and the media URLs return 200).
 
 ---
 
