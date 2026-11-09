@@ -1,6 +1,6 @@
 # HANDOFF — National Empowerment Network (NEN) website
 
-Last updated: 2026-11-09 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08; application form + visual overhaul added 2026-11-09)
+Last updated: 2026-11-09 (work was done 2026-10-27 → 2026-10-29, handoff written 2026-11-08; application form + visual overhaul added 2026-11-09 by the owner's account; missing photo files added and CI build fixed 2026-11-09 by Claude)
 Repo: https://github.com/Kushams/Grant · Working branch: `ccr-6cf6c9bd-qjbfrs` · Open **draft PR #1** into `main` (not merged)
 Static preview (GitHub Pages, branch `gh-pages`): https://kushams.github.io/Grant/
 Owner / requester: Kushams (the user). Read this whole file before changing anything.
@@ -60,7 +60,10 @@ Keeps the whole original app: public directory/search, applicant accounts, wizar
 - Site is `noindex` (`src/app/layout.tsx`, `src/app/robots.ts`) — deliberate until launch.
 
 ### Quality gates (last verified 2026-11-09)
-`npm run lint`, `npm run typecheck`, `npm test` (142 tests, vitest, 21 files), `npx playwright test` (16 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to and including `f6f95b3` (the latest). Two CI failures happened and were fixed: (a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to ≥4975 unique of 5000; real uniqueness is a DB unique index + retry); (b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`).
+`npm run lint`, `npm run typecheck`, `npm test` (142 tests, vitest, 21 files), `npx playwright test` (16 e2e tests, run with `SITE_MODE=demo`), `next build` — all passing locally. CI (`.github/workflows/ci.yml`: npm ci, lint, typecheck, test, build; **Playwright is not in CI**) was green on every commit up to `6fc7b81`. Three CI failures have happened and were fixed:
+(a) a flaky birthday-collision assertion in `tests/unit/references.test.ts` (relaxed to >=4975 unique of 5000; real uniqueness is a DB unique index + retry);
+(b) typecheck failing on `@/assets/*.png` imports in a fresh checkout (fixed by `src/types/assets.d.ts` referencing `next/image-types/global`);
+(c) **2026-11-09: `next build` failed on commits `bf5f39d`…`6678672` because the code imported 11 photo files (`src/assets/photos/*.jpg`) that were never committed (only `.gitkeep` existed)**. Fixed by adding the 13 files named in `docs/photo-credits.md`, downloaded from the Pexels photo IDs listed there (`https://images.pexels.com/photos/<id>/pexels-photo-<id>.jpeg?auto=compress&cs=tinysrgb&w=1600`, 1600px wide, ~2.3 MB total) and visually checked against the credit descriptions (no cheques/awards/government imagery). **Lesson: binary assets referenced by imports must be committed with the code that imports them; run `next build` before pushing.**
 
 ---
 
